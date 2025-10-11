@@ -9,14 +9,12 @@
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:'Poppins', sans-serif; background:linear-gradient(135deg,#0f0f10,#1c1c22); color:#fff; overflow-x:hidden; }
 
-  /* --- Header --- */
   .site-header { background: rgba(20,20,25,0.9); backdrop-filter: blur(10px); padding:1rem 3rem; display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #00bfff; position:sticky; top:0; z-index:1000; }
   .site-header h1 { font-size:1.8rem; font-weight:800; color:#00bfff; text-shadow:0 0 10px #00bfff; }
   .header-icons { display:flex; align-items:center; gap:1rem; }
   .header-icons a { color:#00bfff; text-decoration:none; font-size:1.5rem; position:relative; }
   .header-icons a:hover { color:#00ffcc; }
 
-  /* Dropdown profil */
   .profile-dropdown { position: relative; display: inline-block; }
   .profile-dropdown-content { display:none; position:absolute; right:0; background:rgba(25,25,30,0.95); min-width:180px; border:1px solid #00bfff; border-radius:10px; box-shadow:0 0 10px rgba(0,191,255,0.5); z-index:100; }
   .profile-dropdown-content a { color:#fff; padding:0.8rem 1rem; text-decoration:none; display:block; border-bottom:1px solid #00bfff; transition:0.3s; }
@@ -24,14 +22,12 @@
   .profile-dropdown-content a:hover { background:#00bfff; color:#000; }
   .profile-dropdown:hover .profile-dropdown-content { display:block; }
 
-  /* --- Hero --- */
   .hero { text-align:center; padding:5rem 2rem; background:url('https://cdn.pixabay.com/photo/2019/10/11/14/29/gaming-4547959_1280.jpg') center/cover no-repeat; color:#fff; position:relative; }
   .hero::after { content:''; position:absolute; inset:0; background:rgba(0,0,0,0.6); }
   .hero h2, .hero p { position:relative; z-index:2; }
   .hero h2 { font-size:3rem; font-weight:800; text-shadow:0 0 15px #00bfff; }
   .hero p { font-size:1.2rem; margin-top:1rem; }
 
-  /* --- Produits populaires --- */
   .popular-products { width:90%; margin:5rem auto; text-align:center; }
   .popular-products h2 { font-size:2.5rem; color:#00bfff; margin-bottom:2rem; text-shadow:0 0 10px #00bfff; }
   .product-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:2rem; }
@@ -45,10 +41,8 @@
   .buy-btn { display:inline-block; margin-top:0.8rem; background:#00bfff; color:#000; padding:0.6rem 1.2rem; border-radius:30px; font-weight:700; transition:all 0.3s; }
   .buy-btn:hover { background:#00ffcc; }
 
-  /* --- Footer --- */
   .site-footer { text-align:center; padding:2rem; background:#111; border-top:2px solid #00bfff; color:#aaa; }
 
-  /* --- Lightbox --- */
   #lightbox { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:2000; }
   #lightbox img { max-width:90%; max-height:90%; border:5px solid #00bfff; border-radius:15px; }
 </style>
@@ -96,7 +90,7 @@
     <div class="product-card">
       <img src="écran_180hz.png" alt="Moniteur 23.8 FHD 180Hz">
       <div class="product-info">
-        <h3>Moniteur de jeu 23.8" FHD 180Hz</h3>
+        <h3>Moniteur de jeu 23.8 FHD 180Hz</h3>
         <p>100 €</p>
         <a href="#" class="buy-btn" data-name="Moniteur de jeu 23.8 FHD 180Hz" data-price="100" data-img="écran_180hz.png">Ajouter au panier</a>
       </div>
@@ -116,29 +110,28 @@
   &copy; <span id="year"></span> PixelZone — Tous droits réservés.
 </footer>
 
-<!-- Lightbox -->
-<div id="lightbox">
-  <img id="lightbox-img" src="">
-</div>
+<div id="lightbox"><img id="lightbox-img" src=""></div>
 
 <script>
 document.getElementById('year').textContent = new Date().getFullYear();
 
-// UID et username
-const uid = localStorage.getItem('uid'); 
-const username = localStorage.getItem('username'); 
-let cart = JSON.parse(localStorage.getItem('cart_' + uid)) || [];
+// Gestion utilisateur
+const uid = localStorage.getItem('uid');
+const username = localStorage.getItem('username');
 
-// Ajouter au panier
+// Ajouter un produit au panier
 function addToCart(item){
-  if(!uid){ alert('Vous devez être connecté pour ajouter au panier !'); return; }
-  const exist = cart.find(i => i.name === item.name);
-  if(exist){ exist.qty += 1; } 
-  else { cart.push({...item, qty:1}); }
-  localStorage.setItem('cart_' + uid, JSON.stringify(cart));
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const existing = cart.find(p => p.name === item.name);
+
+  if (existing) existing.qty += 1;
+  else cart.push({ ...item, qty: 1 });
+
+  localStorage.setItem('cart', JSON.stringify(cart));
   alert(`${item.name} ajouté au panier !`);
 }
 
+// Boutons d'ajout
 document.querySelectorAll('.buy-btn').forEach(btn => {
   btn.addEventListener('click', e => {
     e.preventDefault();
@@ -152,7 +145,7 @@ document.querySelectorAll('.buy-btn').forEach(btn => {
 
 // Profil utilisateur
 const profileDropdownContent = document.getElementById('profile-dropdown-content');
-if(uid && username){
+if (uid && username) {
   document.getElementById('login-link')?.remove();
   document.getElementById('signup-link')?.remove();
   const userNameEl = document.createElement('a');
@@ -161,7 +154,7 @@ if(uid && username){
   profileDropdownContent.appendChild(userNameEl);
 }
 
-// Lightbox images
+// Lightbox
 const lightbox = document.getElementById('lightbox');
 const lightboxImg = document.getElementById('lightbox-img');
 document.querySelectorAll('.product-card img').forEach(img => {
@@ -170,7 +163,7 @@ document.querySelectorAll('.product-card img').forEach(img => {
     lightboxImg.src = img.src;
   });
 });
-lightbox.addEventListener('click', () => { lightbox.style.display = 'none'; });
+lightbox.addEventListener('click', () => lightbox.style.display = 'none');
 </script>
 
 </body>
