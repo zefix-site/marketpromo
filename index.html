@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PixelZone - Gaming Store</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Poppins', sans-serif; background:linear-gradient(135deg,#0f0f10,#1c1c22); color:#fff; overflow-x:hidden; }
+
+  /* --- Header --- */
+  .site-header { background: rgba(20,20,25,0.9); backdrop-filter: blur(10px); padding:1rem 3rem; display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #00bfff; position:sticky; top:0; z-index:1000; }
+  .site-header h1 { font-size:1.8rem; font-weight:800; color:#00bfff; text-shadow:0 0 10px #00bfff; }
+  .header-icons { display:flex; align-items:center; gap:1rem; }
+  .header-icons a { color:#00bfff; text-decoration:none; font-size:1.5rem; position:relative; }
+  .header-icons a:hover { color:#00ffcc; }
+
+  /* Dropdown profil */
+  .profile-dropdown { position: relative; display: inline-block; }
+  .profile-dropdown-content { display:none; position:absolute; right:0; background:rgba(25,25,30,0.95); min-width:180px; border:1px solid #00bfff; border-radius:10px; box-shadow:0 0 10px rgba(0,191,255,0.5); z-index:100; }
+  .profile-dropdown-content a { color:#fff; padding:0.8rem 1rem; text-decoration:none; display:block; border-bottom:1px solid #00bfff; transition:0.3s; }
+  .profile-dropdown-content a:last-child { border-bottom:none; }
+  .profile-dropdown-content a:hover { background:#00bfff; color:#000; }
+  .profile-dropdown:hover .profile-dropdown-content { display:block; }
+
+  /* --- Hero --- */
+  .hero { text-align:center; padding:5rem 2rem; background:url('https://cdn.pixabay.com/photo/2019/10/11/14/29/gaming-4547959_1280.jpg') center/cover no-repeat; color:#fff; position:relative; }
+  .hero::after { content:''; position:absolute; inset:0; background:rgba(0,0,0,0.6); }
+  .hero h2, .hero p { position:relative; z-index:2; }
+  .hero h2 { font-size:3rem; font-weight:800; text-shadow:0 0 15px #00bfff; }
+  .hero p { font-size:1.2rem; margin-top:1rem; }
+
+  /* --- Produits populaires --- */
+  .popular-products { width:90%; margin:5rem auto; text-align:center; }
+  .popular-products h2 { font-size:2.5rem; color:#00bfff; margin-bottom:2rem; text-shadow:0 0 10px #00bfff; }
+  .product-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:2rem; }
+  .product-card { background:rgba(25,25,30,0.95); border:2px solid #00bfff; border-radius:20px; overflow:hidden; box-shadow:0 0 20px rgba(0,191,255,0.2); transition:transform 0.3s, box-shadow 0.3s; cursor:pointer; }
+  .product-card:hover { transform:translateY(-5px) scale(1.03); box-shadow:0 0 25px rgba(0,191,255,0.5); }
+  .product-card img { width:100%; height:200px; object-fit:cover; border-bottom:2px solid #00bfff; transition:transform 0.3s; cursor:pointer; }
+  .product-card img:hover { transform:scale(1.05); }
+  .product-info { padding:1rem; text-align:center; }
+  .product-info h3 { font-size:1.2rem; color:#fff; margin-bottom:0.5rem; }
+  .product-info p { font-size:1rem; color:#00ffcc; font-weight:600; }
+  .buy-btn { display:inline-block; margin-top:0.8rem; background:#00bfff; color:#000; padding:0.6rem 1.2rem; border-radius:30px; font-weight:700; transition:all 0.3s; }
+  .buy-btn:hover { background:#00ffcc; }
+
+  /* --- Footer --- */
+  .site-footer { text-align:center; padding:2rem; background:#111; border-top:2px solid #00bfff; color:#aaa; }
+
+  /* --- Lightbox --- */
+  #lightbox { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:2000; }
+  #lightbox img { max-width:90%; max-height:90%; border:5px solid #00bfff; border-radius:15px; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1>PixelZone</h1>
+  <div class="header-icons">
+    <a href="panier.html">🛒</a>
+    <div class="profile-dropdown">
+      <a href="#">👤</a>
+      <div class="profile-dropdown-content" id="profile-dropdown-content">
+        <a href="login.html" id="login-link">Se connecter</a>
+        <a href="signup.html" id="signup-link">S'inscrire</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <h2>Bienvenue sur PixelZone</h2>
+  <p>Découvrez nos produits gaming exclusifs et boostez votre setup !</p>
+</section>
+
+<section class="popular-products">
+  <h2>🔥 Produits Populaires</h2>
+  <div class="product-grid">
+    <div class="product-card">
+      <img src="chargeur_type_c.png" alt="Chargeur rapide Apple 30W">
+      <div class="product-info">
+        <h3>Chargeur rapide Apple 30W</h3>
+        <p>10 €</p>
+        <a href="#" class="buy-btn" data-name="Chargeur rapide Apple 30W" data-price="10" data-img="chargeur_type_c.png">Ajouter au panier</a>
+      </div>
+    </div>
+    <div class="product-card">
+      <img src="clavier_souris_blanc.png" alt="Clavier et souris rétroéclairés">
+      <div class="product-info">
+        <h3>Clavier et souris rétroéclairés arc-en-ciel</h3>
+        <p>20 €</p>
+        <a href="#" class="buy-btn" data-name="Clavier et souris rétroéclairés arc-en-ciel" data-price="20" data-img="clavier_souris_blanc.png">Ajouter au panier</a>
+      </div>
+    </div>
+    <div class="product-card">
+      <img src="écran_180hz.png" alt="Moniteur 23.8 FHD 180Hz">
+      <div class="product-info">
+        <h3>Moniteur de jeu 23.8" FHD 180Hz</h3>
+        <p>100 €</p>
+        <a href="#" class="buy-btn" data-name="Moniteur de jeu 23.8 FHD 180Hz" data-price="100" data-img="écran_180hz.png">Ajouter au panier</a>
+      </div>
+    </div>
+    <div class="product-card">
+      <img src="disque_dur_1_TB.png" alt="Disque dur externe 1 To">
+      <div class="product-info">
+        <h3>Disque dur externe 1 To haute vitesse</h3>
+        <p>15 €</p>
+        <a href="#" class="buy-btn" data-name="Disque dur externe 1 To haute vitesse" data-price="15" data-img="disque_dur_1_TB.png">Ajouter au panier</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  &copy; <span id="year"></span> PixelZone — Tous droits réservés.
+</footer>
+
+<!-- Lightbox -->
+<div id="lightbox">
+  <img id="lightbox-img" src="">
+</div>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// UID et username
+const uid = localStorage.getItem('uid'); 
+const username = localStorage.getItem('username'); 
+let cart = JSON.parse(localStorage.getItem('cart_' + uid)) || [];
+
+// Ajouter au panier
+function addToCart(item){
+  if(!uid){ alert('Vous devez être connecté pour ajouter au panier !'); return; }
+  const exist = cart.find(i => i.name === item.name);
+  if(exist){ exist.qty += 1; } 
+  else { cart.push({...item, qty:1}); }
+  localStorage.setItem('cart_' + uid, JSON.stringify(cart));
+  alert(`${item.name} ajouté au panier !`);
+}
+
+document.querySelectorAll('.buy-btn').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.preventDefault();
+    addToCart({
+      name: btn.dataset.name,
+      price: parseFloat(btn.dataset.price),
+      img: btn.dataset.img
+    });
+  });
+});
+
+// Profil utilisateur
+const profileDropdownContent = document.getElementById('profile-dropdown-content');
+if(uid && username){
+  document.getElementById('login-link')?.remove();
+  document.getElementById('signup-link')?.remove();
+  const userNameEl = document.createElement('a');
+  userNameEl.textContent = `Connecté : ${username}`;
+  userNameEl.href = "#";
+  profileDropdownContent.appendChild(userNameEl);
+}
+
+// Lightbox images
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+document.querySelectorAll('.product-card img').forEach(img => {
+  img.addEventListener('click', () => {
+    lightbox.style.display = 'flex';
+    lightboxImg.src = img.src;
+  });
+});
+lightbox.addEventListener('click', () => { lightbox.style.display = 'none'; });
+</script>
+
+</body>
+</html>
