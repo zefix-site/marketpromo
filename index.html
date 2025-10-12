@@ -45,6 +45,49 @@
 
   #lightbox { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:2000; }
   #lightbox img { max-width:90%; max-height:90%; border:5px solid #00bfff; border-radius:15px; }
+.product-categories {
+  width: 90%;
+  margin: 4rem auto;
+  text-align: center;
+}
+
+.product-categories h2 {
+  font-size: 2.2rem;
+  color: #00bfff;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 0 10px #00bfff;
+}
+
+.category-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.category-btn {
+  background: rgba(25,25,30,0.9);
+  border: 2px solid #00bfff;
+  color: #00bfff;
+  padding: 0.7rem 1.5rem;
+  border-radius: 30px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.category-btn:hover {
+  background: #00bfff;
+  color: #000;
+}
+
+.category-btn.active {
+  background: #00bfff;
+  color: #000;
+  box-shadow: 0 0 15px #00bfff;
+}
+
+
 </style>
 </head>
 <body>
@@ -71,7 +114,7 @@
 <section class="popular-products">
   <h2>🔥 Produits Populaires</h2>
   <div class="product-grid">
-    <div class="product-card">
+    <div class="product-card" data-category="Acessoire">
       <img src="chargeur_type_c.png" alt="Chargeur rapide Apple 30W">
       <div class="product-info">
         <h3>Chargeur rapide Apple 30W</h3>
@@ -79,7 +122,7 @@
         <a href="#" class="buy-btn" data-name="Chargeur rapide Apple 30W" data-price="10" data-img="chargeur_type_c.png">Ajouter au panier</a>
       </div>
     </div>
-    <div class="product-card">
+    <div class="product-card" data-category="Acessoire">
       <img src="clavier_souris_blanc.png" alt="Clavier et souris rétroéclairés">
       <div class="product-info">
         <h3>Clavier et souris rétroéclairés arc-en-ciel</h3>
@@ -87,7 +130,7 @@
         <a href="#" class="buy-btn" data-name="Clavier et souris rétroéclairés arc-en-ciel" data-price="20" data-img="clavier_souris_blanc.png">Ajouter au panier</a>
       </div>
     </div>
-    <div class="product-card">
+    <div class="product-card" data-category="écran">
       <img src="écran_180hz.png" alt="Moniteur 23.8 FHD 180Hz">
       <div class="product-info">
         <h3>Moniteur de jeu 23.8 FHD 180Hz</h3>
@@ -95,7 +138,7 @@
         <a href="#" class="buy-btn" data-name="Moniteur de jeu 23.8 FHD 180Hz" data-price="100" data-img="écran_180hz.png">Ajouter au panier</a>
       </div>
     </div>
-    <div class="product-card">
+    <div class="product-card" data-category="Acessoire">
       <img src="disque_dur_1_TB.png" alt="Disque dur externe 1 To">
       <div class="product-info">
         <h3>Disque dur externe 1 To haute vitesse</h3>
@@ -105,10 +148,23 @@
     </div>
   </div>
 </section>
+<section class="product-categories">
+  <h2>🗂️ Catégories d'Articles</h2>
+  <div class="category-buttons">
+    <button class="category-btn active" data-category="all">Tout</button>
+    <button class="category-btn" data-category="Acessoire">Acessoire</button>
+    <button class="category-btn" data-category="Caméra">Caméra</button>
+    <button class="category-btn" data-category="Carte graphique">Carte graphique</button>
+    <button class="category-btn" data-category="Micro">Micro</button>
+    <button class="category-btn" data-category="écran">écran</button>
+  </div>
+</section>
+
+
 <section class="popular-products">
   <h2>🆕 Nouveaux Produits</h2>
   <div class="product-grid">
-    <div class="product-card">
+    <div class="product-card" data-category="Acessoire">
       <img src="bouchon_anti_poussière_avec_brosse_de_nettoyage.png" alt="bouchon_anti-poussière_avec_brosse_de_nettoyage">
       <div class="product-info">
         <h3>Port de chargement de téléphone portable, bouchon anti-poussière avec brosse de nettoyage pour IPhone 17 16 14 13 Pro Max Plus Samsung Xiaomi IOS Type C, ensemble de nettoyage</h3>
@@ -116,7 +172,7 @@
         <a href="#" class="buy-btn" data-name="bouchon_anti_çpoussière_avec_brosse_de_nettoyage" data-price="5" data-img="bouchon_anti_poussière_avec_brosse_de_nettoyage.png">Ajouter au panier</a>
       </div>
     </div>
-    <div class="product-card">
+    <div class="product-card" data-category="Acessoire">
       <img src="style universelle.png" alt="Stylet universel pour tablette, stylet tactile pour iPad Apple, crayon pour téléphone portable, Huawei, Lenovo, Samsung, Xiaomi, Redmi, nouveau">
       <div class="product-info">
         <h3>Stylet universel pour tablette, stylet tactile pour iPad Apple, crayon pour téléphone portable, Huawei, Lenovo, Samsung, Xiaomi, Redmi, nouveau</h3>
@@ -124,7 +180,7 @@
         <a href="#" class="buy-btn" data-name="Stylet universel pour tablette, stylet tactile pour iPad Apple, crayon pour téléphone portable, Huawei, Lenovo, Samsung, Xiaomi, Redmi, nouveau" data-price="7" data-img="style universelle.png">Ajouter au panier</a>
       </div>
     </div>
-    <div class="product-card">
+    <div class="product-card" data-category="Acessoire">
       <img src="trépied_sans_fil_Bluetooth.png" alt="FGCLSY-Mini trépied sans fil Bluetooth, monopode, obturateur à distance, lumière d'appoint pour iPhone, Samsung, Xiaomi, support de téléphone, perche à selfie">
       <div class="product-info">
         <h3>FGCLSY-Mini trépied sans fil Bluetooth, monopode, obturateur à distance, lumière d'appoint pour iPhone, Samsung, Xiaomi, support de téléphone, perche à selfie</h3>
@@ -132,7 +188,7 @@
         <a href="#" class="buy-btn" data-name="FGCLSY-Mini trépied sans fil Bluetooth, monopode, obturateur à distance, lumière d'appoint pour iPhone, Samsung, Xiaomi, support de téléphone, perche à selfie" data-price="8" data-img="trépied_sans_fil_Bluetooth.png">Ajouter au panier</a>
       </div>
     </div>
-    <div class="product-card">
+    <div class="product-card" data-category="Acessoire">
       <img src="12_touches_Mini_jeu_clavier_de_jeu_mécanique_clavier.png" alt="12 touches Mini jeu clavier de jeu mécanique clavier à une main USB-C filaire OSU clavier Programmable clavier échangeable à chaud">
       <div class="product-info">
         <h3>12 touches Mini jeu clavier de jeu mécanique clavier à une main USB-C filaire OSU clavier Programmable clavier échangeable à chaud</h3>
@@ -140,7 +196,7 @@
         <a href="#" class="buy-btn" data-name="12 touches Mini jeu clavier de jeu mécanique clavier à une main USB-C filaire OSU clavier Programmable clavier échangeable à chaud" data-price="20" data-img="12_touches_Mini_jeu_clavier_de_jeu_mécanique_clavier.png">Ajouter au panier</a>
       </div>
     </div>
-    <div class="product-card">
+    <div class="product-card" data-category="Caméra">
       <img src="Mini_Webcam HD_1080P.png" alt="Mini Webcam HD 1080P Portable, Caméra de Jeu pour Ordinateur Portable, Microphone USB pour Conférence de Travail">
       <div class="product-info">
         <h3>Mini Webcam HD 1080P Portable, Caméra de Jeu pour Ordinateur Portable, Microphone USB pour Conférence de Travail</h3>
@@ -149,7 +205,7 @@
         total vendu 1
       </div>
     </div>
-    <div class="product-card">
+    <div class="product-card" data-category="Carte graphique">
       <img src="carte_graphique_soyo_rtx3060.png" alt="SOYO nouvelles cartes graphiques de jeu NVIDIA GeForce RTX 3060 12GB GDDR6 192 bits carte vidéo GPU de bureau composants informatiques">
       <div class="product-info">
         <h3>SOYO nouvelles cartes graphiques de jeu NVIDIA GeForce RTX 3060 12GB GDDR6 192 bits carte vidéo GPU de bureau composants informatiques</h3>
@@ -157,7 +213,7 @@
         <a href="#" class="buy-btn" data-name="SOYO nouvelles cartes graphiques de jeu NVIDIA GeForce RTX 3060 12GB GDDR6 192 bits carte vidéo GPU de bureau composants informatiques" data-price="300" data-img="carte_graphique_soyo_rtx3060.png">Ajouter au panier</a>
       </div>
     </div>
-    <div class="product-card">
+    <div class="product-card" data-category="Acessoire">
       <img src="cable hdmi.png" alt="Câble de données HDTV haute vitesse compatible HDMI Hong5.5, haute définition 1080P, version de câble vidéo pour moniteur d'ordinateur">
       <div class="product-info">
         <h3>Câble de données HDTV haute vitesse compatible HDMI 1.5m, haute définition 1080P, version de câble vidéo pour moniteur d'ordinateur</h3>
@@ -166,7 +222,7 @@
         total vendu 5
       </div>
     </div>
-    <div class="product-card">
+    <div class="product-card" data-category="Acessoire">
       <img src="cable vga.png" alt="VGA 3m Câble Mâle À Mâle Haute Définition Ordinateur Projecteur Moniteur Vidéo Câble De Données Avec Anneau Magnétique">
       <div class="product-info">
         <h3>VGA 3m Câble Mâle À Mâle Haute Définition Ordinateur Projecteur Moniteur Vidéo Câble De Données Avec Anneau Magnétique</h3>
@@ -174,7 +230,7 @@
         <a href="#" class="buy-btn" data-name="VGA 3m Câble Mâle À Mâle Haute Définition Ordinateur Projecteur Moniteur Vidéo Câble De Données Avec Anneau Magnétique" data-price="7" data-img="cable vga.png">Ajouter au panier</a>
       </div>
     </div>
-    <div class="product-card">
+    <div class="product-card" data-category="Acessoire">
       <img src="cable display port.png" alt="Câble Displayport 8K DP 1.4 vers DP, 8K @ 60HZ 4K @ 144Hz 2K @ 165Hz, adaptateur Audio-vidéo pour PC portable HDTV">
       <div class="product-info">
         <h3>Câble Displayport 8K DP 1.4 vers DP, 8K @ 60HZ 4K @ 144Hz 2K @ 165Hz, adaptateur Audio-vidéo pour PC portable HDTV</h3>
@@ -182,13 +238,33 @@
         <a href="#" class="buy-btn" data-name="Câble Displayport 8K DP 1.4 vers DP, 8K @ 60HZ 4K @ 144Hz 2K @ 165Hz, adaptateur Audio-vidéo pour PC portable HDTV" data-price="10" data-img="cable display port.png">Ajouter au panier</a>
       </div>
     </div>
-    <div class="product-card">
+    <div class="product-card" data-category="Micro">
       <img src="micro rgb usb.png" alt="Microphones à condensateur 3.5MM/USB, Microphone professionnel, système de karaoké, enregistrement de chant de jeu, Micro micro pour ordinateur portable">
       <div class="product-info">
         <h3>Câble Displayport 8K DP 1.4 vers DP, 8K @ 60HZ 4K @ 144Hz 2K @ 165Hz, adaptateur Audio-vidéo pour PC portable HDTV</h3>
         <p>22 €</p>
         <a href="#" class="buy-btn" data-name="Microphones à condensateur 3.5MM/USB, Microphone professionnel, système de karaoké, enregistrement de chant de jeu, Micro micro pour ordinateur portable" data-price="22" data-img="micro rgb usb.png">Ajouter au panier</a>
         total vendu 1
+      </div>
+
+    </div>
+    <div class="product-card" data-category="Carte graphique">
+      <img src="carte_graphique_soyo_rtx3060_12gb.png" alt="SOYO RTX 3060 12GB carte graphique GDDR6 192Bit PCI Express 4.0 × 16 8Pin NVIDIA GPU Rtx 3060 carte vidéo De jeu Placa De vidéo">
+      <div class="product-info">
+        <h3>SOYO RTX 3060 12GB carte graphique GDDR6 192Bit PCI Express 4.0 × 16 8Pin NVIDIA GPU Rtx 3060 carte vidéo De jeu Placa De vidéo</h3>
+        <p>280 €</p>
+        <a href="#" class="buy-btn" data-name="SOYO RTX 3060 12GB carte graphique GDDR6 192Bit PCI Express 4.0 × 16 8Pin NVIDIA GPU Rtx 3060 carte vidéo De jeu Placa De vidéo" data-price="280" data-img="carte_graphique_soyo_rtx3060_12gb.png">Ajouter au panier</a>
+        
+      </div>
+
+    </div>
+    <div class="product-card" data-category="Carte graphique">
+      <img src="carte_graphique_580_8g.png" alt="SOYO cartes graphiques Radeon RX580 8G & RX550 4G carte de jeu vidéo PCIE3.0x16 GPU composants d'ordinateur de bureau AMD RX 580 8G">
+      <div class="product-info">
+        <h3>SOYO cartes graphiques Radeon RX580 8G & RX550 4G carte de jeu vidéo PCIE3.0x16 GPU composants d'ordinateur de bureau AMD RX 580 8G</h3>
+        <p>170 €</p>
+        <a href="#" class="buy-btn" data-name="SOYO cartes graphiques Radeon RX580 8G & RX550 4G carte de jeu vidéo PCIE3.0x16 GPU composants d'ordinateur de bureau AMD RX 580 8G" data-price="170" data-img="carte_graphique_580_8g.png">Ajouter au panier</a>
+        
       </div>
 
     </div>
@@ -254,6 +330,25 @@ document.querySelectorAll('.product-card img').forEach(img => {
   });
 });
 lightbox.addEventListener('click', () => lightbox.style.display = 'none');
+// --- FILTRAGE PAR CATÉGORIE ---
+const categoryButtons = document.querySelectorAll('.category-btn');
+const productCards = document.querySelectorAll('.product-card');
+
+categoryButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    // Activer le bouton sélectionné
+    categoryButtons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const selected = btn.dataset.category;
+
+    productCards.forEach(card => {
+  const match = selected === 'all' || card.dataset.category === selected;
+  card.style.display = match ? '' : 'none';
+    });
+  });
+});
+
 </script>
 
 </body>
