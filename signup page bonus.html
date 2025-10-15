@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inscription - PixelZone</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; }
+body {
+  background: linear-gradient(135deg, #0f0f10, #1c1c22);
+  color: #fff;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+}
+.signup-container {
+  background: rgba(25,25,30,0.95);
+  padding: 3rem;
+  border-radius: 25px;
+  box-shadow: 0 0 25px rgba(0,191,255,0.5);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+.signup-container h1 { color: #00bfff; margin-bottom: 1.5rem; text-shadow: 0 0 10px #00bfff; }
+.signup-container input {
+  width: 100%;
+  padding: 0.8rem;
+  margin: 0.8rem 0;
+  border-radius: 15px;
+  border: 1px solid #00bfff;
+  background: #1c1c22;
+  color: #fff;
+  font-size: 1rem;
+}
+.signup-container input:focus { outline:none; border-color:#00ffcc; box-shadow: 0 0 10px #00ffcc; }
+.signup-container button {
+  width: 100%;
+  padding: 0.8rem;
+  margin-top:1rem;
+  background:#00bfff;
+  color:#000;
+  font-weight:700;
+  border:none;
+  border-radius:25px;
+  cursor:pointer;
+  transition:0.3s;
+}
+.signup-container button:hover { background:#00ffcc; }
+.signup-container a { color:#00bfff; text-decoration:none; display:block; margin-top:1rem; transition:0.3s; }
+.signup-container a:hover { color:#00ffcc; }
+</style>
+</head>
+<body>
+
+<div class="signup-container">
+  <h1>Créer un compte</h1>
+  <input type="text" id="name" placeholder="Nom complet" required>
+  <input type="email" id="email" placeholder="Adresse email" required>
+  <input type="password" id="password" placeholder="Mot de passe" required>
+  <input type="password" id="confirm-password" placeholder="Confirmer mot de passe" required>
+  <button onclick="signup()">S'inscrire</button>
+  <a href="login cadena.html">Déjà un compte ? Se connecter</a>
+</div>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyAur6dDvL5xHOIIIr40_k5pN4drXc0xbok",
+  authDomain: "notlookbase.firebaseapp.com",
+  projectId: "notlookbase",
+  storageBucket: "notlookbase.firebasestorage.app",
+  messagingSenderId: "744309774659",
+  appId: "1:744309774659:web:e7d301156c2733a613f7f6",
+  measurementId: "G-5NV71LBKTQ"
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+function signup(){
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const confirm = document.getElementById('confirm-password').value;
+
+  if(!name || !email || !password || !confirm){
+    alert('Veuillez remplir tous les champs.');
+    return;
+  }
+  if(password !== confirm){
+    alert('Les mots de passe ne correspondent pas !');
+    return;
+  }
+
+  auth.createUserWithEmailAndPassword(email, password)
+  .then(userCredential => {
+    const user = userCredential.user;
+    db.collection('users').doc(user.uid).set({ name, email })
+    .then(() => {
+      alert('Compte créé avec succès ! Veuillez vous connecter.');
+      window.location.href = 'login.html';
+    })
+    .catch(err => {
+      console.error('Erreur Firestore :', err);
+      alert('Erreur lors de l’enregistrement du profil.');
+    });
+  })
+  .catch(error => {
+    alert('Erreur : ' + error.message);
+  });
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>page Bonus</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Poppins', sans-serif; background:linear-gradient(135deg,#000000,#000000); color:#fff; overflow-x:hidden; }
+
+  .site-header { background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(10px); padding:1rem 3rem; display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #00bfff; position:sticky; top:0; z-index:1000; }
+  .site-header h1 { font-size:1.8rem; font-weight:800; color:#00bfff; text-shadow:0 0 10px #00bfff; }
+  .header-icons { display:flex; align-items:center; gap:1rem; }
+  .header-icons a { color:#00bfff; text-decoration:none; font-size:1.5rem; position:relative; }
+  .header-icons a:hover { color:#00ffcc; }
+
+  .profile-dropdown { position: relative; display: inline-block; }
+  .profile-dropdown-content { display:none; position:absolute; right:0; background:rgba(25,25,30,0.95); min-width:180px; border:1px solid #00bfff; border-radius:10px; box-shadow:0 0 10px rgba(0,191,255,0.5); z-index:100; }
+  .profile-dropdown-content a { color:#fff; padding:0.8rem 1rem; text-decoration:none; display:block; border-bottom:1px solid #00bfff; transition:0.3s; }
+  .profile-dropdown-content a:last-child { border-bottom:none; }
+  .profile-dropdown-content a:hover { background:#00bfff; color:#000; }
+  .profile-dropdown:hover .profile-dropdown-content { display:block; }
+
+  .hero { text-align:center; padding:5rem 2rem; background:url('https://cdn.pixabay.com/photo/2019/10/11/14/29/gaming-4547959_1280.jpg') center/cover no-repeat; color:#fff; position:relative; }
+  .hero::after { content:''; position:absolute; inset:0; background:rgba(0,0,0,0.6); }
+  .hero h2, .hero p { position:relative; z-index:2; }
+  .hero h2 { font-size:3rem; font-weight:800; text-shadow:0 0 15px #00bfff; }
+  .hero p { font-size:1.2rem; margin-top:1rem; }
+
+  .popular-products { width:90%; margin:5rem auto; text-align:center; }
+  .popular-products h2 { font-size:2.5rem; color:#00bfff; margin-bottom:2rem; text-shadow:0 0 10px #00bfff; }
+  .product-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:2rem; }
+  .product-card { background:rgba(25,25,30,0.95); border:2px solid #00bfff; border-radius:20px; overflow:hidden; box-shadow:0 0 20px rgba(0,191,255,0.2); transition:transform 0.3s, box-shadow 0.3s; cursor:pointer; }
+  .product-card:hover { transform:translateY(-5px) scale(1.03); box-shadow:0 0 25px rgba(0,191,255,0.5); }
+  .product-card img { width:100%; height:200px; object-fit:cover; border-bottom:2px solid #00bfff; transition:transform 0.3s; cursor:pointer; }
+  .product-card img:hover { transform:scale(1.05); }
+  .product-info { padding:1rem; text-align:center; }
+  .product-info h3 { font-size:1.2rem; color:#fff; margin-bottom:0.5rem; }
+  .product-info p { font-size:1rem; color:#00ffcc; font-weight:600; }
+  .buy-btn { display:inline-block; margin-top:0.8rem; background:#00bfff; color:#000; padding:0.6rem 1.2rem; border-radius:30px; font-weight:700; transition:all 0.3s; }
+  .buy-btn:hover { background:#00ffcc; }
+
+  .site-footer { text-align:center; padding:2rem; background:#111; border-top:2px solid #00bfff; color:#aaa; }
+
+  #lightbox { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:2000; }
+  #lightbox img { max-width:90%; max-height:90%; border:5px solid #00bfff; border-radius:15px; }
+.product-categories {
+  width: 90%;
+  margin: 4rem auto;
+  text-align: center;
+}
+
+.product-categories h2 {
+  font-size: 2.2rem;
+  color: #00bfff;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 0 10px #00bfff;
+}
+
+.category-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.category-btn {
+  background: rgba(25,25,30,0.9);
+  border: 2px solid #00bfff;
+  color: #00bfff;
+  padding: 0.7rem 1.5rem;
+  border-radius: 30px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.category-btn:hover {
+  background: #00bfff;
+  color: #000;
+}
+
+.category-btn.active {
+  background: #00bfff;
+  color: #000;
+  box-shadow: 0 0 15px #00bfff;
+}
+.lock-button {
+  position: fixed;
+  bottom: 20px;       /* distance du bas */
+  right: 20px;        /* distance du bord droit */
+  background-color: #1e1e1e; /* couleur du fond */
+  color: rgb(0, 0, 0);        /* couleur de l’icône */
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.lock-button:hover {
+  background-color: #fcd604;
+  transform: scale(1.1);
+}
+
+
+
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1>page Bonus</h1>
+  <div class="header-icons">
+    <a href="panier page bonus.html">🛒</a>
+    
+  </div>
+</header>
+
+
+<section class="product-categories">
+  <h2>🗂️ Catégories d'Articles</h2>
+  <div class="category-buttons">
+    <button class="category-btn active" data-category="all">Tout</button>
+    <button class="category-btn" data-category="éclairage,Bricolage">éclairage,Bricolage</button>
+    <button class="category-btn" data-category="Bijouterie">Bijouterie</button>
+  </div>
+</section>
+<section class="popular-products">
+  <h2>🔥 Produits Populaires</h2>
+  <div class="product-grid">
+    <div class="product-card" data-category="Informatique,Bureautique">
+      <img src="chargeur_type_c.png" alt="Chargeur rapide Apple 30W">
+      <div class="product-info">
+        <h3>Chargeur rapide Apple 30W</h3>
+        <p>10 €</p>
+        <a href="#" class="buy-btn" data-name="Chargeur rapide Apple 30W" data-price="10" data-img="chargeur_type_c.png">Ajouter au panier</a>
+      </div>
+    </div>
+    
+</section>
+<section class="popular-products">
+  <h2>🆕 Nouveaux Produits</h2>
+  <div class="product-grid">
+    <div class="product-card" data-category="Informatique,Bureautique">
+      <img src="bouchon_anti_poussière_avec_brosse_de_nettoyage.png" alt="bouchon_anti-poussière_avec_brosse_de_nettoyage">
+      <div class="product-info">
+        <h3>Port de chargement de téléphone portable, bouchon anti-poussière avec brosse de nettoyage pour IPhone 17 16 14 13 Pro Max Plus Samsung Xiaomi IOS Type C, ensemble de nettoyage</h3>
+        <p>5 €</p>
+        <a href="#" class="buy-btn" data-name="bouchon_anti_çpoussière_avec_brosse_de_nettoyage" data-price="5" data-img="bouchon_anti_poussière_avec_brosse_de_nettoyage.png">Ajouter au panier</a>
+      </div>
+    </div>
+</section>
+<footer class="site-footer">
+  &copy; <span id="year"></span> PixelZone — Tous droits réservés.
+</footer>
+
+<div id="lightbox"><img id="lightbox-img" src=""></div>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// Gestion utilisateur
+const uid = localStorage.getItem('uid');
+const username = localStorage.getItem('username');
+
+// Ajouter un produit au panier
+function addToCart(item){
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const existing = cart.find(p => p.name === item.name);
+
+  if (existing) existing.qty += 1;
+  else cart.push({ ...item, qty: 1 });
+
+  localStorage.setItem('cart', JSON.stringify(cart));
+  alert(`${item.name} ajouté au panier !`);
+}
+
+// Boutons d'ajout
+document.querySelectorAll('.buy-btn').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.preventDefault();
+    addToCart({
+      name: btn.dataset.name,
+      price: parseFloat(btn.dataset.price),
+      img: btn.dataset.img
+    });
+  });
+});
+
+// Profil utilisateur
+const profileDropdownContent = document.getElementById('profile-dropdown-content');
+if (uid && username) {
+  document.getElementById('login-link')?.remove();
+  document.getElementById('signup-link')?.remove();
+  const userNameEl = document.createElement('a');
+  userNameEl.textContent = `Connecté : ${username}`;
+  userNameEl.href = "#";
+  profileDropdownContent.appendChild(userNameEl);
+}
+
+// Lightbox
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+document.querySelectorAll('.product-card img').forEach(img => {
+  img.addEventListener('click', () => {
+    lightbox.style.display = 'flex';
+    lightboxImg.src = img.src;
+  });
+});
+lightbox.addEventListener('click', () => lightbox.style.display = 'none');
+// --- FILTRAGE PAR CATÉGORIE ---
+const categoryButtons = document.querySelectorAll('.category-btn');
+const productCards = document.querySelectorAll('.product-card');
+
+categoryButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    // Activer le bouton sélectionné
+    categoryButtons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const selected = btn.dataset.category;
+
+    productCards.forEach(card => {
+  const match = selected === 'all' || card.dataset.category === selected;
+  card.style.display = match ? '' : 'none';
+    });
+  });
+});
+
+</script>
+
+</body>
+</html>
