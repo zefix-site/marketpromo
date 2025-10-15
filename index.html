@@ -55,6 +55,7 @@ body {
   display: flex;
   align-items: center;
   gap: 1.3rem;
+  
 }
 
 .header-icons a {
@@ -62,6 +63,7 @@ body {
   font-size: 1.6rem;
   position: relative;
   transition: 0.3s ease;
+  
 }
 
 .header-icons a::after {
@@ -222,72 +224,130 @@ body {
 
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  justify-items: center;
 }
-
 .product-card {
-  background: rgba(25, 25, 30, 0.95);
-  border: 2px solid #00bfff;
-  border-radius: 20px;
+  position: relative;
+  background: linear-gradient(180deg, rgba(10,10,10,0.95) 0%, rgba(25,25,30,0.98) 100%);
+  border: 1.5px solid rgba(0, 191, 255, 0.3);
+  border-radius: 8px; /* carré mais légèrement adouci */
   overflow: hidden;
-  box-shadow: 0 0 25px rgba(0,191,255,0.2);
-  transition: all 0.4s ease;
+  box-shadow: 0 8px 20px rgba(0,255,255,0.08);
+  transition: all 0.35s ease;
   cursor: pointer;
-  transform: perspective(800px) rotateY(0);
+  max-width: 320px;
+  width: 100%;
+}
+.product-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0,255,255,0.15), rgba(255,255,255,0.02));
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.product-card:hover::before {
+  opacity: 1;
 }
 
 .product-card:hover {
-  transform: perspective(800px) rotateY(5deg) translateY(-5px);
-  box-shadow: 0 0 40px rgba(0,255,255,0.5);
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 0 30px rgba(0,255,255,0.25), inset 0 0 10px rgba(0,255,255,0.15);
 }
 
 .product-card img {
   width: 100%;
-  height: 220px;
+  width:  250px;
+  height: 250px;
   object-fit: cover;
-  border-bottom: 2px solid #00bfff;
-  transition: transform 0.4s ease;
+  transition: transform 0.5s ease, filter 0.5s ease;
+  border-bottom: 1px solid rgba(0,191,255,0.4);
 }
 
-.product-card img:hover {
-  transform: scale(1.08);
+.product-card:hover img {
+  transform: scale(1.05);
+  filter: brightness(1.15) contrast(1.05);
 }
-
 .product-info {
-  padding: 1rem;
+  padding: 1.3rem 1.4rem;
   text-align: center;
+  position: relative;
 }
 
 .product-info h3 {
-  font-size: 1.2rem;
-  color: #fff;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #f0f0f0;
   margin-bottom: 0.5rem;
+  text-shadow: 0 0 10px rgba(0,255,255,0.2);
 }
 
 .product-info p {
-  font-size: 1rem;
-  color: #00ffcc;
+  font-size: 1.05rem;
   font-weight: 600;
+  color: #00ffcc;
+  margin-bottom: 1rem;
+}
+.product-card::after {
+  content: "";
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 120%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(0,255,255,0.15) 50%, transparent 100%);
+  opacity: 0;
+  transform: skewY(-10deg);
+  transition: opacity 0.6s ease, top 0.6s ease;
+}
+.product-card:hover::after {
+  opacity: 1;
+  top: 100%;
+}
+.product-card .badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: linear-gradient(135deg, #00bfff, #00ffcc);
+  color: #000;
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  box-shadow: 0 0 10px rgba(0,255,255,0.4);
+  animation: pulse 2s infinite ease-in-out;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.9; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
 }
 
 .buy-btn {
-  display: inline-block;
-  margin-top: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   background: linear-gradient(135deg, #00bfff, #00ffcc);
   color: #000;
-  padding: 0.6rem 1.3rem;
-  border-radius: 30px;
+  padding: 0.7rem 1.6rem;
+  border-radius: 6px;
   font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  box-shadow: 0 0 20px rgba(0,255,255,0.3);
   transition: all 0.3s ease;
-  box-shadow: 0 0 15px rgba(0,255,255,0.4);
 }
-
 .buy-btn:hover {
-  transform: scale(1.1);
+  transform: translateY(-3px) scale(1.05);
   box-shadow: 0 0 25px rgba(0,255,255,0.6);
 }
 
+.buy-btn::before {
+  content: "🛒";
+  font-size: 1rem;
+}
 /* ===== SPONSORS ===== */
 .sponsors {
   text-align: center;
@@ -447,19 +507,19 @@ body {
   <h2>🔥 Produits Populaires</h2>
   <div class="product-grid">
     <div class="product-card" data-category="Informatique,Bureautique">
-      <img src="chargeur_type_c.png" alt="Chargeur rapide Apple 30W">
+      <img src="carte_graphique_soyo_rtx3060.png" alt="SOYO RTX 3060 12GB carte graphique GDDR6 192Bit PCI Express 4.0 × 16 8Pin NVIDIA GPU Rtx 3060 carte vidéo De jeu Placa De vidéo">
       <div class="product-info">
-        <h3>Chargeur rapide Apple 30W</h3>
-        <p>10 €</p>
-        <a href="#" class="buy-btn" data-name="Chargeur rapide Apple 30W" data-price="10" data-img="chargeur_type_c.png">Ajouter au panier</a>
+        <h3>SOYO RTX 3060 12GB carte graphique GDDR6 192Bit PCI Express 4.0 × 16 8Pin NVIDIA GPU Rtx 3060 carte vidéo De jeu Placa De vidéo</h3>
+        <p>280 €</p>
+        <a href="#" class="buy-btn" data-name="SOYO RTX 3060 12GB carte graphique GDDR6 192Bit PCI Express 4.0 × 16 8Pin NVIDIA GPU Rtx 3060 carte vidéo De jeu Placa De vidéo" data-price="280" data-img="carte_graphique_soyo_rtx3060.png">Ajouter au panier</a>
       </div>
     </div>
-    <div class="product-card" data-category="Informatique,Bureautique">
-      <img src="clavier_souris_blanc.png" alt="Clavier et souris rétroéclairés">
+    <div class="product-card" data-category="Figurines">
+      <img src="figurine one piece.png" alt="Figurine d'anime une pièce de 28cm, Smiley confiant Luffy, poupée à trois formes, visage changeant, modèle d'action, Kits de jouets">
       <div class="product-info">
-        <h3>Clavier et souris rétroéclairés arc-en-ciel</h3>
-        <p>20 €</p>
-        <a href="#" class="buy-btn" data-name="Clavier et souris rétroéclairés arc-en-ciel" data-price="20" data-img="clavier_souris_blanc.png">Ajouter au panier</a>
+        <h3>Figurine d'anime une pièce de 28cm, Smiley confiant Luffy, poupée à trois formes, visage changeant, modèle d'action, Kits de jouets</h3>
+        <p>15 €</p>
+        <a href="#" class="buy-btn" data-name="Figurine d'anime une pièce de 28cm, Smiley confiant Luffy, poupée à trois formes, visage changeant, modèle d'action, Kits de jouets" data-price="15" data-img="figurine one piece.png">Ajouter au panier</a>
       </div>
     </div>
     <div class="product-card" data-category="Informatique,Bureautique">
@@ -471,11 +531,11 @@ body {
       </div>
     </div>
     <div class="product-card" data-category="Informatique,Bureautique">
-      <img src="disque_dur_1_TB.png" alt="Disque dur externe 1 To">
+      <img src="air pro 5.png" alt="Apple Original Airpods Pro 5 TWS Max Écouteurs Bluetooth sans fil dans l'oreille Écouteurs antibruit pour iPhone Écouteurs">
       <div class="product-info">
-        <h3>Disque dur externe 1 To haute vitesse</h3>
-        <p>15 €</p>
-        <a href="#" class="buy-btn" data-name="Disque dur externe 1 To haute vitesse" data-price="15" data-img="disque_dur_1_TB.png">Ajouter au panier</a>
+        <h3>Apple Original Airpods Pro 5 TWS Max Écouteurs Bluetooth sans fil dans l'oreille Écouteurs antibruit pour iPhone Écouteurs</h3>
+        <p>25 €</p>
+        <a href="#" class="buy-btn" data-name="Apple Original Airpods Pro 5 TWS Max Écouteurs Bluetooth sans fil dans l'oreille Écouteurs antibruit pour iPhone Écouteurs" data-price="25" data-img="air pro 5.png">Ajouter au panier</a>
       </div>
     </div>
   </div>
@@ -793,6 +853,35 @@ body {
         <h3>Parfum Jean Paul gautier 125 cl</h3>
         <p>35 €</p>
         <a href="#" class="buy-btn" data-name="Parfum Jean Paul gautier 125 cl" data-price="35" data-img="parfum jean paul gautier.png">Ajouter au panier</a>
+        
+      </div>
+    </div>
+       <div class="product-card" data-category="Informatique,Bureautique">
+      <img src="clavier_souris_blanc.png" alt="Clavier et souris rétroéclairés">
+      <div class="product-info">
+        <h3>Clavier et souris rétroéclairés</h3>
+        <p>20 €</p>
+        <a href="#" class="buy-btn" data-name="Clavier et souris rétroéclairés" data-price="20" data-img="clavier_souris_blanc.png">Ajouter au panier</a>
+        
+      </div>
+
+    </div>
+    <div class="product-card" data-category="Informatique,Bureautique">
+      <img src="disque_dur_1_TB.png" alt="Disque dur externe 1 To">
+      <div class="product-info">
+        <h3>Disque dur externe 1 To</h3>
+        <p>15 €</p>
+        <a href="#" class="buy-btn" data-name="Disque dur externe 1 To" data-price="15" data-img="disque_dur_1_TB.png">Ajouter au panier</a>
+        
+      </div>
+
+    </div>
+    <div class="product-card" data-category="Informatique,Bureautique">
+      <img src="disque_dur_1_TB.png" alt="Moniteur de jeu KTC H24F8, écran IPS rapide 23,8 pouces 1920x1080 16:9, temps de réponse 180Hz 1ms, rapport de contraste 1000:1, support HDR10 VESA">
+      <div class="product-info">
+        <h3>Moniteur de jeu KTC H24F8, écran IPS rapide 23,8 pouces 1920x1080 16:9, temps de réponse 180Hz 1ms, rapport de contraste 1000:1, support HDR10 VESA</h3>
+        <p>100 €</p>
+        <a href="#" class="buy-btn" data-name="Moniteur de jeu KTC H24F8, écran IPS rapide 23,8 pouces 1920x1080 16:9, temps de réponse 180Hz 1ms, rapport de contraste 1000:1, support HDR10 VESA" data-price="100" data-img="écran_180hz.png">Ajouter au panier</a>
         
       </div>
 
