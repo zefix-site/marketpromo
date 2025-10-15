@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PixelZone - Gaming Store</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:'Poppins', sans-serif; background:linear-gradient(135deg,#0f0f10,#1c1c22); color:#fff; overflow-x:hidden; }
@@ -86,6 +87,30 @@
   color: #000;
   box-shadow: 0 0 15px #00bfff;
 }
+.lock-button {
+  position: fixed;
+  bottom: 20px;       /* distance du bas */
+  right: 20px;        /* distance du bord droit */
+  background-color: #1e1e1e; /* couleur du fond */
+  color: rgb(0, 0, 0);        /* couleur de l’icône */
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.lock-button:hover {
+  background-color: #fcd604;
+  transform: scale(1.1);
+}
+
 
 
 </style>
@@ -122,6 +147,7 @@
     <button class="category-btn" data-category="électromenager">électromenager</button>
     <button class="category-btn" data-category="Peluches">Peluches</button>
     <button class="category-btn" data-category="Parfums">Parfums</button>
+    <button class="category-btn" data-category="Figurines">Figurines</button>
   </div>
 </section>
 <section class="popular-products">
@@ -414,6 +440,38 @@
         <a href="#" class="buy-btn" data-name=" Chargeur rapide Apple 30W" data-price="10" data-img="chargeur_type_c.png">Ajouter au panier</a>
          </div>
       </div>
+      <div class="product-card" data-category="Figurines">
+      <img src="figurine stitch 12pc.png" alt=" 12 pièces point Anime Figurine stich ">
+      <div class="product-info">
+        <h3>12 pièces point Anime Figurine stich</h3>
+        <p>7 €</p>
+        <a href="#" class="buy-btn" data-name=" 12 pièces point Anime Figurine stich" data-price="7" data-img="figurine stitch 12pc.png">Ajouter au panier</a>
+         </div>
+      </div>
+      <div class="product-card" data-category="Figurines">
+      <img src="Roronoa Zoro figurine.png" alt=" 18CM une pièce Luffy Figure Roronoa Zoro trois lames sa-maximum Manga Anime Statue PVC Action Collection modèle jouets pour enfants ">
+      <div class="product-info">
+        <h3>18CM une pièce Luffy Figure Roronoa Zoro trois lames sa-maximum Manga Anime Statue PVC Action Collection modèle jouets pour enfants</h3>
+        <p>9 €</p>
+        <a href="#" class="buy-btn" data-name=" 18CM une pièce Luffy Figure Roronoa Zoro trois lames sa-maximum Manga Anime Statue PVC Action Collection modèle jouets pour enfants" data-price="9" data-img="Roronoa Zoro figurine.png">Ajouter au panier</a>
+         </div>
+      </div>
+      <div class="product-card" data-category="Figurines">
+      <img src="figurine one piece.png" alt=" Figurine d'anime une pièce de 28cm, Smiley confiant Luffy, poupée à trois formes, visage changeant, modèle d'action, Kits de jouets ">
+      <div class="product-info">
+        <h3>Figurine d'anime une pièce de 28cm, Smiley confiant Luffy, poupée à trois formes, visage changeant, modèle d'action, Kits de jouets</h3>
+        <p>15 €</p>
+        <a href="#" class="buy-btn" data-name=" Figurine d'anime une pièce de 28cm, Smiley confiant Luffy, poupée à trois formes, visage changeant, modèle d'action, Kits de jouets" data-price="15" data-img="figurine one piece.png">Ajouter au panier</a>
+         </div>
+      </div>
+      <div class="product-card" data-category="Figurines">
+      <img src="figurine animaux marin.png" alt=" Mini sceau lumineux en résine pour chiot, 10/20/50 pièces, lueur la nuit, Figurines d'animaux marins, ornement de jardin féerique, accessoires de bricolage ">
+      <div class="product-info">
+        <h3>Mini sceau lumineux en résine pour chiot, 20 pièces, lueur la nuit, Figurines d'animaux marins, ornement de jardin féerique, accessoires de bricolage</h3>
+        <p>6.50 €</p>
+        <a href="#" class="buy-btn" data-name=" Mini sceau lumineux en résine pour chiot, 10/20/50 pièces, lueur la nuit, Figurines d'animaux marins, ornement de jardin féerique, accessoires de bricolage" data-price="6.50" data-img="figurine animaux marin.png">Ajouter au panier</a>
+         </div>
+      </div>
 
     
     <div class="product-card" data-category="Informatique,Bureautique">
@@ -447,7 +505,9 @@
 
     </div>
   </div>
-  
+  <button class="lock-button"onclick="window.location.href='login cadena.html'">
+  <i class="fas fa-lock"></i>
+</button>
   
 </section>
 <footer class="site-footer">
