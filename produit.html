@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Détails du produit - PixelZone</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+<style>
+body {
+  font-family: 'Poppins', sans-serif;
+  background: radial-gradient(circle at top left, #0a0a0a, #111, #000);
+  color: #f5f5f5;
+  margin: 0;
+  padding: 0;
+}
+/* ===== HEADER ===== */
+.site-header {
+  background: rgba(15, 15, 15, 0.9);
+  backdrop-filter: blur(15px);
+  padding: 1rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #d4af37;
+  box-shadow:0 0 25px rgba(212, 175, 55, 0.25);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  animation: fadeDown 1s ease forwards;
+}
+
+@keyframes fadeDown {
+  from { transform: translateY(-40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.site-header h1 {
+  font-size: 1.9rem;
+  font-weight: 900;
+  color: #00bfff;
+  letter-spacing: 1px;
+  text-shadow: 0 0 12px rgba(212,175,55,0.7), 0 0 20px rgba(255,215,0,0.4);
+}
+
+.header-icons {
+  display: flex;
+  align-items: center;
+  gap: 1.3rem;
+  
+}
+
+.header-icons a {
+  color: #d4af37;
+  font-size: 1.6rem;
+  position: relative;
+  transition: 0.3s ease;
+  
+}
+
+.header-icons a::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background: #ffd700;
+  transition: 0.3s ease;
+}
+
+.header-icons a:hover::after {
+  width: 100%;
+}
+
+.header-icons a:hover {
+  color:#fff2b0;
+  transform: translateY(-2px);
+}
+
+/* Section produit */
+.product-detail {
+  width: 90%;
+  max-width: 1200px;
+  margin: 5rem auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 2rem;
+  background: rgba(20, 20, 25, 0.95);
+  border: 2px solid #00bfff;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 0 30px rgba(0,255,255,0.2);
+}
+
+.product-detail img {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0,255,255,0.3);
+}
+
+.product-info {
+  flex: 1;
+}
+
+.product-info h2 {
+  font-size: 2rem;
+  color: #00bfff;
+  text-shadow: 0 0 10px #00ffff;
+}
+
+.product-info p {
+  margin: 1rem 0;
+  line-height: 1.6;
+}
+
+.price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #00ffcc;
+  text-shadow: 0 0 10px #00ffcc;
+}
+
+.buy-btn {
+  background: linear-gradient(135deg, #00bfff, #00ffcc);
+  color: #000;
+  padding: 0.8rem 1.6rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(0,255,255,0.3);
+  transition: all 0.3s;
+}
+
+.buy-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(0,255,255,0.6);
+}
+
+/* Détails techniques */
+.details-title {
+  margin-top: 2rem;
+  font-size: 1.4rem;
+  color: #00bfff;
+  text-shadow: 0 0 8px #00ffff;
+  border-bottom: 2px solid #00bfff;
+  display: inline-block;
+  padding-bottom: 4px;
+}
+
+.product-details {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background: rgba(15, 20, 25, 0.8);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 15px rgba(0,255,255,0.1);
+}
+
+.product-details td {
+  padding: 10px 15px;
+  border-bottom: 1px solid rgba(0,255,255,0.1);
+}
+
+.product-details tr:last-child td {
+  border-bottom: none;
+}
+
+.product-details td:first-child {
+  color: #00ffff;
+  font-weight: 600;
+  width: 45%;
+}
+
+.product-details td:last-child {
+  color: #e0e0e0;
+  text-align: right;
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1>PixelZone</h1>
+  <div class="header-icons">
+    <a href="index.html">🏠</a>
+    
+  </div>
+</header>
+
+<section class="product-detail">
+  <img id="product-img" src="" alt="Produit">
+  <div class="product-info">
+    <h2 id="product-name"></h2>
+    <p id="product-desc"></p>
+    <p class="price" id="product-price"></p>
+    <p><strong>Taille :</strong> <span id="product-size"></span></p>
+    <p><strong>Poids :</strong> <span id="product-weight"></span></p>
+    
+    <div>
+    <h3 class="details-title">Détails techniques</h3>
+    <table class="product-details" id="details-table"></table>
+    </div>
+  </div>
+</section>
+
+<script>
+const produits = {
+  "rtx3060": {
+    nom: "SOYO RTX 3060 12GB GDDR6",
+    description: "Carte graphique puissante avec technologie NVIDIA RTX, 12 Go GDDR6, PCIe 4.0, parfaite pour le gaming haute performance.",
+    prix: "280 €",
+    taille: "24 x 12 cm",
+    poids: "0.8 kg",
+    image: "carte_graphique_soyo_rtx3060.png",
+    details: {
+      "Overclocké": "Non",
+      "État": "Neuf",
+      "Connecteur d'alimentation": "8 pin",
+      "Catégorie": "Cartes Graphiques Desktop",
+      "Caractéristiques": "VR Ready",
+      "Processus de puce": "8 nm",
+      "Processeurs de Jet": "3584",
+      "Type de refroidisseur": "Double ventilateur",
+      "Sorties vidéo": "HDMI 1.2 x1, DisplayPort x3",
+      "Type de mémoire": "GDDR6",
+      "Interface mémoire": "192 bits",
+      "Chipset": "NVIDIA",
+      "Paquet": "Oui",
+      "Horloge cœur": "1875 MHz",
+      "Horloge mémoire": "1875 MHz",
+      "Application": "Bureau",
+      "Interface": "PCI Express 4.0 x16",
+      "Capacité mémoire": "12 Go",
+      "RVB": "Non",
+      "Origine": "CN (Chine)"
+    }
+  },
+  "SOYO NVIDIA GeForce RTX 3060 I2G 12GB GDDR6 192 bits": {
+  nom: "SOYO NVIDIA GeForce RTX 3060 I2G 12GB GDDR6 192 bits",
+  description: "Carte graphique desktop performante pour gaming et applications professionnelles.",
+  prix: "300 €",
+  image: "carte_graphique_soyo_rtx3060.png",
+  details: {
+    "Overclocked": "Non",
+    "Power Connector": "8pin",
+    "Product Category": "Cartes Graphiques Desktop",
+    "Product Features": "HDCP Prêt",
+    "Max Resolution": "7680x4320",
+    "Chip Process": "8NM",
+    "Stream Processors": "3584",
+    "DirectX": "DirectX 12",
+    "Cooler Type": "Double ventilateur",
+    "Output Interface Type": "DisplayPort x 3, HDMI 2.0X1",
+    "Video Memory Type": "GDDR6",
+    "Memory Interface": "192 bits",
+    "Chipset Manufacturer": "Nvidia",
+    "Package": "yes",
+    "Core Clock(Mhz)": "1320MHz",
+    "Memory Clock(Mhz)": "15000MHz",
+    "Application": "Bureau",
+    "Interface Type": "PCI Express 3.0X16",
+    "Video Memory Capacity": "12 GO",
+    "Brand Name": "SOYO",
+    "RGB": "Non",
+    "Origin": "CN (Origine)"
+  }
+},
+
+
+  "figurineLuffy": {
+  nom: "Figurine Luffy One Piece 28cm",
+  description: "Figurine ultra-détaillée de Monkey D. Luffy issue de la série One Piece, produite par Bandai. Finition de haute qualité, idéale pour les collectionneurs et fans d'anime.",
+  prix: "15 €",
+  taille: "28 cm",
+  poids: "0.5 kg",
+  image: "figurine one piece.png",
+  details: {
+    "Produit chimique à haute préoccupation": "Aucun",
+    "ACG Caractère": "Luffy",
+    "ACG Nom": "One Piece",
+    "Type de marionnettes": "Model",
+    "Accessoires du soldat": "Produit fini pour soldat",
+    "Par source d'animation": "Japon",
+    "Attribut du produit": "Produits finis",
+    "Diplôme d’achèvement": "Produits finis",
+    "Numéro de la série Mfg": "Model",
+    "Matériau": "PVC",
+    "Thème": "Film & TV",
+    "Sexe": "Unisexe",
+    "Type d'article": "Model",
+    "Nom de marque": "Bandai",
+    "Âge recommandé": "14+ / 18+",
+    "Origine": "CN (Chine)"
+   }
+ },
+ "figurineLuffy": {
+  nom: "Figurine Luffy One Piece 28cm",
+  description: "Figurine ultra-détaillée de Monkey D. Luffy issue de la série One Piece, produite par Bandai. Finition de haute qualité, idéale pour les collectionneurs et fans d'anime.",
+  prix: "15 €",
+  taille: "28 cm",
+  poids: "0.5 kg",
+  image: "figurine one piece.png",
+  details: {
+    "Produit chimique à haute préoccupation": "Aucun",
+    "ACG Caractère": "Luffy",
+    "ACG Nom": "One Piece",
+    "Type de marionnettes": "Model",
+    "Accessoires du soldat": "Produit fini pour soldat",
+    "Par source d'animation": "Japon",
+    "Attribut du produit": "Produits finis",
+    "Diplôme d’achèvement": "Produits finis",
+    "Numéro de la série Mfg": "Model",
+    "Matériau": "PVC",
+    "Thème": "Film & TV",
+    "Sexe": "Unisexe",
+    "Type d'article": "Model",
+    "Nom de marque": "Bandai",
+    "Âge recommandé": "14+ / 18+",
+    "Origine": "CN (Chine)"
+   }
+ },
+ "ecran-gaming": {
+  nom: "Écran Gaming KTC 24 pouces 180Hz HDR10",
+  description: "Écran KTC Full HD 1080p avec taux de rafraîchissement de 180Hz et compatibilité HDR10. Parfait pour le gaming fluide et réactif. Design sobre, bord fin et excellente reproduction des couleurs.",
+  prix: "100 €",
+  taille: "24 pouces",
+  poids: "3.5 kg",
+  image: "écran_180hz.png",
+  details: {
+    "Bracket Type": "Autre",
+    "Screen curvature": "Aucun",
+    "High-Dynamic Range": "HDR10",
+    "Refresh Rate": "180Hz",
+    "Horizontal Viewing Angle": "178°",
+    "Response Time": "1MS",
+    "Products Status": "En stock",
+    "Contrast Ratio": "1000:1",
+    "Brightness": "400cd/m²",
+    "Brand Name": "KTC",
+    "Resolution": "1920x1080",
+    "Origin": "CN (Chine)",
+    "Numéro de série": "2056653",
+    "Certificat": "EU Energy Label"
+  }
+},
+ "apple-airpods-5": {
+  nom: "Apple AirPods 5 Bluetooth 5.0",
+  description: "Écouteurs intra-auriculaires TWS, véritable sans fil, avec annulation active du bruit, micro intégré, étui de recharge et compatibilité Apple Siri. Imperméable et portable pour sport, gaming et usage quotidien.",
+  prix: "25 €",
+  taille: "50x50x18 mm",
+  poids: "25 g",
+  image: "air pro 5.png",
+  details: {
+    "Produit chimique à haute préoccupation": "Aucun",
+    "Matériau": "Plastique",
+    "Capacité de la batterie [mAh]": "400",
+    "Vie de la batterie [heures]": "3.5-4",
+    "Assistant vocal intégré": "Oui",
+    "Portée maximale sans fil [m]": "10-20m",
+    "Technologie NFC": "Non",
+    "Isolation sonore": "Oui",
+    "Catégorie": "Écouteurs et écouteurs",
+    "Type d’oreillettes": "Semi-ouvert",
+    "Nombre de conducteurs": "2",
+    "Méthode de charge": "Étui de recharge",
+    "Matériel des oreillettes": "Silicone",
+    "Type d’aimant": "Néodyme",
+    "Diamètre d'attaque pour casque audio": "13mm",
+    "Gamme d’impédance": "jusqu’à 32 Ω",
+    "Version Bluetooth": "5.0",
+    "Liste des paquets": "Manuel d'utilisation, Étui de recharge, Charging Cable",
+    "Caractéristiques": "Imperméable, avec microphone, Supporte Apple Siri, Annulation active du bruit, Contrôle de lecture",
+    "Codecs": "Apt-X HD",
+    "Avec microphone": "Oui",
+    "Est sans fil": "Oui",
+    "Soutien APP": "Non",
+    "Longueur de la ligne": "0m",
+    "Plage de réponse de fréquence": "20 - 20000Hz",
+    "Type de prise": "Aucun",
+    "Annulation active du bruit": "Oui",
+    "Contrôle de Volume": "Oui",
+    "Principe du Vocalisme": "Dynamique",
+    "Type sans fil": "Bluetooth",
+    "Communication": "Véritable sans fil",
+    "Style": "Écouteurs intra-auriculaires TWS",
+    "Origine": "CN (Origine)",
+    "Nom de marque": "TRANGJAN",
+    "Support de Carte Mémoire": "Non",
+    "Color": "White",
+    "Model Number": "Original Free Shipping Air Pro 5 Tws Pods Earphones For Apple iPhone PK Pro 4 i12 Earpod Airpod",
+    "Product Name": "Original Bluetooth 5.0 Earphone For Apple iPhone Earpod Airpod"
+  }
+},
+"bouchon-anti-poussiere": {
+  nom: "Port de chargement de téléphone portable, bouchon anti-poussière avec brosse de nettoyage",
+  description: "Bouchon anti-poussière pour port de chargement, avec brosse de nettoyage pour iPhone, Samsung, Xiaomi et autres téléphones Type-C. Protège le port contre la poussière, sable, liquides et saleté.",
+  prix: "5 €",
+  image: "bouchon_anti_poussière_avec_brosse_de_nettoyage.png",
+  details: {
+    "Produit chimique à haute préoccupation": "Aucun",
+    "Type": "Port de charge pour type C",
+    "Origine": "CN (Origine)",
+    "Présentation": "Bouchon anti-poussière pour port de chargement de téléphone portable, avec brosse de nettoyage pour iPhone 15 14 13 12 Pro Max Plus, Samsung, Xiaomi, IOS, Type C, ensemble de nettoyants",
+    "Description": "Nouveau design, plus adapté au port de chargement. Protège votre téléphone des liquides, du sable, de la poussière, de la saleté, des peluches ou d'autres substances. Le moulage métallique rejette la poussière",
+    "Spécification": "Nom : bouchon anti-poussière en métal pour port de chargement. Matériau : alliage d'aluminium. Applicable aux téléphones mobiles: pour iOS/Type-C"
+  }
+},
+"stylet-universel": {
+  nom: "Stylet universel tactile",
+  description: "Stylet universel  tactile pour iPad Apple, crayon pour téléphone portable, Huawei, Lenovo, Samsung, Xiaomi, Redmi, nouveau,tablette,Batterie incluse.",
+  prix: "10 €",
+  image: "style universelle.png",
+  details: {
+    "Batterie incluse": "Oui",
+    "Type": "Stylet résistif",
+    "Produit chimique à haute préoccupation": "Aucun",
+    "Matériau": "Plastique",
+    "Nom de marque": "Branches",
+    "Origine": "CN (Origine)",
+    "Origin": "Mainland China"
+  }
+},
+"fgclsy-mini-trepied": {
+  nom: "FGCLSY-Mini trépied sans fil Bluetooth",
+  description: "Mini trépied léger compatible avec smartphones, avec télécommande Bluetooth intégrée.",
+  prix: "8 €",
+  image: "trépied_sans_fil_Bluetooth.png",
+  details: {
+    "Produit chimique à haute préoccupation": "Aucun",
+    "Longueur maximale étendue (mm)": "700mm",
+    "Longueur pliée (mm)": "185mm",
+    "Paquet": "Non",
+    "Numéro de Modèle": "S03S",
+    "Utiliser": "Smartphones",
+    "Type": "Mini Trépied / Léger",
+    "Matériau": "Plastique",
+    "Nom de marque": "FGCLSY",
+    "Origine": "CN (Origine)",
+    "Poids (g)": "145g"
+  }
+},
+"clavier-12-touches-usb-c": {
+  nom: "Clavier 12 touches USB-C filaire",
+  description: "Clavier mécanique mini avec 12 touches, rétroéclairage couleur unique, compatible Windows et PlayStation, échange à chaud des touches.",
+  prix: "20 €",
+  image: "12_touches_Mini_jeu_clavier_de_jeu_mécanique_clavier.png",
+  details: {
+    "Monture du joint d'étanchéité": "Oui",
+    "Wrist rest": "Non",
+    "Matériau du clavier": "ABD",
+    "Type de commutateur de clavier": "Interrupteur rouge",
+    "Rechargeable": "Pas de",
+    "Câble": "Autres",
+    "Sondage": "8000hz",
+    "Échange à chaud": "Clé complète échangeable à chaud",
+    "Effet d'éclairage": "Rétroéclairage de couleur unique",
+    "Systèmes compatibles": "fenêtres",
+    "Langue des touches": "Anglais",
+    "Prise en charge du logiciel pilote": "Oui",
+    "Équipement applicable": "PlayStation",
+    "Types d'interfaces de connexion": "Interface USB",
+    "Disposition du clavier": "Autres",
+    "La vie de commutateur": "10000000",
+    "Méthode de connexion du clavier": "Filaire",
+    "Changer de marque": "Outemu",
+    "Type de clavier": "Clavier mécanique",
+    "Type": "mini",
+    "Origine": "CN (Origine)",
+    "Nom de marque": "BTXETUEL"
+  }
+},
+"mini-webcam-hd-1080p": {
+  nom: "Mini Webcam HD 1080P Microphone USB",
+  description: "Webcam compacte HD 1080P avec microphone intégré, idéale pour la maison ou le bureau.",
+  prix: "17 €",
+  image: "Mini_Webcam HD_1080P.png",
+  details: {
+    "Produit chimique à haute préoccupation": "Aucun",
+    "Max.Résolution": "640x480",
+    "Nom de marque": "AEVYVKV",
+    "Origine": "CN (Origine)",
+    "Usage": "Home Use",
+    "High Definition Support": "1080P (Full-HD)",
+    "Type": "HD Camera",
+    "Touch Screen": "NO",
+    "Weight": "101g-150g",
+    "Additional Function": "Camera Function"
+  }
+},
+"cable hdmi": {
+  nom: "cable hdmi",
+  description: "Webcam compacte HD 1080P avec microphone intégré, idéale pour la maison ou le bureau.",
+  prix: "17 €",
+  image: "Mini_Webcam HD_1080P.png",
+  details: {
+    "Produit chimique à haute préoccupation": "Aucun",
+    "Max.Résolution": "640x480",
+    "Nom de marque": "AEVYVKV",
+    "Origine": "CN (Origine)",
+    "Usage": "Home Use",
+    "High Definition Support": "1080P (Full-HD)",
+    "Type": "HD Camera",
+    "Touch Screen": "NO",
+    "Weight": "101g-150g",
+    "Additional Function": "Camera Function"
+  }
+},
+"cable-hdmi-1080p": {
+  nom: "Câble HDMI haute vitesse, 1080P",
+  description: "Câble HDMI haute vitesse compatible 1080P, idéal pour ordinateurs, TV, projecteurs et multimédia.",
+  prix: "5 €",
+  image: "cable hdmi.png",
+  details: {
+    "Produit chimique à haute préoccupation": "Aucun",
+    "Caractéristique": "HDMI-Compatible1.4",
+    "Paquet": "Oui",
+    "Blindage": "Foil",
+    "Diamètre extérieur": "OD5.5",
+    "Application": "POUR IPOD, ordinateur, Multimédia, Moniteur, Lecteur dvd, Projecteur, TÉLÉVISION, TV Box",
+    "Type": "Compatibles HDMI Câbles",
+    "Connecteur B": "HDMI-compatible",
+    "Connecteur A": "HDMI-compatible",
+    "Numéro de Modèle": "HDTV5.5",
+    "Sexe": "Mâle-Mâle",
+    "Nom de marque": "NoEnName_Null",
+    "Origine": "CN (Origine)",
+    "Paquet": "SAC PLASTIQUE"
+  }
+},
+"vga-3m": {
+  nom: "VGA 3m Câble Mâle À Mâle Haute Définition",
+  description: "Câble VGA 3 mètres, mâle à mâle, idéal pour ordinateurs, moniteurs, projecteurs et multimédia.",
+  prix: "7 €",
+  image: "cable vga.png",
+  details: {
+    "Produit chimique à haute préoccupation": "Aucun",
+    "Caractéristique": "Aucun",
+    "Paquet": "Oui",
+    "Blindage": "Foil",
+    "Diamètre extérieur": "5.5mm",
+    "Application": "ordinateur, Multimédia, Moniteur, Lecteur dvd, Projecteur, TÉLÉVISION",
+    "Type": "Câbles VGA",
+    "Connecteur B": "Masculin, VGA",
+    "Connecteur A": "Masculin, VGA",
+    "Numéro de Modèle": "VGA4 +5",
+    "Sexe": "Mâle-Mâle",
+    "Origine": "CN (Origine)",
+    "Paquet": "SAC PLASTIQUE"
+  }
+},
+"displayport-8k": {
+  nom: "Câble Displayport 8K @ 60HZ 4K @ 144Hz 2K @ 165Hz",
+  description: "Câble DisplayPort haute performance pour ordinateurs, moniteurs, projecteurs et appareils multimédias, supportant 8K60Hz, 4K144Hz et 2K165Hz.",
+  prix: "10 €",
+  image: "cable display port.png",
+  details: {
+    "Produit chimique à haute préoccupation": "Aucun",
+    "Caractéristique": "Aucun",
+    "Paquet": "Oui",
+    "Blindage": "Tresse",
+    "Diamètre extérieur": "6.0",
+    "Application": "ordinateur, Multimédia, Moniteur, Lecteur dvd, Projecteur, TÉLÉVISION, TV Box, AMPLIFICATEUR, MP3/MP4 Lecteur",
+    "Type": "Câbles DP / Mini DP",
+    "Connecteur B": "DisplayPort (DP)",
+    "Connecteur A": "DP M",
+    "Numéro de Modèle": "DP-8K",
+    "Sexe": "Mâle-Mâle",
+    "Nom de marque": "Awkanger",
+    "Origine": "CN (Origine)",
+    "Paquet": "SAC PLASTIQUE",
+    "Version1": "DisplayPort 1.4",
+    "Version2": "Displayport 1.4 8k",
+    "Resolution": "8k60hz, 4k144hz, 2k165hz"
+  }
+},
+"micro-usb-pro": {
+  nom: "Micro USB, Microphone professionnel",
+  description: "Microphone USB professionnel avec diaphragme S-Mall et motif polaire cardioïde, idéal pour ordinateurs et enregistrement de bureau.",
+  prix: "22 €",
+  image: "micro rgb usb.png",
+  details: {
+    "Produit chimique à haute préoccupation": "Aucun",
+    "Diaphragme": "S-Mall",
+    "Motifs polaires": "Cardioïde",
+    "Paquet": "Oui",
+    "Communication": "Filaire",
+    "Type D'ensemble": "Kits multi-microphones",
+    "Transducteur": "Microphone à condensateur",
+    "Utiliser": "MICROPHONE D’ORDINATEUR",
+    "Style": "Table",
+    "Nom de marque": "HAOMUREN",
+    "Origine": "CN (Origine)"
+  }
+},
+"soyo-rx580-8g": {
+  nom: "SOYO cartes graphiques Radeon RX580 8G",
+  description: "Carte graphique SOYO Radeon RX580 8G avec support HDCP, refroidissement ventilateur unique ou double, idéale pour usage bureau et gaming.",
+  prix: "170 €",
+  image: "carte_graphique_580_8g.png",
+  details: {
+    "Produit chimique à haute préoccupation": "Aucun",
+    "Overclocké": "Non",
+    "Connecteur d'alimentation": "6pin",
+    "Catégorie de produits": "Cartes Graphiques Desktop",
+    "Caractéristiques du produit": "HDCP Prêt",
+    "Processus de puce": "14NM",
+    "Processeurs de Jet": "2048",
+    "DirectX": "DirectX 12",
+    "Type de refroidisseur": "Ventilateur unique,Double ventilateur",
+    "Type d’interface de sortie": "DVI-D,HDMI 1.4x1,DisplayPort x 1",
+    "Type de mémoire vidéo": "Gddr5",
+    "Interface mémoire": "256 Bit",
+    "Fabricant de Chipset": "AMD",
+    "Paquet": "YES",
+    "Horloge du cœur (Mhz)": "1205MHz",
+    "Horloge de mémoire (Mhz)": "1500MHz",
+    "Application": "Bureau",
+    "Type D'interface": "PCI Express 3.0X16",
+    "Capacité de mémoire vidéo": "8 Go",
+    "Nom de marque": "SOYO",
+    "Origine": "CN (Origine)",
+    "RVB": "Non"
+  }
+},
+"disney-stitch-20cm rose": {
+  nom: "Dessin animé Disney rose Stitch 20CM",
+  description: "Peluches Disney Stitch rose de 20CM, douce et parfaite pour collection ou cadeau.",
+  prix: "7 €",
+  image: "stich_rose_20_cm_100g.png",
+  details: {
+    "Produit chimique à haute préoccupation": "Aucun",
+    "Remplissage": "Coton PP",
+    "Numéro de Modèle": "Stitch plush doll",
+    "Avertissement": "Keep away from fire",
+    "Sexe": "Unisexe",
+    "Matériau": "Peluche",
+    "Nom de marque": "MINISO",
+    "CN": "Guangdong",
+    "Origine": "CN (Origine)",
+    "Recommande L'âge": "18+,14 + y",
+    "Certificat": "CE Certificate"
+  }
+},
+"disney-stitch-20cm bleu": {
+  nom: "dessin animé Disney bleu Stitch 20CM",
+  description: "Peluches Disney Stitch bleu de 20CM, douce et parfaite pour collection ou cadeau.",
+  prix: "7 €",
+  image: "stich_bleu_20cm_100g.png",
+  details: {
+    "Produit chimique à haute préoccupation": "Aucun",
+    "Remplissage": "Coton PP",
+    "Numéro de Modèle": "Stitch plush doll",
+    "Avertissement": "Keep away from fire",
+    "Sexe": "Unisexe",
+    "Matériau": "Peluche",
+    "Nom de marque": "MINISO",
+    "CN": "Guangdong",
+    "Origine": "CN (Origine)",
+    "Recommande L'âge": "18+,14 + y",
+    "Certificat": "CE Certificate"
+  }
+},
+"peluche-axolot-30cm rose": {
+  nom: "Peluche Axolot rose 30CM",
+  description: "Peluche Axolot rose de 30CM, douce et parfaite pour collection ou cadeau.",
+  prix: "9 €",
+  image: "axolot peluche rose .png",
+  details: {
+    "Produit chimique à haute préoccupation": "Aucun",
+    "Remplissage": "Coton PP",
+    "Avertissement": "None",
+    "Sexe": "Unisexe",
+    "Dimensions": "20-30cm",
+    "Matériau": "Peluche courte",
+    "Origine": "CN (Origine)",
+    "CN": "Guangdong",
+    "Recommande L'âge": "18+,14 + y",
+    "Caractéristiques": "Film & tv",
+    "Certificat": "CE Certificate"
+  }
+},
+"peluche-axolot-30cm bleu": {
+  nom: "Peluche Axolot bleu 30CM",
+  description: "Peluche Axolot bleu de 30CM, douce et parfaite pour collection ou cadeau.",
+  prix: "9 €",
+  image: "axolot peluche bleu .png",
+  details: {
+    "Produit chimique à haute préoccupation": "Aucun",
+    "Remplissage": "Coton PP",
+    "Avertissement": "None",
+    "Sexe": "Unisexe",
+    "Dimensions": "20-30cm",
+    "Matériau": "Peluche courte",
+    "Origine": "CN (Origine)",
+    "CN": "Guangdong",
+    "Recommande L'âge": "18+,14 + y",
+    "Caractéristiques": "Film & tv",
+    "Certificat": "CE Certificate"
+  }
+},
+"lampe-torche-minecraft": {
+  nom: "Brownstone lampe torche Minecraft LED",
+  description: "Lampe torche LED inspirée de Minecraft, parfaite pour les fans du jeu et comme veilleuse décorative.",
+  prix: "12 €",
+  image: "torche minecraft led couleur.png",
+  details: {
+    "Produit chimique à haute préoccupation": "Aucun",
+    "Type D'article": "3D LED Veilleuse",
+    "Origine": "CN (Origine)",
+    "Nom de marque": "MINISO",
+    "Recommande L'âge": "14 + y",
+    "Information sur la sécurité du produit/Avertissement": "WARNIN： GCHOKING HAZARD - Toy contains functional sharp points. Not for children under 3 years"
+  }
+},
+"lampe-led-minecraft-bleu-cube": {
+  nom: "LED nuit bureau lumière jouets lumineux Minecraft bleu cube",
+  description: "Lampe de nuit lumineuse Minecraft, idéale pour décorer un bureau ou une chambre avec une touche geek et colorée.",
+  prix: "18.30 €",
+  image: "cube minecraft couleru bleu minerai.png",
+  details: {
+    "Produit chimique à haute préoccupation": "Aucun",
+    "Est électrique": "Batterie AAA",
+    "Type D'article": "Aide au sommeil lampe de projection",
+    "Avertissement": "Keep away from fire",
+    "Numéro de Modèle": "game toys",
+    "Sexe": "Unisexe",
+    "Matériau": "PVC",
+    "Nom de marque": "GAGAGIRL",
+    "Origine": "CN (Origine)",
+    "CN": "Henan",
+    "Recommande L'âge": "14 + y",
+    "Caractéristiques": "CLIGNOTANT",
+    "Brand Name": "MINECRAFT",
+    "Certificat": "CE Certificate"
+  }
+},
+"lampe-led-minecraft-vert-cube": {
+  nom: "LED nuit bureau lumière jouets lumineux Minecraft vert cube",
+  description: "Lampe de nuit lumineuse Minecraft, idéale pour décorer un bureau ou une chambre avec une touche geek et colorée.",
+  prix: "18.30 €",
+  image: "cube lumineux minecraft vert.png",
+  details: {
+    "Produit chimique à haute préoccupation": "Aucun",
+    "Est électrique": "Batterie AAA",
+    "Type D'article": "Aide au sommeil lampe de projection",
+    "Avertissement": "Keep away from fire",
+    "Numéro de Modèle": "game toys",
+    "Sexe": "Unisexe",
+    "Matériau": "PVC",
+    "Nom de marque": "GAGAGIRL",
+    "Origine": "CN (Origine)",
+    "CN": "Henan",
+    "Recommande L'âge": "14 + y",
+    "Caractéristiques": "CLIGNOTANT",
+    "Brand Name": "MINECRAFT",
+    "Certificat": "CE Certificate"
+  }
+},
+"lampe-led-minecraft-Rouge-cube": {
+  nom: "LED nuit bureau lumière jouets lumineux Minecraft Rouge cube",
+  description: "Lampe de nuit lumineuse Minecraft, idéale pour décorer un bureau ou une chambre avec une touche geek et colorée.",
+  prix: "18.30 €",
+  image: "cube lumineux minecraft rouge.png",
+  details: {
+    "Produit chimique à haute préoccupation": "Aucun",
+    "Est électrique": "Batterie AAA",
+    "Type D'article": "Aide au sommeil lampe de projection",
+    "Avertissement": "Keep away from fire",
+    "Numéro de Modèle": "game toys",
+    "Sexe": "Unisexe",
+    "Matériau": "PVC",
+    "Nom de marque": "GAGAGIRL",
+    "Origine": "CN (Origine)",
+    "CN": "Henan",
+    "Recommande L'âge": "14 + y",
+    "Caractéristiques": "CLIGNOTANT",
+    "Brand Name": "MINECRAFT",
+    "Certificat": "CE Certificate"
+  }
+},
+"lampe-led-minecraft-jaune-cube": {
+  nom: "LED nuit bureau lumière jouets lumineux Minecraft Rouge cube",
+  description: "Lampe de nuit lumineuse Minecraft, idéale pour décorer un bureau ou une chambre avec une touche geek et colorée.",
+  prix: "18.30 €",
+  image: "cube lumineux minecraft jaune.png",
+  details: {
+    "Produit chimique à haute préoccupation": "Aucun",
+    "Est électrique": "Batterie AAA",
+    "Type D'article": "Aide au sommeil lampe de projection",
+    "Avertissement": "Keep away from fire",
+    "Numéro de Modèle": "game toys",
+    "Sexe": "Unisexe",
+    "Matériau": "PVC",
+    "Nom de marque": "GAGAGIRL",
+    "Origine": "CN (Origine)",
+    "CN": "Henan",
+    "Recommande L'âge": "14 + y",
+    "Caractéristiques": "CLIGNOTANT",
+    "Brand Name": "MINECRAFT",
+    "Certificat": "CE Certificate"
+  }
+},
+"lampe-led-minecraft-tete creeper": {
+  nom: "LED nuit bureau lumière jouets lumineux Minecraft tete creeper",
+  description: "Lampe de nuit lumineuse Minecraft, idéale pour décorer un bureau ou une chambre avec une touche geek et colorée.",
+  prix: "22.60 €",
+  image: "cube crepeer vert lumieuc.png",
+  details: {
+    "Produit chimique à haute préoccupation": "Aucun",
+    "Est électrique": "Batterie AAA",
+    "Type D'article": "Aide au sommeil lampe de projection",
+    "Avertissement": "Keep away from fire",
+    "Numéro de Modèle": "game toys",
+    "Sexe": "Unisexe",
+    "Matériau": "PVC",
+    "Nom de marque": "GAGAGIRL",
+    "Origine": "CN (Origine)",
+    "CN": "Henan",
+    "Recommande L'âge": "14 + y",
+    "Caractéristiques": "CLIGNOTANT",
+    "Brand Name": "MINECRAFT",
+    "Certificat": "CE Certificate"
+  }
+},
+"veilleuse-renard-minecraft": {
+  nom: "Veilleuse en forme de renard mignon Minecraft",
+  description: "Adorable veilleuse Minecraft en forme de renard. Émet une douce lumière d’ambiance idéale pour les fans du jeu. Parfaite pour une chambre ou un bureau.",
+  prix: "20 €",
+  image: "renard lumineux .png",
+  details: {
+    "Produit chimique à haute préoccupation": "Aucun",
+    "Paquet original": "Oui",
+    "Condition": "Articles en stock",
+    "Type de version": "Première édition",
+    "Type de marionnettes": "Model",
+    "Télécommande": "Non",
+    "Attribut du produit": "Périphériques",
+    "Diplôme d’achèvement": "Produits finis",
+    "Numéro de la série Mfg": "Model",
+    "Matériau": "ABS",
+    "Sexe": "Unisexe",
+    "Type D'article": "3D LED Veilleuse",
+    "Origine": "CN (Origine)",
+    "Nom de marque": "Funko",
+    "Recommande L'âge": "18+, 14+ y"
+  }
+},
+"bague-cuivre-zirconium-Or-jaune": {
+  nom: "Bague en cuivre minimaliste avec zirconium cubique",
+  description: "Élégante bague en cuivre doré avec zirconium cubique. Parfaite pour un mariage, une cérémonie ou un usage quotidien. Un bijou raffiné qui allie style et éclat.",
+  prix: "7 €",
+  image: "Bague en cuivre.png",
+  details: {
+    "Couleur": "Or jaune",
+    "Détail occasion": "Mariage",
+    "Élément": "Strass",
+    "Style": "Sexy",
+    "Détails": "Gemme, Métal, Strasse",
+    "Tissu/matériau": "Cuivre",
+    "Sexe": "Femme",
+    "Taille unique": "Diamètre 1.65-1.9 cm",
+    "Circonférence": "5.18-5.97 cm"
+  }
+},
+"bague-cuivre-zirconium-Argent": {
+  nom: "Bague en cuivre minimaliste avec zirconium cubique",
+  description: "Élégante bague en cuivre argent avec zirconium cubique. Parfaite pour un mariage, une cérémonie ou un usage quotidien. Un bijou raffiné qui allie style et éclat.",
+  prix: "7 €",
+  image: "bague en cuivre couleur argent.png",
+  details: {
+    "Couleur": "Argent",
+    "Détail occasion": "Mariage",
+    "Élément": "Strass",
+    "Style": "Sexy",
+    "Détails": "Gemme, Métal, Strasse",
+    "Tissu/matériau": "Cuivre",
+    "Sexe": "Femme",
+    "Taille unique": "Diamètre 1.65-1.9 cm",
+    "Circonférence": "5.18-5.97 cm"
+  }
+},
+"friteuse-ninja-foodi-af300-deux-bac": {
+  nom: "Friteuse Ninja Foodi AF300 deux bacs",
+  description: "Friteuse à air chaud double bac Ninja Foodi AF300, en excellent état. Permet de cuire deux plats simultanément avec un contrôle précis de la température et du temps. Idéale pour une cuisine saine et rapide.",
+  prix: "130 €",
+  image: "friteuse ninja .png",
+  details: {
+    "Couleur": "Noir",
+    "Modèle": "Foodi AF300",
+    "Puissance (W)": "2400",
+    "Product ranking": "10",
+    "Marque": "Ninja",
+    "Poids": "8200 g",
+    "Hauteur": "35 cm",
+    "Largeur": "37.5 cm",
+    "Profondeur": "31.5 cm",
+    "Origine": "FR"
+  }
+},
+"friteuse-ninja-foodi-af180": {
+  nom: "Friteuse Ninja Foodi AF180 un bac",
+  description: "Friteuse à air chaud Ninja Foodi AF180 avec un seul bac, en excellent état. Parfaite pour préparer des plats croustillants et sains grâce à sa technologie de cuisson sans huile.",
+  prix: "80 €",
+  image: "friteuse ninja un bac.png",
+  details: {
+    "Couleur": "Noir",
+    "Modèle": "AF180",
+    "Puissance (W)": "2000",
+    "Capacité (L)": "6,2",
+    "Marque": "Ninja",
+    "Poids": "1170 g",
+    "Hauteur": "30,5 cm",
+    "Largeur": "28 cm",
+    "Profondeur": "36 cm",
+    "Origine": "FR"
+  }
+},
+"plaque-cuisson-esperanza-ekh011": {
+  nom: "Plaque de cuisson Esperanza EKH011",
+  description: "Plaque de cuisson électrique Esperanza EKH011, en très bon état. Idéale pour une cuisson rapide et efficace, parfaite pour la maison ou le camping.",
+  prix: "70 €",
+  image: "plaque de cuisson une plaque.png",
+  details: {
+    "Couleur": "Noir",
+    "Modèle": "DOM174",
+    "Puissance (W)": "2000",
+    "Nombre de foyer(s)": "6",
+    "Type de plaque de cuisson": "Électrique",
+    "Marque": "Livoo",
+    "Poids": "2250 g",
+    "Origine": "FR"
+  }
+},
+
+"Plaque-de-cuisson-Livoo-DOM174": {
+  nom: "Plaque de cuisson Livoo DOM174 trés bonne état",
+  description: "Plaque de cuisson Livoo DOM174 trés bonne état, en très bon état. Idéale pour une cuisson rapide et efficace, parfaite pour la maison ou le camping.",
+  prix: "60 €",
+  image: "plaque de cuisson petit format plan chat.png",
+  details: {
+    "Couleur": "Noir",
+    "Modèle": "DOM174",
+    "Puissance (W)": "2000",
+    "Nombre de foyer(s)": "6",
+    "Type de plaque de cuisson": "Électrique",
+    "Marque": "Livoo",
+    "Poids": "2250 g",
+    "Origine": "FR"
+  }
+},
+"chargeur-rapide-apple-30w": {
+  nom: "Chargeur rapide Apple 30W",
+  description: "Chargeur rapide original Apple 30W avec câble USB-C vers Lightning. Compatible avec iPhone, iPad et plusieurs autres marques. Offre une charge rapide de 50% en seulement 30 minutes.",
+  prix: "10 €",
+  image: "chargeur_type_c.png",
+  details: {
+    "Produit chimique à haute préoccupation": "Aucun",
+    "Connecteur B": "TYPE-C, Foudre",
+    "Connecteur A": "TYPE-C",
+    "Courant maximum": "5A",
+    "Caractéristiques": "MFi certifié",
+    "A emballage de détail": "Oui",
+    "Origine": "CN (Origine)",
+    "Model Number": "For Apple iPhone 30W Original Fast Quick Charge Charger USB C to Lightning Cable",
+    "Type": "Quick charger",
+    "Power Source": "A.C. Source",
+    "Max. Output Power": "30W",
+    "Color": "White",
+    "Cable Length": "1m",
+    "Plug Type": "EU Plug / US Plug USB C Charger",
+    "Function 1": "USB C Charger, Mobile Phone Charger",
+    "Function 2": "Wall USB C Charger For iPhone Samsung Xiaomi Huawei AirPods",
+    "Function 3": "Universal USB C Charger",
+    "Feature 1": "USB C PD Charger / Type C Charger / Fast Charger",
+    "Feature 2": "Supports PD 2.0, QC 4.0, QC 3.0",
+    "Fast Charge": "30 mins 50% charge for iPhone 12/XS",
+    "Compatibility 1": "For iPhone 16 15 14 13 12 11 mini Pro XS XR X Max 7 8 Plus",
+    "Compatibility 2": "For iPad Pro 11-inch 2018, 12.9\" pro 3rd gen etc.",
+    "Compatibility 3": "For Samsung Galaxy S10 S10e S10 Plus S9 S8, Note 9 8",
+    "Compatibility 4": "For LG G5 G6 G7 V20 V30 V40 V50",
+    "Compatibility 5": "For Huawei P40 P30 P20 P20 Pro P10 P10 P Honor 10 9 8 7X",
+    "Compatibility 6": "For Xiaomi mi 10 9 8 7 6 / 5 / 4 Redmi 5 Plus 4X 4a 5a Note 4",
+    "Compatibility 7": "For OnePlus, Xiaomi tablet, smartphone",
+    "Shipping": "Free shipping",
+    "Wholesale / Dropshipping": "Support"
+  }
+},
+"figurine-stitch-12pcs": {
+  nom: "12 pièces point Anime Figurine Stitch",
+  description: "Ensemble de 12 figurines Stitch inspirées du dessin animé Lilo & Stitch. Idéal pour les collectionneurs ou comme décoration amusante. Modèles en PVC de haute qualité.",
+  prix: "7 €",
+  image: "figurine stitch 12pc.png",
+  details: {
+    "Produit chimique à haute préoccupation": "Aucun",
+    "ACG Nom": "Lilo & Stitch",
+    "Condition": "Articles en stock",
+    "Type de version": "Première édition",
+    "Type de marionnettes": "Model",
+    "Télécommande": "Non",
+    "Accessoires du soldat": "Ensemble de soldat",
+    "Attribut du produit": "Périphériques",
+    "Diplôme d’achèvement": "Produits finis",
+    "Numéro de la série Mfg": "Résine",
+    "Matériau": "PVC",
+    "Thème": "Film & TV",
+    "Sexe": "Unisexe",
+    "Type D'article": "Model",
+    "Nom de marque": "Bandai",
+    "Origine": "CN (Origine)",
+    "Recommande L'âge": "18+"
+  }
+},
+"figurine-zoro-18cm": {
+  nom: "18CM Figure Roronoa Zoro trois lames",
+  description: "Figurine de collection Roronoa Zoro avec ses trois lames, inspirée de l’anime UNE PIÈCE. Modèle PVC détaillé, idéal pour les collectionneurs.",
+  prix: "9 €",
+  image: "Roronoa Zoro figurine.png",
+  details: {
+    "ACG Nom": "UNE PIÈCE",
+    "Paquet original": "Non",
+    "Échelle": "1/100",
+    "Condition": "Articles en stock",
+    "Type de version": "Version remasterisée",
+    "Avertissement": "NO",
+    "Dimensions": "15cm",
+    "Type de marionnettes": "Model",
+    "Télécommande": "Non",
+    "Accessoires du soldat": "Produit fini pour soldat",
+    "Par source d'animation": "Japon",
+    "Attribut du produit": "Périphériques",
+    "Diplôme d’achèvement": "Produits finis",
+    "Numéro de la série Mfg": "Model",
+    "Matériau": "PVC",
+    "Thème": "Film & tv",
+    "Sexe": "Unisexe",
+    "Type D'article": "Model",
+    "Nom de marque": "MINISO",
+    "Recommande L'âge": "18+,14 + y",
+    "Origine": "CN (Origine)"
+  }
+},
+"figurine-luffy-28cm": {
+  nom: "Figurine Luffy de 28cm, Smiley",
+  description: "Figurine de collection Luffy, inspirée de l’anime UNE PIÈCE, modèle PVC de 28 cm. Idéal pour les collectionneurs.",
+  prix: "15 €",
+  image: "figurine one piece.png",
+  details: {
+    "Produit chimique à haute préoccupation": "Aucun",
+    "ACG Caractère": "Luffy",
+    "ACG Nom": "UNE PIÈCE",
+    "Type de marionnettes": "Model",
+    "Accessoires du soldat": "Produit fini pour soldat",
+    "Par source d'animation": "Japon",
+    "Attribut du produit": "Produits finis",
+    "Diplôme d’achèvement": "Produits finis",
+    "Numéro de la série Mfg": "Model",
+    "Matériau": "PVC",
+    "Thème": "Film & tv",
+    "Sexe": "Unisexe",
+    "Type D'article": "Model",
+    "Nom de marque": "Bandai",
+    "Recommande L'âge": "18+,14 + y",
+    "Origine": "CN (Origine)"
+  }
+},
+"figurines-animaux-marins": {
+  nom: "Figurines d'animaux marins, 20 pièces, lueur la nuit",
+  description: "Lot de 20 figurines d'animaux marins qui brillent dans le noir. Idéal pour décoration ou jeu éducatif.",
+  prix: "6.50 €",
+  image: "figurine animaux marin.png",
+  details: {
+    "Produit chimique à haute préoccupation": "Aucun",
+    "Est dispositif intelligent": "Non",
+    "Personnalisé": "Non",
+    "Thème": "Animal",
+    "Style": "Pastoral",
+    "Matériau": "RÉSINE",
+    "Origine": "CN (Origine)"
+  }
+},
+"apple-airpods-pro-5": {
+  nom: "Apple Original Airpods Pro 5",
+  description: "Écouteurs intra-auriculaires TWS Bluetooth 5.0 avec annulation active du bruit, étui de recharge et microphone intégré.",
+  prix: "25 €",
+  image: "air pro 5.png",
+  details: {
+    "Produit chimique à haute préoccupation": "Aucun",
+    "Matériau": "plastique",
+    "Dimensions (LxPxH mm)": "50x50x18",
+    "Poids (g)": "25",
+    "Capacité de la batterie (mAh)": "400",
+    "Vie de la batterie (heures)": "3.5-4",
+    "Assistant vocal intégré": "Oui",
+    "Portée maximale sans fil (m)": "10-20",
+    "Technologie NFC": "Non",
+    "Isolation sonore": "Oui",
+    "Catégorie": "Écouteurs et écouteurs",
+    "Type d’oreillettes": "semi-ouvert",
+    "Nombre de conducteurs": 2,
+    "Méthode de charge": "Étui de recharge",
+    "Matériel des oreillettes": "Silicone",
+    "Type d’aimant": "Néodyme",
+    "Diamètre d'attaque pour casque audio": "13mm",
+    "Gamme d’impédance": "jusqu’à 32 Ω",
+    "Version Bluetooth": "5.0",
+    "Liste des paquets": "Manuel d'utilisation, Étui de recharge, Charging Cable",
+    "Caractéristiques": "Imperméable, avec microphone, Supporte Apple Siri, Annulation active du bruit, Contrôle de lecture",
+    "Codecs": "Apt-X HD",
+    "Avec microphone": "Oui",
+    "Est sans fil": "Oui",
+    "Soutien APP": "Non",
+    "Longueur de la ligne": "0m",
+    "Plage de réponse de fréquence": "20 - 20000Hz",
+    "Type de prise": "Aucun",
+    "Fonction": "Pour Internet Bar, Pour le jeu vidéo, pour téléphone mobile, Sport, Pour Aide Auditive, Pour la natation, Pour le sommeil, Pour étude, Pour DJ, Pour bureau, Pour extérieur, Casque HiFi, Casque commun, Casque de moniteur",
+    "Annulation active du bruit": "Oui",
+    "Contrôle de Volume": "Oui",
+    "Bouton de contrôle": "Non",
+    "Principe du Vocalisme": "Dynamique",
+    "Type sans fil": "Bluetooth",
+    "Communication": "véritable sans fil",
+    "Style": "Écouteurs intra-auriculaires TWS",
+    "Origine": "CN (Origine)",
+    "Nom de marque": "TRANGJAN",
+    "Support de Carte Mémoire": "Non",
+    "Color": "White",
+    "Model Number": "Original Free Shipping Air Pro 5 Tws Pods Earphones For Apple iPhone PK Pro 4 i12 Earpod Airpod",
+    "Product Name": "Original Bluetooth 5.0 Earphone For Apple iPhone Earpod Airpod"
+  }
+},
+"camera-streaming-fullhd-usb-1080p-60fps": {
+  nom: "Caméra Streaming Full HD USB 1080P 60FPS avec Microphone",
+  description: "Caméra HD parfaite pour le streaming, les visioconférences et l’enregistrement en Full HD 1080P à 60FPS, avec microphone intégré pour un son clair et précis.",
+  prix: "20 €",
+  image: "camera_xiaomi_1080p.png",
+  details: {
+    "Produit chimique à haute préoccupation": "Aucun",
+    "Max.Résolution": "640x480",
+    "Nom de marque": "AEVYVKV",
+    "Origine": "CN (Origine)",
+    "Usage": "Home Use",
+    "High Definition Support": "1080P (Full-HD)",
+    "Type": "HD Camera",
+    "Touch Screen": "NO",
+    "Weight": "101g-150g",
+    "Additional Function": "Camera Function"
+  }
+},
+"parfum-jean-paul-gaultier-125cl": {
+  nom: "Parfum Jean Paul Gaultier 125 cl",
+  description: "Parfum pour homme à la senteur boisée et à la fragrance intense. Un parfum riche et longue tenue pour une allure élégante et charismatique.",
+  prix: "35 €",
+  image: "parfum jean paul gautier.png",
+  details: {
+    "Note de parfum": "Boisé",
+    "Concentration de saveur": "10 ~ 20 %",
+    "Sexe": "Mâle",
+    "Concentration d'alcool": "10%",
+    "Teneur en alcool": "Alcoolique",
+    "Produit chimique à haute préoccupation": "Aucun",
+    "Odeur": "cologne",
+    "POIDS NET": "100ml",
+    "Ingrédient": "as the show",
+    "Numéro de Modèle": "MEN PERFUME",
+    "Nom de marque": "JEAN MISS",
+    "Origine": "CN (Origine)",
+    "Type D'article": "PERFUME",
+    "Advantage": "Rich, long lasting",
+    "Ingredient": "liquid",
+    "Fragrance": "cologne",
+    "Feature 1": "Long-lasting smell",
+    "Feature 2": "Strong fragrance",
+    "Feature 3": "Enhance the charm",
+    "Feature 4": "Original perfume"
+  }
+},
+"clavier-souris-retroeclaires": {
+  nom: "Clavier et souris rétroéclairés",
+  description: "Ensemble clavier et souris filaires rétroéclairés, parfaits pour le gaming ou le travail de bureau. Design ergonomique avec touches multimédias et connexion USB.",
+  prix: "20 €",
+  image: "clavier_souris_blanc.png",
+  details: {
+    "Produit chimique à haute préoccupation": "Aucun",
+    "Avec touches de fonction multimédia": "Oui",
+    "Connexion souris": "Filaire",
+    "Supporte l’ingénierie humaine": "Oui",
+    "Objet applicable": "Pour le jeu",
+    "Paquet": "Oui",
+    "Connexion clavier": "Filaire",
+    "Type": "Ergonomique, Jeux, Multimédia, Standard, Imperméabilisé, Filaire",
+    "Nom de marque": "DUTRIEUX",
+    "Origine": "CN (Origine)",
+    "Interface": "USB"
+  }
+},
+"disque-dur-externe-1to": {
+  nom: "Disque dur externe 1 To",
+  description: "Disque dur externe SSD 1 To haute performance, compatible avec PC et consoles. Design compact, rapide et portable, idéal pour le stockage et le transfert de données.",
+  prix: "15",
+  image: "disque_dur_1_TB.png",
+  details: {
+    "Produit chimique à haute préoccupation": "Aucun",
+    "Type d'interface": "PCI EXPRESS",
+    "Type de prise": "USB",
+    "Numéro de Modèle": "External SSD E61",
+    "Marque/modèle compatible": "Microsoft",
+    "Origine": "CN (Origine)",
+    "Feature1": "external hard drive",
+    "Feature2": "hard drive",
+    "Feature3": "external ssd drive",
+    "Feature4": "ssd",
+    "Feature5": "ssd nvme 1tb",
+    "Feature6": "ssd sata 1tb",
+    "Feature7": "portable external ssd",
+    "Feature8": "external ssd",
+    "Feature9": "1tb external hdd",
+    "Feature10": "hard disk",
+    "Feature11": "ssd drive for laptop",
+    "Feature12": "ssd 1tb",
+    "Feature13": "hard drive external",
+    "Feature14": "External hard drive",
+    "Feature15": "External ssd hard drive",
+    "Feature16": "External hard drive 1tb",
+    "Feature17": "ssd external drive",
+    "Feature18": "ssd 1 tb",
+    "Feature19": "External ssd",
+    "Feature20": "Hard disk",
+    "Feature21": "2tb external hard drive",
+    "Feature22": "ssd hard disk",
+    "Feature23": "ssd solid disk",
+    "Feature24": "External hard disk",
+    "Feature25": "hard drive external"
+  }
+},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+};
+
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+const produit = produits[id];
+
+if (produit) {
+  document.getElementById("product-name").textContent = produit.nom;
+  document.getElementById("product-desc").textContent = produit.description;
+  document.getElementById("product-price").textContent = produit.prix;
+  document.getElementById("product-size").textContent = produit.taille;
+  document.getElementById("product-weight").textContent = produit.poids;
+  document.getElementById("product-img").src = produit.image;
+
+  const table = document.getElementById("details-table");
+  for (const [cle, valeur] of Object.entries(produit.details)) {
+    const row = document.createElement("tr");
+    row.innerHTML = `<td>${cle}</td><td>${valeur}</td>`;
+    table.appendChild(row);
+  }
+} else {
+  document.querySelector(".product-detail").innerHTML = "<p>Produit introuvable 😢</p>";
+}
+</script>
+
+</body>
+</html>
