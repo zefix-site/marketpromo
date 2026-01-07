@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - PixelZone Gaming</title>
+  <style>
+    /* --- RESET & BASE --- */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Orbitron', sans-serif; background: #0f0f1a; color: #eee; padding: 20px; }
+
+    h1 { text-align: center; margin-bottom: 30px; color: #00ffff; text-shadow: 0 0 8px #00ffff; }
+    h2 { margin-bottom: 15px; color: #ff00ff; text-shadow: 0 0 6px #ff00ff; }
+
+    /* --- FORMULAIRE --- */
+    form {
+      background: #1a1a2e;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,255,255,0.2);
+      max-width: 500px;
+      margin: 0 auto 40px auto;
+    }
+
+    input, textarea, button {
+      width: 100%;
+      padding: 10px 12px;
+      margin-bottom: 12px;
+      border-radius: 6px;
+      border: 1px solid #00ffff;
+      background: #12122a;
+      color: #eee;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #ff00ff;
+      outline: none;
+      box-shadow: 0 0 8px #ff00ff;
+    }
+
+    button {
+      background-color: #00ffff;
+      color: #0f0f1a;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    button:hover { background-color: #ff00ff; color: #fff; box-shadow: 0 0 10px #ff00ff; }
+
+    /* --- LISTE PRODUITS --- */
+    .products {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .product-card {
+      background: #1a1a2e;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,255,255,0.3);
+      width: 240px;
+      padding: 15px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 25px rgba(255,0,255,0.5);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      border: 2px solid #00ffff;
+    }
+
+    .product-card h3 {
+      font-size: 16px;
+      margin-bottom: 5px;
+      color: #00ffff;
+      text-align: center;
+      text-shadow: 0 0 5px #00ffff;
+    }
+
+    .product-card p {
+      font-size: 13px;
+      color: #ccc;
+      text-align: center;
+      margin-bottom: 5px;
+    }
+
+    .delete-btn {
+      background-color: #ff007f;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 12px;
+      transition: 0.3s;
+    }
+
+    .delete-btn:hover { background-color: #ff3399; }
+
+    .quantity {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 10px;
+    }
+
+    .quantity button {
+      padding: 5px 10px;
+      font-weight: bold;
+      background-color: #00ffff;
+      color: #0f0f1a;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .quantity button:hover { background-color: #ff00ff; color: #fff; }
+    .quantity span { font-weight: bold; min-width: 25px; text-align: center; color: #ff00ff; }
+  </style>
+</head>
+<body>
+  <h1>Admin - PixelZone Gaming</h1>
+
+  <form id="product-form">
+    <h2>Ajouter un produit</h2>
+    <input type="text" id="name" placeholder="Nom du produit" required>
+    <textarea id="description" placeholder="Description du produit" required></textarea>
+    <input type="text" id="price" placeholder="Prix" required>
+    <input type="text" id="size" placeholder="Taille (ex: 24 pouces)">
+    <input type="text" id="weight" placeholder="Poids (ex: 3.5 kg)">
+    <input type="file" id="image" accept="image/*">
+    <textarea id="details" placeholder="Détails supplémentaires (texte libre)"></textarea>
+    <input type="number" id="quantity" placeholder="Quantité" min="0" value="1" required>
+    <label>Catégorie du produit</label>
+<select id="category" required>
+  <option value="">-- Choisir une catégorie --</option>
+  <option value="Informatique,Bureautique">Informatique & Bureautique</option>
+  <option value="électonique">Électronique</option>
+  <option value="électromenager">Électroménager</option>
+  <option value="Maison,Jardin">Maison & Jardin</option>
+  <option value="Figurines">Figurines</option>
+  <option value="Parfums">Parfums</option>
+  <option value="Peluches">Peluches</option>
+</select>
+    <button type="submit">Ajouter le produit</button>
+  </form>
+
+  <div class="products" id="products-container"></div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBmZ8oear75OdXjkjqn2p7k0VjotrQwRYQ",
+      authDomain: "market-promo.firebaseapp.com",
+      projectId: "market-promo",
+      storageBucket: "market-promo.appspot.com",
+      messagingSenderId: "381267030115",
+      appId: "1:381267030115:web:dc310f4cb502bc81800856",
+      measurementId: "G-0RQZLQ9GQ9"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const form = document.getElementById('product-form');
+    const productsContainer = document.getElementById('products-container');
+
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+      });
+    }
+
+    // Ajouter produit
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const description = document.getElementById('description').value;
+      const price = document.getElementById('price').value;
+      const size = document.getElementById('size').value;
+      const weight = document.getElementById('weight').value;
+      const details = document.getElementById('details').value;
+      const category = document.getElementById('category').value;
+      const quantity = parseInt(document.getElementById('quantity').value) || 0;
+      let imageBase64 = "";
+      const imageFile = document.getElementById('image').files[0];
+      if(imageFile) imageBase64 = await fileToBase64(imageFile);
+
+      await db.collection('products').add({
+        name, description, price, size, weight, details, quantity,category, image: imageBase64,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      form.reset();
+      loadProducts();
+    });
+    
+    // Charger produits
+    async function loadProducts() {
+      productsContainer.innerHTML = '';
+      const snapshot = await db.collection('products').orderBy('createdAt','desc').get();
+
+      snapshot.forEach(doc => {
+        const product = doc.data();
+        const card = document.createElement('div');
+        card.className = 'product-card';
+
+        card.innerHTML = `
+          ${product.image ? `<img src="${product.image}" alt="${product.name}">` : ''}
+          <h3>${product.name}</h3>
+          <p>${product.description}</p>
+          <p><strong>Prix:</strong> ${product.price}</p>
+          <p><strong>Taille:</strong> ${product.size}</p>
+          <p><strong>Poids:</strong> ${product.weight}</p>
+          ${product.details ? `<p><strong>Détails:</strong> ${product.details}</p>` : ''}
+          <p>${product.category}</p>
+          <div class="quantity">
+            <button class="decrease-btn">-</button>
+            
+            <span class="quantity-value">${product.quantity||0}</span>
+            
+            <button class="increase-btn">+</button>
+          </div>
+          <button class="delete-btn">Supprimer</button>
+        `;
+
+        // Suppression
+        card.querySelector('.delete-btn').addEventListener('click', async () => {
+          if(confirm(`Supprimer "${product.name}" ?`)) {
+            await db.collection('products').doc(doc.id).delete();
+            card.remove(); // pas besoin de reload complet
+          }
+        });
+
+        // Quantité +
+        card.querySelector('.increase-btn').addEventListener('click', async () => {
+          const newQty = (product.quantity||0)+1;
+          await db.collection('products').doc(doc.id).update({ quantity: newQty });
+          card.querySelector('.quantity-value').textContent = newQty;
+          product.quantity = newQty; // mise à jour locale
+        });
+
+        // Quantité -
+        card.querySelector('.decrease-btn').addEventListener('click', async () => {
+          const newQty = Math.max(0,(product.quantity||0)-1);
+          await db.collection('products').doc(doc.id).update({ quantity: newQty });
+          card.querySelector('.quantity-value').textContent = newQty;
+          product.quantity = newQty;
+        });
+
+        productsContainer.appendChild(card);
+      });
+    }
+    
+    loadProducts();
+  </script>
+</body>
+</html>
