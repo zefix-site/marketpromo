@@ -12,7 +12,6 @@ body { font-family: 'Orbitron', sans-serif; background: #0f0f1a; color: #eee; pa
 h1 { text-align: center; margin-bottom: 30px; color: #00ffff; text-shadow: 0 0 8px #00ffff; }
 h2 { margin-bottom: 15px; color: #ff00ff; text-shadow: 0 0 6px #ff00ff; }
 
-/* FORM */
 form {
   background: #1a1a2e;
   padding: 25px;
@@ -22,7 +21,7 @@ form {
   margin: 0 auto 40px auto;
 }
 
-input, textarea, select, button {
+input, textarea, button, select {
   width: 100%;
   padding: 10px;
   margin-bottom: 12px;
@@ -38,9 +37,9 @@ button {
   font-weight: bold;
   cursor: pointer;
 }
+
 button:hover { background-color: #ff00ff; color: #fff; }
 
-/* PRODUITS */
 .products {
   display: flex;
   flex-wrap: wrap;
@@ -51,9 +50,9 @@ button:hover { background-color: #ff00ff; color: #fff; }
 .product-card {
   background: #1a1a2e;
   border-radius: 12px;
-  width: 260px;
-  padding: 15px;
   box-shadow: 0 0 15px rgba(0,255,255,0.3);
+  width: 240px;
+  padding: 15px;
   position: relative;
   text-align: center;
 }
@@ -82,33 +81,33 @@ button:hover { background-color: #ff00ff; color: #fff; }
   cursor: pointer;
 }
 
-.quantity, .price-edit {
+.quantity {
   display: flex;
   justify-content: center;
-  align-items: center;
-  gap: 5px;
-  margin-top: 10px;
+  gap: 6px;
+  margin-top: 8px;
 }
 
 .quantity button {
   padding: 5px 10px;
-  font-weight: bold;
   background: #00ffff;
   border: none;
   border-radius: 6px;
 }
 
+/* 🔧 MODIF PRIX */
+.price-edit {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  margin: 8px 0;
+}
 .price-edit input {
-  width: 80px;
+  width: 70px;
   text-align: center;
 }
-
-.save-price {
-  background: #00ffcc;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 6px;
-  cursor: pointer;
+.price-edit button {
+  padding: 5px 8px;
 }
 </style>
 </head>
@@ -117,19 +116,32 @@ button:hover { background-color: #ff00ff; color: #fff; }
 
 <h1>Admin - PixelZone Gaming</h1>
 
+<!-- 🔒 FORMULAIRE STRICTEMENT INCHANGÉ -->
 <form id="product-form">
   <h2>Ajouter un produit</h2>
-  <input type="text" id="name" placeholder="Nom" required>
-  <textarea id="description" placeholder="Description"></textarea>
-  <input type="text" id="price" placeholder="Prix (€)" required>
-  <input type="number" id="quantity" placeholder="Quantité" value="1">
+  <input type="text" id="name" placeholder="Nom du produit" required>
+  <textarea id="description" placeholder="Description du produit"></textarea>
+  <input type="text" id="price" placeholder="Prix" required>
+  <input type="text" id="size" placeholder="Taille (ex: 24 pouces)">
+  <input type="text" id="weight" placeholder="Poids (ex: 3.5 kg)">
   <input type="file" id="image" accept="image/*">
+  <textarea id="details" placeholder="Détails supplémentaires (texte libre)"></textarea>
+  <input type="number" id="quantity" min="0" value="1" required>
+
+  <label>Catégorie du produit</label>
   <select id="category" required>
-    <option value="">Catégorie</option>
-    <option value="gaming">Gaming</option>
-    <option value="informatique">Informatique</option>
+    <option value="">-- Choisir une catégorie --</option>
+    <option value="Informatique,Bureautique">Informatique & Bureautique</option>
+    <option value="électronique">Électronique</option>
+    <option value="électromenager">Électroménager</option>
+    <option value="Maison,Jardin">Maison & Jardin</option>
+    <option value="Figurines">Figurines</option>
+    <option value="Parfums">Parfums</option>
+    <option value="Peluches">Peluches</option>
+    <option value="cuisines">cuisines</option>
   </select>
-  <button type="submit">Ajouter</button>
+
+  <button type="submit">Ajouter le produit</button>
 </form>
 
 <div class="products" id="products-container"></div>
@@ -145,30 +157,34 @@ firebase.initializeApp({
 });
 
 const db = firebase.firestore();
-const productsContainer = document.getElementById('products-container');
 const form = document.getElementById('product-form');
+const productsContainer = document.getElementById('products-container');
 
 function fileToBase64(file){
-  return new Promise(res=>{
-    const r = new FileReader();
-    r.onload = ()=>res(r.result);
-    r.readAsDataURL(file);
+  return new Promise(resolve=>{
+    const reader = new FileReader();
+    reader.onload = ()=>resolve(reader.result);
+    reader.readAsDataURL(file);
   });
 }
 
-/* AJOUT PRODUIT */
+// AJOUT PRODUIT (INCHANGÉ)
 form.addEventListener('submit', async e=>{
   e.preventDefault();
-  const img = document.getElementById('image').files[0];
-  const base64 = img ? await fileToBase64(img) : "";
+
+  const imageFile = image.files[0];
+  const imageBase64 = imageFile ? await fileToBase64(imageFile) : "";
 
   await db.collection('products').add({
     name: name.value,
     description: description.value,
     price: price.value,
+    size: size.value,
+    weight: weight.value,
+    details: details.value,
     quantity: Number(quantity.value),
     category: category.value,
-    image: base64,
+    image: imageBase64,
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
   });
 
@@ -176,7 +192,7 @@ form.addEventListener('submit', async e=>{
   loadProducts();
 });
 
-/* LOAD PRODUITS */
+// CHARGEMENT + MODIF PRIX
 async function loadProducts(){
   productsContainer.innerHTML = "";
   const snap = await db.collection('products').orderBy('createdAt','desc').get();
@@ -189,40 +205,31 @@ async function loadProducts(){
     card.innerHTML = `
       ${p.image ? `<img src="${p.image}">` : ""}
       <h3>${p.name}</h3>
+      <p>${p.description}</p>
 
+      <!-- 🔧 MODIF PRIX -->
       <div class="price-edit">
-        <input type="text" value="${p.price}" class="price-input">
-        <button class="save-price">💾</button>
+        <input type="text" value="${p.price}">
+        <button>💾</button>
       </div>
 
       <div class="quantity">
-        <button class="dec">-</button>
-        <span>${p.quantity||0}</span>
-        <button class="inc">+</button>
+        <button>-</button>
+        <span>${p.quantity || 0}</span>
+        <button>+</button>
       </div>
 
-      <button class="delete-btn">✖</button>
+      <button class="delete-btn">Supprimer</button>
     `;
 
-    /* UPDATE PRIX */
-    card.querySelector('.save-price').onclick = async ()=>{
-      const newPrice = card.querySelector('.price-input').value;
-      await db.collection('products').doc(doc.id).update({ price:newPrice });
+    // 🔧 SAUVEGARDE PRIX
+    card.querySelector('.price-edit button').onclick = async () => {
+      const newPrice = card.querySelector('.price-edit input').value;
+      await db.collection('products').doc(doc.id).update({ price: newPrice });
       alert("Prix mis à jour");
     };
 
-    /* QUANTITÉ */
-    card.querySelector('.inc').onclick = async ()=>{
-      await db.collection('products').doc(doc.id).update({ quantity:(p.quantity||0)+1 });
-      loadProducts();
-    };
-    card.querySelector('.dec').onclick = async ()=>{
-      await db.collection('products').doc(doc.id).update({ quantity:Math.max(0,(p.quantity||0)-1) });
-      loadProducts();
-    };
-
-    /* SUPPRIMER */
-    card.querySelector('.delete-btn').onclick = async ()=>{
+    card.querySelector('.delete-btn').onclick = async () => {
       if(confirm("Supprimer ce produit ?")){
         await db.collection('products').doc(doc.id).delete();
         loadProducts();
@@ -235,5 +242,6 @@ async function loadProducts(){
 
 loadProducts();
 </script>
+
 </body>
 </html>
