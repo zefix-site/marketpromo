@@ -162,41 +162,32 @@ auth.onAuthStateChanged(user => {
 });
 
 // ===== PANIER =====
-function addToCart(name, price, img) {
+function addToCart(name, price, img){
   const user = auth.currentUser;
-  const numericPrice = parseFloat(price); // assure que le prix est un nombre
-
+  const numericPrice = parseFloat(price);
   if(user){
     const cartRef = db.collection('carts').doc(user.uid);
-    cartRef.get().then(doc => {
+    cartRef.get().then(doc=>{
       let cart = [];
-      if(doc.exists) cart = doc.data().items || [];
-
-      // Vérifie si le produit existe déjà
+      if(doc.exists) cart = doc.data().items;
       const existing = cart.find(item => item.name === name);
       if(existing){
-        existing.qty += 1;
+        existing.qty +=1;
       } else {
-        cart.push({name, price: numericPrice, img, qty:1});
+        cart.push({name, price:numericPrice, img, qty:1});
       }
-
-      cartRef.set({items: cart}).then(() => {
-        alert(name + " ajouté au panier !");
-      }).catch(err => console.error("Erreur ajout panier Firebase:", err));
-    }).catch(err => console.error("Erreur lecture panier Firebase:", err));
+      cartRef.set({items:cart}).then(()=>alert(name+" ajouté au panier !"));
+    });
   } else {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-    // Vérifie si le produit existe déjà
     const existing = cart.find(item => item.name === name);
     if(existing){
-      existing.qty += 1;
+      existing.qty +=1;
     } else {
-      cart.push({name, price: numericPrice, img, qty:1});
+      cart.push({name, price:numericPrice, img, qty:1});
     }
-
     localStorage.setItem('cart', JSON.stringify(cart));
-    alert(name + " ajouté au panier !");
+    alert(name+" ajouté au panier !");
   }
 }
 

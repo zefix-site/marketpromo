@@ -5,26 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Panier - PixelZone</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
-
 <style>
-body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #0f0f10, #1c1c22); color: #fff; padding: 2rem; }
-h1 { color: #00bfff; text-shadow: 0 0 10px #00bfff; margin-bottom: 2rem; text-align: center; }
-
-table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; background: rgba(25,25,30,0.9); border-radius: 15px; overflow: hidden; box-shadow: 0 0 20px rgba(0,191,255,0.3); }
-th, td { padding: 1rem; text-align: center; border-bottom: 1px solid #00bfff; }
-th { background: rgba(0,191,255,0.2); }
-input[type="number"], input[type="email"], input[type="tel"] { width: 60px; padding: 0.3rem; border-radius: 10px; border: 1px solid #00bfff; text-align: center; background: #1c1c22; color: #fff; }
-input[type="email"], input[type="tel"] { width: 50%; margin: 0.5rem auto; display:block; padding:0.5rem; }
-button { background: #00bfff; color: #000; padding: 0.5rem 1rem; border: none; border-radius: 15px; cursor: pointer; transition: all 0.3s; }
-button:hover { background: #00ffcc; }
-#total { font-size: 1.5rem; color: #00ffcc; text-shadow: 0 0 10px #00ffcc; }
-.actions-btns { display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem; }
-a.continue-btn { display: inline-block; padding: 0.6rem 1.5rem; border-radius: 20px; background: #00bfff; color: #000; font-weight: 700; text-decoration: none; transition: all 0.3s; }
-a.continue-btn:hover { background: #00ffcc; }
+body { font-family:'Poppins',sans-serif; background:#111; color:#fff; padding:2rem; }
+h1 { color:#00bfff; text-align:center; margin-bottom:2rem; }
+table { width:100%; border-collapse:collapse; background:rgba(25,25,30,0.9); border-radius:15px; overflow:hidden; margin-bottom:2rem; }
+th,td { padding:1rem; text-align:center; border-bottom:1px solid #00bfff; }
+th { background:rgba(0,191,255,0.2); }
+input[type="number"] { width:60px; text-align:center; background:#1c1c22; color:#fff; border-radius:10px; border:1px solid #00bfff; }
+button { background:#00bfff; color:#000; padding:0.5rem 1rem; border:none; border-radius:15px; cursor:pointer; }
+button:hover { background:#00ffcc; }
 img.cart-img { width:50px; height:50px; object-fit:cover; border-radius:10px; margin-right:10px; vertical-align:middle; }
-
-.checkout-form { margin-top: 2rem; text-align:center; }
-.checkout-form button { margin-top: 1rem; }
+.actions-btns { display:flex; justify-content:center; gap:1rem; margin-bottom:2rem; }
+a.continue-btn { padding:0.5rem 1.5rem; border-radius:20px; background:#00bfff; color:#000; font-weight:700; text-decoration:none; }
+a.continue-btn:hover { background:#00ffcc; }
+#total { font-size:1.5rem; color:#00ffcc; text-align:center; display:block; margin-bottom:2rem; }
 </style>
 </head>
 <body>
@@ -49,116 +43,121 @@ img.cart-img { width:50px; height:50px; object-fit:cover; border-radius:10px; ma
   <a href="index.html" class="continue-btn">Continuer vos achats</a>
 </div>
 
-<h2>Total : <span id="total">0</span> €</h2>
+<h2 id="total">Total : 0 €</h2>
 
-<div class="checkout-form">
-  <h2>📝 Passer la commande</h2>
-  <input type="email" id="email" placeholder="Votre email" required>
-  <input type="tel" id="phone" placeholder="Votre téléphone" required>
-  <button onclick="placeOrder()">Commander</button>
-</div>
-
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
 <script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyBmZ8oear75OdXjkjqn2p7k0VjotrQwRYQ",
-    authDomain: "market-promo.firebaseapp.com",
-    projectId: "market-promo",
-    storageBucket: "market-promo.firebasestorage.app",
-    messagingSenderId: "381267030115",
-    appId: "1:381267030115:web:dc310f4cb502bc81800856",
-    measurementId: "G-0RQZLQ9GQ9"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-</script>
+const firebaseConfig = {
+  apiKey: "AIzaSyBmZ8oear75OdXjkjqn2p7k0VjotrQwRYQ",
+  authDomain: "market-promo.firebaseapp.com",
+  projectId: "market-promo",
+  storageBucket: "market-promo.appspot.com",
+  messagingSenderId: "381267030115",
+  appId: "1:381267030115:web:dc310f4cb502bc81800856",
+  measurementId: "G-0RQZLQ9GQ9"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
 
-<script>
-function renderCart(){
+function renderCart(cart){
   const tbody = document.querySelector('#cart-table tbody');
   tbody.innerHTML = '';
-  let cart = JSON.parse(localStorage.getItem('cart')) || [];
   let total = 0;
-
-  cart.forEach((item, index) => {
-    const subtotal = item.price * item.qty;
+  cart.forEach((item,index)=>{
+    const subtotal = item.price*item.qty;
     total += subtotal;
     tbody.innerHTML += `
       <tr>
         <td><img src="${item.img}" class="cart-img" alt="${item.name}">${item.name}</td>
         <td>${item.price.toFixed(2)}</td>
-        <td><input type="number" min="1" value="${item.qty}" onchange="updateQty(${index}, this.value)"></td>
+        <td><input type="number" min="1" value="${item.qty}" onchange="updateQty(${index},this.value)"></td>
         <td>${subtotal.toFixed(2)}</td>
         <td><button onclick="removeItem(${index})">Supprimer</button></td>
       </tr>
     `;
   });
+  document.getElementById('total').textContent = 'Total : ' + total.toFixed(2) + ' €';
+}
 
-  document.getElementById('total').textContent = total.toFixed(2);
+// ===== UTILISATEUR CONNECTÉ / LOCAL =====
+function loadCart(){
+  const user = auth.currentUser;
+  if(user){
+    const cartRef = db.collection('carts').doc(user.uid);
+    cartRef.get().then(doc=>{
+      let cart = [];
+      if(doc.exists) cart = doc.data().items;
+      renderCart(cart);
+    });
+  } else {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    renderCart(cart);
+  }
+}
+
+function saveCart(cart){
+  const user = auth.currentUser;
+  if(user){
+    db.collection('carts').doc(user.uid).set({items:cart});
+  } else {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }
 }
 
 function removeItem(index){
   let cart = JSON.parse(localStorage.getItem('cart')) || [];
-  cart.splice(index, 1);
-  localStorage.setItem('cart', JSON.stringify(cart));
-  renderCart();
+  const user = auth.currentUser;
+  if(user){
+    db.collection('carts').doc(user.uid).get().then(doc=>{
+      if(doc.exists) cart = doc.data().items;
+      cart.splice(index,1);
+      saveCart(cart);
+      renderCart(cart);
+    });
+  } else {
+    cart.splice(index,1);
+    saveCart(cart);
+    renderCart(cart);
+  }
 }
 
-function updateQty(index, qty){
-  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+function updateQty(index,qty){
   qty = parseInt(qty);
-  if(qty < 1) qty = 1;
-  cart[index].qty = qty;
-  localStorage.setItem('cart', JSON.stringify(cart));
-  renderCart();
+  if(qty<1) qty=1;
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const user = auth.currentUser;
+  if(user){
+    db.collection('carts').doc(user.uid).get().then(doc=>{
+      if(doc.exists) cart = doc.data().items;
+      cart[index].qty = qty;
+      saveCart(cart);
+      renderCart(cart);
+    });
+  } else {
+    cart[index].qty = qty;
+    saveCart(cart);
+    renderCart(cart);
+  }
 }
 
 function clearCart(){
   if(confirm("Voulez-vous vraiment vider le panier ?")){
-    localStorage.removeItem('cart');
-    renderCart();
-  }
-}
-
-function placeOrder(){
-  const email = document.getElementById('email').value.trim();
-  const phone = document.getElementById('phone').value.trim();
-  let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-  if(cart.length === 0){
-    alert("Votre panier est vide !");
-    return;
-  }
-  if(!email || !phone){
-    alert("Veuillez remplir l'email et le téléphone !");
-    return;
-  }
-
-  const order = {
-    cart: cart,
-    email: email,
-    phone: phone,
-    date: new Date().toISOString()
-  };
-
-  db.collection("orders").add(order)
-    .then(() => {
-      alert("Commande envoyée avec succès !");
+    const user = auth.currentUser;
+    if(user){
+      db.collection('carts').doc(user.uid).set({items:[]});
+    } else {
       localStorage.removeItem('cart');
-      renderCart();
-      document.getElementById('email').value = '';
-      document.getElementById('phone').value = '';
-    })
-    .catch((error) => {
-      console.error("Erreur lors de la commande : ", error);
-      alert("Erreur, veuillez réessayer.");
-    });
+    }
+    renderCart([]);
+  }
 }
 
-renderCart();
+// Charger le panier au démarrage
+auth.onAuthStateChanged(loadCart);
 </script>
 
 </body>
