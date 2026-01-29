@@ -66,6 +66,109 @@
 
   /* FOOTER */
   .site-footer { text-align:center; padding:2rem; background:#0c0c10; border-top:2px solid #00bfff; color:#aaa; font-size:0.95rem; letter-spacing:0.5px; }
+/* =======================
+   RESPONSIVE TABLETTE
+   ======================= */
+@media (max-width: 1024px) {
+  .product-categories {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .category-buttons {
+    display: flex;
+    gap: 0.7rem;
+    padding: 0.5rem 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+  }
+  .category-buttons::-webkit-scrollbar {
+    display: none;
+  }
+  .category-btn {
+    white-space: nowrap;
+    padding: 0.65rem 1.1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 8px;
+    background: rgba(25,30,35,0.95);
+    color: #cfefff;
+    border: 1px solid rgba(0,191,255,0.3);
+    transition: all 0.25s ease;
+  }
+  .category-btn:hover {
+    background: rgba(0,191,255,0.15);
+    color: #ffffff;
+  }
+  .category-btn.active {
+    background: linear-gradient(135deg, #00bfff, #00ffcc);
+    color: #000;
+    border: none;
+    box-shadow: 0 4px 14px rgba(0,255,255,0.5);
+  }
+  .category-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(15, 20, 25, 0.95);
+    padding: 0.6rem;
+    border-radius: 12px;
+    border: 1px solid rgba(0,191,255,0.35);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  }
+  .category-scroll {
+    display: flex;
+    gap: 0.6rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    flex: 1;
+  }
+  .category-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  .cat-arrow {
+    background: rgba(0,191,255,0.15);
+    border: none;
+    color: #00bfff;
+    font-size: 1.1rem;
+    padding: 0.4rem 0.6rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .cat-arrow:hover {
+    background: rgba(0,191,255,0.35);
+    color: #fff;
+  }
+}
+  .site-header {
+    padding: 1rem 1.5rem;
+  }
+
+  .site-header h1 {
+    font-size: 1.6rem;
+  }
+
+  .hero {
+    padding: 4rem 1.5rem;
+  }
+
+  .hero h2 {
+    font-size: 2.5rem;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+
+  .product-card img {
+    height: 220px;
+  }
+
+
+
+
 
 </style>
 </head>
@@ -92,7 +195,9 @@
 
 <section class="product-categories">
   <h2>🗂️ Catégories d'Articles</h2>
-  <div class="category-buttons">
+     <div class="category-bar">
+    <button class="cat-arrow left" onclick="scrollCategories(-200)">❮</button>
+   <div class="category-scroll" id="categoryScroll">
     <button class="category-btn active" data-category="all">Tout</button>
     <button class="category-btn" data-category="Bijouterie">Bijouterie</button>
     <button class="category-btn" data-category="vêtement">vêtement</button>
@@ -106,6 +211,7 @@
     <button class="category-btn" data-category="Figurines">Figurines</button>
     <button class="category-btn" data-category="cuisines">cuisines</button>
   </div>
+  <button class="cat-arrow right" onclick="scrollCategories(200)">❯</button>
 </section>
 
 <section class="popular-products">
