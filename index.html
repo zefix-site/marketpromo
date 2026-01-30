@@ -159,13 +159,111 @@
   }
 
   .product-grid {
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.8rem;
+  }
+
+  .product-card {
+    max-width: 260px;
   }
 
   .product-card img {
-    height: 220px;
+    height: 200px;
   }
 
+  .product-info {
+    padding: 1rem 1rem;
+  }
+
+  .product-info h3 {
+    font-size: 1rem;
+  }
+
+  .product-info p {
+    font-size: 0.9rem;
+  }
+
+  .buy-btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.8rem;
+  }
+
+
+/* =======================
+   RESPONSIVE TÉLÉPHONE
+   ======================= */
+@media (max-width: 768px) {
+  .product-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.6rem;
+  }
+
+  .product-card {
+    max-width: 180px;
+  }
+
+  .product-card img {
+    height: 150px;
+  }
+
+  .product-info {
+    padding: 0.8rem 0.8rem;
+  }
+
+  .product-info h3 {
+    font-size: 0.85rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .product-info p {
+    font-size: 0.75rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .buy-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.7rem;
+  }
+}
+
+/* =======================
+   RESPONSIVE PETIT TÉLÉPHONE
+   ======================= */
+@media (max-width: 480px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0 0.5rem;
+  }
+
+  .product-card {
+    max-width: 100%;
+  }
+
+  .product-card img {
+    height: 130px;
+  }
+
+  .product-info {
+    padding: 0.6rem 0.6rem;
+  }
+
+  .product-info h3 {
+    font-size: 0.75rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .product-info p {
+    font-size: 0.65rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .buy-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.65rem;
+  }
+}
 
 
 
@@ -189,8 +287,8 @@
 </header>
 
 <section class="hero">
-  <h2>Bienvenue sur PixelZone</h2>
-  <p>Découvrez nos produits gaming exclusifs et boostez votre setup !</p>
+  <h2>Bienvenue </h2>
+  <p>Découvrez nos produits exclusifs,rapidement</p>
 </section>
 
 <section class="product-categories">
@@ -377,6 +475,14 @@ db.collection('products').onSnapshot(snapshot => {
     afficherProduit(doc.data());
   });
 });
+// ===== SCROLL CATÉGORIES (TABLETTE / MOBILE) =====
+function scrollCategories(value) {
+  const container = document.getElementById("categoryScroll");
+  container.scrollBy({
+    left: value,
+    behavior: "smooth"
+  });
+}
 </script>
 
 
