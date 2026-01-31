@@ -4,174 +4,842 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin - PixelZone Gaming</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
     /* --- RESET & BASE --- */
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Orbitron', sans-serif; background: #0f0f1a; color: #eee; padding: 20px; }
-
-    h1 { text-align: center; margin-bottom: 30px; color: #00ffff; text-shadow: 0 0 8px #00ffff; }
-    h2 { margin-bottom: 15px; color: #ff00ff; text-shadow: 0 0 6px #ff00ff; }
-
-    /* --- FORMULAIRE --- */
-    form {
-      background: #1a1a2e;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,255,255,0.2);
-      max-width: 500px;
-      margin: 0 auto 40px auto;
+    body { 
+      font-family: 'Poppins', sans-serif; 
+      background: radial-gradient(circle at top left, #0a0a0a, #111, #000); 
+      color: #f5f5f5;
+      overflow-x: hidden;
     }
 
-    input, textarea, button {
+    /* --- HEADER --- */
+    .admin-header {
+      background: rgba(15,15,15,0.95);
+      backdrop-filter: blur(15px);
+      padding: 1.5rem 2rem;
+      border-bottom: 2px solid #00bfff;
+      box-shadow: 0 0 25px rgba(0, 191, 255, 0.25);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .admin-header h1 {
+      font-size: 2rem;
+      color: #00bfff;
+      text-shadow: 0 0 12px rgba(0, 191, 255, 0.7);
+      letter-spacing: 2px;
+      font-weight: 800;
+    }
+
+    /* --- MAIN CONTAINER --- */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    /* --- FORMULAIRE SECTION --- */
+    .form-section {
+      background: linear-gradient(180deg, rgba(25,25,35,0.95) 0%, rgba(15,15,25,0.95) 100%);
+      padding: 2.5rem;
+      border-radius: 15px;
+      border: 1.5px solid rgba(0,191,255,0.3);
+      box-shadow: 0 8px 32px rgba(0,191,255,0.1);
+      margin-bottom: 3rem;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .form-section h2 {
+      font-size: 1.8rem;
+      color: #00bfff;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 0 10px rgba(0,191,255,0.3);
+      font-weight: 700;
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #00ffcc;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    input, textarea, select {
       width: 100%;
-      padding: 10px 12px;
-      margin-bottom: 12px;
-      border-radius: 6px;
-      border: 1px solid #00ffff;
-      background: #12122a;
-      color: #eee;
-      font-size: 14px;
-      transition: all 0.3s;
+      padding: 0.9rem 1rem;
+      margin-bottom: 0;
+      border-radius: 8px;
+      border: 1.5px solid rgba(0,191,255,0.4);
+      background: rgba(10,10,20,0.9);
+      color: #f5f5f5;
+      font-size: 0.95rem;
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.3s ease;
     }
 
-    input:focus, textarea:focus {
-      border-color: #ff00ff;
+    input:focus, textarea:focus, select:focus {
+      border-color: #00ffcc;
       outline: none;
-      box-shadow: 0 0 8px #ff00ff;
+      box-shadow: 0 0 12px rgba(0,255,204,0.4);
+      background: rgba(10,10,20,0.95);
     }
 
-    button {
-      background-color: #00ffff;
-      color: #0f0f1a;
-      font-weight: bold;
-      border: none;
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    select {
       cursor: pointer;
-      transition: all 0.3s;
     }
 
-    button:hover { background-color: #ff00ff; color: #fff; box-shadow: 0 0 10px #ff00ff; }
+    .submit-btn {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, #00bfff, #00ffcc);
+      color: #000;
+      font-weight: 800;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      box-shadow: 0 0 20px rgba(0,255,204,0.3);
+    }
 
-    /* --- LISTE PRODUITS --- */
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(0,255,204,0.6);
+    }
+
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+
+    /* --- PRODUITS SECTION --- */
+    .products-section {
+      margin-top: 3rem;
+    }
+
+    .products-section h2 {
+      font-size: 1.8rem;
+      color: #00bfff;
+      text-align: center;
+      margin-bottom: 2rem;
+      text-shadow: 0 0 10px rgba(0,191,255,0.3);
+      font-weight: 700;
+    }
+
     .products {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      justify-items: center;
     }
 
     .product-card {
-      background: #1a1a2e;
+      background: linear-gradient(180deg, rgba(25,25,35,0.95) 0%, rgba(15,15,25,0.95) 100%);
       border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,255,255,0.3);
-      width: 240px;
-      padding: 15px;
+      border: 1.5px solid rgba(0,191,255,0.3);
+      box-shadow: 0 8px 20px rgba(0,255,255,0.08);
+      width: 100%;
+      max-width: 280px;
+      padding: 1.5rem 1.2rem;
       position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: all 0.35s ease;
     }
 
     .product-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 0 25px rgba(255,0,255,0.5);
+      transform: translateY(-8px);
+      border-color: rgba(0,255,204,0.6);
+      box-shadow: 0 12px 40px rgba(0,255,204,0.3);
     }
 
     .product-card img {
       width: 100%;
-      height: 140px;
+      height: 180px;
       object-fit: cover;
       border-radius: 8px;
-      margin-bottom: 10px;
-      border: 2px solid #00ffff;
+      margin-bottom: 1rem;
+      border: 1.5px solid rgba(0,191,255,0.4);
+      transition: transform 0.3s ease;
+    }
+
+    .product-card:hover img {
+      transform: scale(1.05);
     }
 
     .product-card h3 {
-      font-size: 16px;
-      margin-bottom: 5px;
-      color: #00ffff;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      color: #00ffcc;
       text-align: center;
-      text-shadow: 0 0 5px #00ffff;
+      font-weight: 700;
     }
 
     .product-card p {
-      font-size: 13px;
+      font-size: 0.85rem;
       color: #ccc;
       text-align: center;
-      margin-bottom: 5px;
+      margin-bottom: 0.4rem;
+      line-height: 1.4;
+    }
+
+    .product-card p strong {
+      color: #00bfff;
+      font-weight: 600;
     }
 
     .delete-btn {
-      background-color: #ff007f;
+      background: linear-gradient(135deg, #ff3366, #ff007f);
       color: white;
       border: none;
-      padding: 6px 10px;
+      padding: 0.6rem 1rem;
       border-radius: 6px;
       cursor: pointer;
       position: absolute;
-      top: 10px;
-      right: 10px;
-      font-size: 12px;
-      transition: 0.3s;
+      top: 12px;
+      right: 12px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      box-shadow: 0 4px 12px rgba(255,0,127,0.3);
     }
 
-    .delete-btn:hover { background-color: #ff3399; }
+    .delete-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 18px rgba(255,0,127,0.5);
+    }
 
     .quantity {
       display: flex;
       align-items: center;
-      gap: 5px;
-      margin-top: 10px;
+      gap: 0.6rem;
+      margin-top: 1rem;
+      background: rgba(0,191,255,0.1);
+      padding: 0.6rem 0.8rem;
+      border-radius: 6px;
+      border: 1px solid rgba(0,191,255,0.3);
     }
 
     .quantity button {
-      padding: 5px 10px;
-      font-weight: bold;
-      background-color: #00ffff;
-      color: #0f0f1a;
+      padding: 0.4rem 0.7rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #00bfff, #00ffcc);
+      color: #000;
       border: none;
-      border-radius: 6px;
+      border-radius: 4px;
       cursor: pointer;
-      transition: 0.3s;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
     }
 
-    .quantity button:hover { background-color: #ff00ff; color: #fff; }
-    .quantity span { font-weight: bold; min-width: 25px; text-align: center; color: #ff00ff; }
+    .quantity button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 10px rgba(0,255,204,0.5);
+    }
+
+    .quantity span {
+      font-weight: 700;
+      min-width: 30px;
+      text-align: center;
+      color: #00ffcc;
+      font-size: 1.1rem;
+    }
+
+    /* --- CHAMPS OPTIONNELS PAR CATÉGORIE --- */
+    .category-fields {
+      background: rgba(0,191,255,0.08);
+      padding: 1.5rem;
+      border-radius: 10px;
+      border: 1px solid rgba(0,191,255,0.2);
+      margin-top: 1.5rem;
+      display: none;
+    }
+
+    .category-fields.active {
+      display: block;
+      animation: slideDown 0.3s ease;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .category-fields h3 {
+      color: #00ffcc;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    .optional-field {
+      display: none;
+    }
+
+    .optional-field.visible {
+      display: block;
+    }
+
+    /* --- FILTRES CATÉGORIES PRODUITS --- */
+    .category-filter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background: rgba(0,191,255,0.08);
+      border-radius: 10px;
+      border: 1px solid rgba(0,191,255,0.2);
+      justify-content: center;
+    }
+
+    .filter-btn {
+      padding: 0.7rem 1.4rem;
+      background: rgba(25,25,35,0.9);
+      border: 1.5px solid rgba(0,191,255,0.4);
+      color: #00bfff;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      text-transform: capitalize;
+    }
+
+    .filter-btn:hover {
+      border-color: #00ffcc;
+      color: #00ffcc;
+      background: rgba(0,191,255,0.1);
+    }
+
+    .filter-btn.active {
+      background: linear-gradient(135deg, #00bfff, #00ffcc);
+      color: #000;
+      border: none;
+      box-shadow: 0 0 20px rgba(0,255,204,0.4);
+    }
+
+    /* --- MODAL D'ÉDITION --- */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      backdrop-filter: blur(5px);
+    }
+
+    .modal.active {
+      display: flex;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-content {
+      background: linear-gradient(180deg, rgba(25,25,35,0.95) 0%, rgba(15,15,25,0.95) 100%);
+      border: 1.5px solid rgba(0,191,255,0.3);
+      border-radius: 15px;
+      padding: 2rem;
+      max-width: 600px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,191,255,0.2);
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(0,191,255,0.3);
+      padding-bottom: 1rem;
+    }
+
+    .modal-header h2 {
+      font-size: 1.6rem;
+      color: #00bfff;
+      margin: 0;
+      font-weight: 700;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: #00bfff;
+      font-size: 1.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      padding: 0;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-close:hover {
+      color: #00ffcc;
+      transform: rotate(90deg);
+    }
+
+    .modal-body {
+      display: grid;
+      gap: 1.2rem;
+    }
+
+    .edit-form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .edit-form-group label {
+      color: #00ffcc;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .edit-form-group input,
+    .edit-form-group textarea {
+      padding: 0.8rem;
+      background: rgba(10,10,20,0.9);
+      border: 1.5px solid rgba(0,191,255,0.4);
+      border-radius: 8px;
+      color: #f5f5f5;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.9rem;
+      transition: all 0.3s;
+    }
+
+    .edit-form-group input:focus,
+    .edit-form-group textarea:focus {
+      border-color: #00ffcc;
+      box-shadow: 0 0 12px rgba(0,255,204,0.4);
+      outline: none;
+    }
+
+    .edit-form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .modal-footer {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(0,191,255,0.3);
+    }
+
+    .modal-btn {
+      flex: 1;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      transition: all 0.3s;
+    }
+
+    .modal-btn.save {
+      background: linear-gradient(135deg, #00bfff, #00ffcc);
+      color: #000;
+      box-shadow: 0 0 20px rgba(0,255,204,0.3);
+    }
+
+    .modal-btn.save:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(0,255,204,0.6);
+    }
+
+    .modal-btn.cancel {
+      background: rgba(0,191,255,0.15);
+      color: #00bfff;
+      border: 1px solid rgba(0,191,255,0.4);
+    }
+
+    .modal-btn.cancel:hover {
+      background: rgba(0,191,255,0.25);
+      border-color: #00ffcc;
+      color: #00ffcc;
+    }
+
+    .edit-btn {
+      background: linear-gradient(135deg, #00bfff, #00ffcc);
+      color: #000;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-top: 0.8rem;
+      transition: all 0.3s ease;
+    }
+
+    .edit-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(0,255,204,0.5);
+    }
+
+    /* --- RESPONSIVE --- */
+    @media (max-width: 768px) {
+      .admin-header {
+        padding: 1rem 1.5rem;
+      }
+
+      .admin-header h1 {
+        font-size: 1.5rem;
+      }
+
+      .container {
+        padding: 1.5rem 1rem;
+      }
+
+      .form-section {
+        padding: 1.5rem;
+        border-radius: 12px;
+      }
+
+      .form-section h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1.2rem;
+      }
+
+      .products {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1rem;
+      }
+
+      .product-card {
+        max-width: 220px;
+        padding: 1rem;
+      }
+
+      .product-card img {
+        height: 140px;
+        margin-bottom: 0.8rem;
+      }
+
+      .product-card h3 {
+        font-size: 1rem;
+      }
+
+      .product-card p {
+        font-size: 0.8rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .admin-header h1 {
+        font-size: 1.3rem;
+      }
+
+      .form-section {
+        padding: 1.2rem;
+        margin-bottom: 2rem;
+      }
+
+      .form-section h2 {
+        font-size: 1.3rem;
+      }
+
+      .products {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+      }
+
+      .product-card {
+        max-width: 100%;
+        padding: 0.8rem;
+      }
+
+      .product-card img {
+        height: 120px;
+        margin-bottom: 0.6rem;
+      }
+    }
   </style>
 </head>
 <body>
-  <h1>Admin - PixelZone Gaming</h1>
+  <header class="admin-header">
+    <h1>🎮 PixelZone Admin</h1>
+  </header>
 
-  <form id="product-form">
-    <h2>Ajouter un produit</h2>
-    <input type="text" id="name" placeholder="Nom du produit" required>
-    <textarea id="description" placeholder="Description du produit" ></textarea>
-    <input type="text" id="price" placeholder="Prix" required>
-    <input type="text" id="size" placeholder="Taille (ex: 24 pouces)">
-    <input type="text" id="weight" placeholder="Poids (ex: 3.5 kg)">
-    <input type="file" id="image" accept="image/*">
-    <textarea id="details" placeholder="Détails supplémentaires (texte libre)"></textarea>
-    <input type="number" id="quantity" placeholder="Quantité" min="0" value="1" required>
-    <label>Catégorie du produit</label>
-<select id="category" required>
-  <option value="">-- Choisir une catégorie --</option>
-  <option value="Informatique,Bureautique">Informatique & Bureautique</option>
-  <option value="électronique">Électronique</option>
-  <option value="électromenager">Électroménager</option>
-  <option value="Bijouterie">Bijouterie</option>
-   <option value="vêtement">vêtement</option>
-    <option value="Maquillage,soin">Maquillage,soin</option>
-     <option value="jouer">jouer</option>
-  <option value="Maison,Jardin">Maison & Jardin</option>
-  <option value="Figurines">Figurines</option>
-  <option value="Parfums">Parfums</option>
-  <option value="Peluches">Peluches</option>
-  <option value="cuisines">cuisines</option>
-</select>
-    <button type="submit">Ajouter le produit</button>
-  </form>
+  <div class="container">
+    <div class="form-section">
+      <h2>📦 Ajouter un produit</h2>
+      <form id="product-form">
+        <div class="form-group">
+          <label for="name">Nom du produit *</label>
+          <input type="text" id="name" placeholder="ex: Manette PS5 Blue" required>
+        </div>
 
-  <div class="products" id="products-container"></div>
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea id="description" placeholder="Décrivez votre produit..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="price">Prix (€) *</label>
+          <input type="text" id="price" placeholder="ex: 49.99" required>
+        </div>
+
+        <div class="form-group">
+          <label for="size">Taille</label>
+          <input type="text" id="size" placeholder="ex: 24 pouces">
+        </div>
+
+        <div class="form-group">
+          <label for="weight">Poids</label>
+          <input type="text" id="weight" placeholder="ex: 3.5 kg">
+        </div>
+
+        <div class="form-group">
+          <label for="image">Image du produit</label>
+          <input type="file" id="image" accept="image/*">
+        </div>
+
+        <div class="form-group">
+          <label for="details">Détails supplémentaires</label>
+          <textarea id="details" placeholder="Caractéristiques, matière, garantie..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="quantity">Quantité</label>
+          <input type="number" id="quantity" placeholder="Quantité en stock" min="0" value="1" required>
+        </div>
+
+        <div class="form-group">
+          <label for="category">Catégorie du produit *</label>
+          <select id="category" required>
+            <option value="">-- Choisir une catégorie --</option>
+            <option value="Informatique,Bureautique">Informatique & Bureautique</option>
+            <option value="électronique">Électronique</option>
+            <option value="électromenager">Électroménager</option>
+            <option value="Bijouterie">Bijouterie</option>
+            <option value="vêtement">vêtement</option>
+            <option value="Maquillage,soin">Maquillage & Soin</option>
+            <option value="jouer">Jeux & Jouets</option>
+            <option value="Maison,Jardin">Maison & Jardin</option>
+            <option value="Figurines">Figurines</option>
+            <option value="Parfums">Parfums</option>
+            <option value="Peluches">Peluches</option>
+            <option value="cuisines">Cuisines</option>
+          </select>
+        </div>
+
+        <!-- CHAMPS OPTIONNELS PAR CATÉGORIE -->
+        <div class="category-fields" id="category-fields">
+          <h3>ℹ️ Détails supplémentaires (Facultatif)</h3>
+
+          <!-- Électronique & Informatique -->
+          <div class="optional-field" data-category="Informatique,Bureautique,électronique">
+            <div class="form-group">
+              <label for="marque">Marque</label>
+              <input type="text" id="marque" placeholder="ex: Dell, HP, Lenovo">
+            </div>
+            <div class="form-group">
+              <label for="modele">Modèle</label>
+              <input type="text" id="modele" placeholder="ex: XPS 13, ThinkPad">
+            </div>
+            <div class="form-group">
+              <label for="garantie">Garantie</label>
+              <input type="text" id="garantie" placeholder="ex: 2 ans, Lifetime">
+            </div>
+          </div>
+
+          <!-- Vêtements -->
+          <div class="optional-field" data-category="vêtement">
+            <div class="form-group">
+              <label for="couleur">Couleur</label>
+              <input type="text" id="couleur" placeholder="ex: Bleu, Rouge">
+            </div>
+            <div class="form-group">
+              <label for="taille-vetement">Taille</label>
+              <input type="text" id="taille-vetement" placeholder="ex: XS, S, M, L, XL">
+            </div>
+            <div class="form-group">
+              <label for="matiere">Matière</label>
+              <input type="text" id="matiere" placeholder="ex: Coton, Polyester, Laine">
+            </div>
+          </div>
+
+          <!-- Bijouterie -->
+          <div class="optional-field" data-category="Bijouterie">
+            <div class="form-group">
+              <label for="matiere-bijou">Matière</label>
+              <input type="text" id="matiere-bijou" placeholder="ex: Or, Argent, Acier inoxydable">
+            </div>
+            <div class="form-group">
+              <label for="pierre">Pierre / Cristal</label>
+              <input type="text" id="pierre" placeholder="ex: Diamant, Émeraude, Zircone">
+            </div>
+            <div class="form-group">
+              <label for="pureté">Pureté</label>
+              <input type="text" id="pureté" placeholder="ex: 14k, 18k, 925, 950">
+            </div>
+          </div>
+
+          <!-- Maquillage & Soin -->
+          <div class="optional-field" data-category="Maquillage,soin">
+            <div class="form-group">
+              <label for="type-peau">Type de peau cible</label>
+              <input type="text" id="type-peau" placeholder="ex: Grasse, Sèche, Sensible, Mixte">
+            </div>
+            <div class="form-group">
+              <label for="ingredients">Ingrédients clés</label>
+              <input type="text" id="ingredients" placeholder="ex: Acide hyaluronique, Vitamine C">
+            </div>
+            <div class="form-group">
+              <label for="certifications">Certifications</label>
+              <input type="text" id="certifications" placeholder="ex: Bio, Vegan, Cruelty-free">
+            </div>
+          </div>
+
+          <!-- Parfums -->
+          <div class="optional-field" data-category="Parfums">
+            <div class="form-group">
+              <label for="concentration">Concentration</label>
+              <input type="text" id="concentration" placeholder="ex: Eau de Toilette, Eau de Parfum">
+            </div>
+            <div class="form-group">
+              <label for="famille">Famille olfactive</label>
+              <input type="text" id="famille" placeholder="ex: Oriental, Floral, Fruité">
+            </div>
+            <div class="form-group">
+              <label for="duree">Durée</label>
+              <input type="text" id="duree" placeholder="ex: 4-6h, 8h+">
+            </div>
+          </div>
+
+          <!-- Peluches & Figurines -->
+          <div class="optional-field" data-category="Peluches,Figurines">
+            <div class="form-group">
+              <label for="licence">Licence / Franchise</label>
+              <input type="text" id="licence" placeholder="ex: Pokemon, Marvel, Disney">
+            </div>
+            <div class="form-group">
+              <label for="personnage">Personnage</label>
+              <input type="text" id="personnage" placeholder="ex: Pikachu, Spider-Man">
+            </div>
+            <div class="form-group">
+              <label for="age-min">Âge minimum</label>
+              <input type="text" id="age-min" placeholder="ex: 3+, 8+, 14+">
+            </div>
+          </div>
+
+          <!-- Électroménager -->
+          <div class="optional-field" data-category="électromenager">
+            <div class="form-group">
+              <label for="consommation">Consommation énergétique</label>
+              <input type="text" id="consommation" placeholder="ex: Classe A+++, 50W">
+            </div>
+            <div class="form-group">
+              <label for="capacite">Capacité</label>
+              <input type="text" id="capacite" placeholder="ex: 8kg, 500L">
+            </div>
+            <div class="form-group">
+              <label for="bruit">Niveau de bruit</label>
+              <input type="text" id="bruit" placeholder="ex: 50dB, Silencieux">
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn">✨ Ajouter le produit</button>
+      </form>
+    </div>
+
+    <div class="products-section">
+      <h2>📋 Produits en stock</h2>
+      <div class="category-filter" id="category-filter"></div>
+      <div class="products" id="products-container"></div>
+    </div>
+  </div>
+
+  <!-- MODAL D'ÉDITION -->
+  <div id="edit-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>✏️ Modifier le produit</h2>
+        <button class="modal-close" onclick="closeEditModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="edit-form-group">
+          <label>Nom du produit</label>
+          <input type="text" id="edit-name">
+        </div>
+        <div class="edit-form-group">
+          <label>Description</label>
+          <textarea id="edit-description"></textarea>
+        </div>
+        <div class="edit-form-group">
+          <label>Prix (€)</label>
+          <input type="text" id="edit-price">
+        </div>
+        <div class="edit-form-group">
+          <label>Taille</label>
+          <input type="text" id="edit-size">
+        </div>
+        <div class="edit-form-group">
+          <label>Poids</label>
+          <input type="text" id="edit-weight">
+        </div>
+        <div class="edit-form-group">
+          <label>Détails supplémentaires</label>
+          <textarea id="edit-details"></textarea>
+        </div>
+
+        <!-- Champs optionnels dans le modal -->
+        <div id="edit-optional-fields"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn cancel" onclick="closeEditModal()">Annuler</button>
+        <button class="modal-btn save" onclick="saveProductChanges()">Enregistrer les modifications</button>
+      </div>
+    </div>
+  </div>
 
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -192,6 +860,29 @@
 
     const form = document.getElementById('product-form');
     const productsContainer = document.getElementById('products-container');
+    const categorySelect = document.getElementById('category');
+    const categoryFieldsContainer = document.getElementById('category-fields');
+    const optionalFields = document.querySelectorAll('.optional-field');
+
+    // Afficher/masquer les champs optionnels selon la catégorie
+    categorySelect.addEventListener('change', (e) => {
+      const selectedCategory = e.target.value;
+
+      if(selectedCategory) {
+        categoryFieldsContainer.classList.add('active');
+        optionalFields.forEach(field => {
+          const categories = field.dataset.category.split(',');
+          if(categories.some(cat => selectedCategory.includes(cat.trim()))) {
+            field.classList.add('visible');
+          } else {
+            field.classList.remove('visible');
+          }
+        });
+      } else {
+        categoryFieldsContainer.classList.remove('active');
+        optionalFields.forEach(field => field.classList.remove('visible'));
+      }
+    });
 
     function fileToBase64(file) {
       return new Promise((resolve, reject) => {
@@ -200,6 +891,18 @@
         reader.onload = () => resolve(reader.result);
         reader.onerror = error => reject(error);
       });
+    }
+
+    // Récupérer les champs optionnels remplis
+    function getOptionalFields() {
+      const optionalData = {};
+      const visibleFields = document.querySelectorAll('.optional-field.visible input, .optional-field.visible textarea');
+      visibleFields.forEach(field => {
+        if(field.value.trim()) {
+          optionalData[field.id] = field.value.trim();
+        }
+      });
+      return optionalData;
     }
 
     // Ajouter produit
@@ -213,28 +916,163 @@
       const details = document.getElementById('details').value;
       const category = document.getElementById('category').value;
       const quantity = parseInt(document.getElementById('quantity').value) || 0;
+      const optionalFields = getOptionalFields();
       let imageBase64 = "";
       const imageFile = document.getElementById('image').files[0];
       if(imageFile) imageBase64 = await fileToBase64(imageFile);
 
       await db.collection('products').add({
-        name, description, price, size, weight, details, quantity,category, image: imageBase64,
+        name, description, price, size, weight, details, quantity, category, image: imageBase64,
+        optionalFields: optionalFields,
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       });
 
       form.reset();
+      categoryFieldsContainer.classList.remove('active');
+      optionalFields.forEach(field => field.classList.remove('visible'));
       loadProducts();
     });
     
-    // Charger produits
-    async function loadProducts() {
-      productsContainer.innerHTML = '';
-      const snapshot = await db.collection('products').orderBy('createdAt','desc').get();
+    // Variable globale pour stocker tous les produits
+    let allProducts = [];
+    let currentFilter = 'all';
+    let currentEditingProduct = null;
 
+    // Ouvrir le modal d'édition
+    function openEditModal(productDoc, productData) {
+      currentEditingProduct = { doc: productDoc, data: productData };
+      
+      document.getElementById('edit-name').value = productData.name || '';
+      document.getElementById('edit-description').value = productData.description || '';
+      document.getElementById('edit-price').value = productData.price || '';
+      document.getElementById('edit-size').value = productData.size || '';
+      document.getElementById('edit-weight').value = productData.weight || '';
+      document.getElementById('edit-details').value = productData.details || '';
+
+      // Charger les champs optionnels
+      const optionalFieldsContainer = document.getElementById('edit-optional-fields');
+      optionalFieldsContainer.innerHTML = '';
+
+      if(productData.optionalFields && Object.keys(productData.optionalFields).length > 0) {
+        optionalFieldsContainer.innerHTML = '<h3 style="color: #00ffcc; margin: 1rem 0 1rem 0; font-size: 0.95rem;">Champs optionnels</h3>';
+        for(const [key, value] of Object.entries(productData.optionalFields)) {
+          const label = key.replace(/-/g, ' ').replace(/^\w/, c => c.toUpperCase());
+          optionalFieldsContainer.innerHTML += `
+            <div class="edit-form-group">
+              <label>${label}</label>
+              <input type="text" data-optional-key="${key}" value="${value}">
+            </div>
+          `;
+        }
+      }
+
+      document.getElementById('edit-modal').classList.add('active');
+    }
+
+    // Fermer le modal d'édition
+    function closeEditModal() {
+      document.getElementById('edit-modal').classList.remove('active');
+      currentEditingProduct = null;
+    }
+
+    // Sauvegarder les modifications
+    async function saveProductChanges() {
+      if(!currentEditingProduct) return;
+
+      const updatedData = {
+        name: document.getElementById('edit-name').value,
+        description: document.getElementById('edit-description').value,
+        price: document.getElementById('edit-price').value,
+        size: document.getElementById('edit-size').value,
+        weight: document.getElementById('edit-weight').value,
+        details: document.getElementById('edit-details').value,
+      };
+
+      // Récupérer les champs optionnels modifiés
+      const optionalFields = {};
+      document.querySelectorAll('#edit-optional-fields input[data-optional-key]').forEach(input => {
+        optionalFields[input.dataset.optionalKey] = input.value;
+      });
+      if(Object.keys(optionalFields).length > 0) {
+        updatedData.optionalFields = optionalFields;
+      }
+
+      try {
+        await db.collection('products').doc(currentEditingProduct.doc.id).update(updatedData);
+        closeEditModal();
+        loadProducts();
+        alert('Produit mis à jour avec succès!');
+      } catch(error) {
+        alert('Erreur lors de la mise à jour: ' + error.message);
+      }
+    }
+
+    // Fermer le modal au clic en dehors
+    document.getElementById('edit-modal').addEventListener('click', (e) => {
+      if(e.target.id === 'edit-modal') closeEditModal();
+    });
+
+    // Charger et afficher les catégories
+    async function loadCategories() {
+      const snapshot = await db.collection('products').get();
+      const categories = new Set(['all']);
+      
       snapshot.forEach(doc => {
         const product = doc.data();
+        if(product.category) {
+          categories.add(product.category);
+        }
+      });
+
+      const categoryFilter = document.getElementById('category-filter');
+      categoryFilter.innerHTML = '';
+
+      categories.forEach(category => {
+        const btn = document.createElement('button');
+        btn.className = 'filter-btn';
+        if(category === 'all') btn.classList.add('active');
+        btn.dataset.category = category;
+        btn.textContent = category === 'all' ? 'Tous les produits' : category;
+
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentFilter = category;
+          displayProducts();
+        });
+
+        categoryFilter.appendChild(btn);
+      });
+    }
+
+    // Afficher les produits filtrés
+    function displayProducts() {
+      productsContainer.innerHTML = '';
+
+      let productsToDisplay = allProducts;
+      if(currentFilter !== 'all') {
+        productsToDisplay = allProducts.filter(product => product.data.category === currentFilter);
+      }
+
+      if(productsToDisplay.length === 0) {
+        productsContainer.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #aaa; padding: 2rem;">Aucun produit dans cette catégorie</p>';
+        return;
+      }
+
+      productsToDisplay.forEach(({ doc, data: product }) => {
         const card = document.createElement('div');
         card.className = 'product-card';
+
+        // Construire la section des champs optionnels
+        let optionalFieldsHTML = '';
+        if(product.optionalFields && Object.keys(product.optionalFields).length > 0) {
+          optionalFieldsHTML = '<div style="border-top: 1px solid rgba(0,191,255,0.3); margin-top: 0.8rem; padding-top: 0.8rem;">';
+          for(const [key, value] of Object.entries(product.optionalFields)) {
+            const label = key.replace(/-/g, ' ').replace(/^\w/, c => c.toUpperCase());
+            optionalFieldsHTML += `<p><strong>${label}:</strong> ${value}</p>`;
+          }
+          optionalFieldsHTML += '</div>';
+        }
 
         card.innerHTML = `
           ${product.image ? `<img src="${product.image}" alt="${product.name}">` : ''}
@@ -244,7 +1082,8 @@
           <p><strong>Taille:</strong> ${product.size}</p>
           <p><strong>Poids:</strong> ${product.weight}</p>
           ${product.details ? `<p><strong>Détails:</strong> ${product.details}</p>` : ''}
-          <p>${product.category}</p>
+          <p><strong style="color: #00ffcc;">Catégorie:</strong> ${product.category}</p>
+          ${optionalFieldsHTML}
           <div class="quantity">
             <button class="decrease-btn">-</button>
             
@@ -252,14 +1091,20 @@
             
             <button class="increase-btn">+</button>
           </div>
+          <button class="edit-btn">✏️ Modifier</button>
           <button class="delete-btn">Supprimer</button>
         `;
+
+        // Bouton Modifier
+        card.querySelector('.edit-btn').addEventListener('click', () => {
+          openEditModal(doc, product);
+        });
 
         // Suppression
         card.querySelector('.delete-btn').addEventListener('click', async () => {
           if(confirm(`Supprimer "${product.name}" ?`)) {
             await db.collection('products').doc(doc.id).delete();
-            card.remove(); // pas besoin de reload complet
+            loadProducts();
           }
         });
 
@@ -267,20 +1112,31 @@
         card.querySelector('.increase-btn').addEventListener('click', async () => {
           const newQty = (product.quantity||0)+1;
           await db.collection('products').doc(doc.id).update({ quantity: newQty });
-          card.querySelector('.quantity-value').textContent = newQty;
-          product.quantity = newQty; // mise à jour locale
+          loadProducts();
         });
 
         // Quantité -
         card.querySelector('.decrease-btn').addEventListener('click', async () => {
           const newQty = Math.max(0,(product.quantity||0)-1);
           await db.collection('products').doc(doc.id).update({ quantity: newQty });
-          card.querySelector('.quantity-value').textContent = newQty;
-          product.quantity = newQty;
+          loadProducts();
         });
 
         productsContainer.appendChild(card);
       });
+    }
+    
+    // Charger produits
+    async function loadProducts() {
+      const snapshot = await db.collection('products').orderBy('createdAt','desc').get();
+      allProducts = [];
+
+      snapshot.forEach(doc => {
+        allProducts.push({ doc, data: doc.data() });
+      });
+
+      loadCategories();
+      displayProducts();
     }
     
     loadProducts();
