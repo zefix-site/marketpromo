@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mes Favoris - PixelZone</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Poppins',sans-serif; background:#f8f9fa; color:#2c3e50; }
+
+  .site-header { 
+    background:#fff; padding:1rem 3rem; display:flex; justify-content:space-between; align-items:center; 
+    border-bottom:1px solid #e8ecf1; box-shadow:0 2px 8px rgba(0,0,0,0.06);
+  }
+  .site-header h1 { 
+    font-size:1.8rem; font-weight:800; 
+    background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  }
+  .site-header a { color:#667eea; text-decoration:none; font-weight:600; }
+
+  .container { max-width:1200px; margin:2rem auto; padding:0 2rem; }
+  h2 { font-size:2rem; margin-bottom:2rem; }
+
+  .favorites-grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));
+    gap:1.5rem;
+  }
+
+  .product-card {
+    background:#fff;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 2px 8px rgba(0,0,0,0.06);
+    transition:all 0.3s;
+  }
+  .product-card:hover { box-shadow:0 8px 24px rgba(0,0,0,0.12); transform:translateY(-4px); }
+
+  .product-image {
+    width:100%;
+    height:200px;
+    background:#f0f2f5;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:3rem;
+    position:relative;
+    overflow:hidden;
+  }
+
+  .product-info { padding:1rem; }
+  .product-info h3 { font-size:1rem; margin-bottom:0.5rem; }
+  .product-price { font-size:1.2rem; font-weight:700; color:#667eea; margin-bottom:0.5rem; }
+  .product-category { font-size:0.8rem; color:#7f8c8d; margin-bottom:1rem; }
+
+  .product-actions { display:flex; gap:0.5rem; }
+  .btn { flex:1; padding:0.6rem; border:none; border-radius:8px; cursor:pointer; transition:0.3s; font-weight:600; }
+  .btn-primary { background:#667eea; color:#fff; }
+  .btn-primary:hover { background:#764ba2; }
+  .btn-danger { background:#e74c3c; color:#fff; }
+  .btn-danger:hover { background:#c0392b; }
+
+  .empty-state { text-align:center; padding:4rem 2rem; }
+  .empty-state i { font-size:3rem; opacity:0.3; margin-bottom:1rem; }
+  .empty-state p { color:#7f8c8d; margin-bottom:1rem; }
+
+  @media (max-width: 768px) {
+    .site-header { padding:1rem; }
+    .site-header h1 { font-size:1.4rem; }
+    .favorites-grid { grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:1rem; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1><a href="index.html">PixelZone</a></h1>
+  <a href="profil.html">← Retour au profil</a>
+</header>
+
+<div class="container">
+  <h2><i class="fas fa-heart"></i> Mes Favoris</h2>
+  <div id="favorites-list"></div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyBmZ8oear75OdXjkjqn2p7k0VjotrQwRYQ",
+  authDomain: "market-promo.firebaseapp.com",
+  projectId: "market-promo",
+  storageBucket: "market-promo.appspot.com",
+  messagingSenderId: "381267030115",
+  appId: "1:381267030115:web:dc310f4cb502bc81800856",
+  measurementId: "G-0RQZLQ9GQ9"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+auth.onAuthStateChanged(user => {
+  if(!user) {
+    window.location.href = 'login.html';
+  } else {
+    loadFavorites(user.uid);
+  }
+});
+
+function loadFavorites(uid) {
+  db.collection('favorites').doc(uid).get().then(doc => {
+    const favoritesList = document.getElementById('favorites-list');
+    
+    if(!doc.exists || !doc.data().items || doc.data().items.length === 0) {
+      favoritesList.innerHTML = `
+        <div class="empty-state">
+          <i class="fas fa-heart-o"></i>
+          <p>Vous n'avez pas encore ajouté de favoris</p>
+          <a href="index.html" style="color:#667eea; text-decoration:underline; font-weight:600;">Découvrir les produits</a>
+        </div>
+      `;
+      return;
+    }
+    
+    const items = doc.data().items || [];
+    let html = '<div class="favorites-grid">';
+    
+    items.forEach((item, idx) => {
+      html += `
+        <div class="product-card">
+          <div class="product-image">
+            ${item.emoji || '📦'}
+          </div>
+          <div class="product-info">
+            <h3>${item.name}</h3>
+            <div class="product-category">${item.category}</div>
+            <div class="product-price">${item.price}€</div>
+            <div class="product-actions">
+              <button class="btn btn-primary" onclick="addToCart('${item.name}', ${item.price}, '${item.emoji || '📦'}')">
+                <i class="fas fa-shopping-cart"></i>
+              </button>
+              <button class="btn btn-danger" onclick="removeFavorite(${idx})">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+    
+    html += '</div>';
+    favoritesList.innerHTML = html;
+  }).catch(err => console.error("Erreur:", err));
+}
+
+function addToCart(name, price, emoji) {
+  const user = auth.currentUser;
+  if(!user) {
+    alert('Veuillez vous connecter');
+    return;
+  }
+  
+  db.collection('carts').doc(user.uid).get().then(doc => {
+    let cart = doc.exists ? doc.data().items || [] : [];
+    const existing = cart.find(item => item.name === name);
+    
+    if(existing) {
+      existing.qty += 1;
+    } else {
+      cart.push({name, price, emoji, qty: 1});
+    }
+    
+    return db.collection('carts').doc(user.uid).set({items: cart}, {merge:true});
+  }).then(() => {
+    alert(name + ' ajouté au panier!');
+  }).catch(err => {
+    console.error("Erreur:", err);
+    alert('Erreur lors de l\'ajout');
+  });
+}
+
+function removeFavorite(idx) {
+  const user = auth.currentUser;
+  if(!user) return;
+  
+  db.collection('favorites').doc(user.uid).get().then(doc => {
+    if(doc.exists) {
+      let items = doc.data().items || [];
+      items.splice(idx, 1);
+      
+      return db.collection('favorites').doc(user.uid).update({items});
+    }
+  }).then(() => {
+    loadFavorites(user.uid);
+  }).catch(err => console.error("Erreur:", err));
+}
+</script>
+
+</body>
+</html>

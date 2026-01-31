@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon Profil - PixelZone</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { 
+    font-family:'Poppins',sans-serif; 
+    background:#f8f9fa;
+    color:#2c3e50; 
+    overflow-x:hidden;
+  }
+
+  /* HEADER */
+  .site-header { 
+    background:#fff; 
+    padding:1rem 3rem; 
+    display:flex; 
+    justify-content:space-between; 
+    align-items:center; 
+    border-bottom:1px solid #e8ecf1;
+    box-shadow:0 2px 8px rgba(0,0,0,0.06);
+    position:sticky; 
+    top:0; 
+    z-index:1000;
+  }
+  .site-header h1 { 
+    font-size:1.8rem; 
+    font-weight:800; 
+    background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+    letter-spacing:-0.5px;
+  }
+  .site-header a { color:#667eea; text-decoration:none; font-weight:600; }
+  .site-header a:hover { color:#764ba2; }
+
+  /* CONTAINER */
+  .profile-container {
+    max-width:900px;
+    margin:3rem auto;
+    padding:0 2rem;
+  }
+
+  /* PROFILE HEADER */
+  .profile-header-section {
+    background:#fff;
+    border-radius:12px;
+    padding:2rem;
+    box-shadow:0 2px 8px rgba(0,0,0,0.06);
+    margin-bottom:2rem;
+    display:flex;
+    align-items:center;
+    gap:2rem;
+  }
+  .profile-avatar {
+    width:100px;
+    height:100px;
+    border-radius:50%;
+    background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:3rem;
+    color:#fff;
+  }
+  .profile-info h2 { margin-bottom:0.5rem; font-size:1.8rem; }
+  .profile-info p { color:#7f8c8d; margin-bottom:0.3rem; }
+
+  /* TABS */
+  .profile-tabs {
+    display:flex;
+    gap:0;
+    background:#fff;
+    border-radius:12px 12px 0 0;
+    border-bottom:2px solid #e8ecf1;
+    margin-bottom:0;
+  }
+  .tab-btn {
+    flex:1;
+    padding:1.2rem;
+    border:none;
+    background:none;
+    cursor:pointer;
+    font-size:1rem;
+    font-weight:600;
+    color:#7f8c8d;
+    border-bottom:3px solid transparent;
+    transition:0.3s;
+  }
+  .tab-btn.active {
+    color:#667eea;
+    border-bottom-color:#667eea;
+  }
+  .tab-btn:hover { color:#667eea; }
+
+  /* CONTENT SECTIONS */
+  .tab-content {
+    display:none;
+    background:#fff;
+    border-radius:0 0 12px 12px;
+    padding:2rem;
+    box-shadow:0 2px 8px rgba(0,0,0,0.06);
+  }
+  .tab-content.active { display:block; }
+
+  /* FORM GROUPS */
+  .form-group {
+    margin-bottom:1.5rem;
+  }
+  .form-group label {
+    display:block;
+    margin-bottom:0.5rem;
+    font-weight:600;
+    color:#2c3e50;
+  }
+  .form-group input,
+  .form-group textarea {
+    width:100%;
+    padding:0.8rem;
+    border:1px solid #e0e0e0;
+    border-radius:8px;
+    font-family:inherit;
+    font-size:0.95rem;
+    transition:0.3s;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-color:#667eea;
+    outline:none;
+    box-shadow:0 0 0 3px rgba(102, 126, 234, 0.1);
+  }
+
+  /* BUTTONS */
+  .btn {
+    padding:0.8rem 2rem;
+    border:none;
+    border-radius:8px;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+    font-size:0.95rem;
+  }
+  .btn-primary {
+    background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color:#fff;
+  }
+  .btn-primary:hover {
+    transform:translateY(-2px);
+    box-shadow:0 8px 16px rgba(102, 126, 234, 0.3);
+  }
+  .btn-secondary {
+    background:#f0f2f5;
+    color:#2c3e50;
+  }
+  .btn-secondary:hover { background:#e8ecf1; }
+  .btn-danger {
+    background:#e74c3c;
+    color:#fff;
+  }
+  .btn-danger:hover { background:#c0392b; }
+
+  /* ORDER CARD */
+  .order-card {
+    background:#f8f9fa;
+    border:1px solid #e8ecf1;
+    border-radius:8px;
+    padding:1.5rem;
+    margin-bottom:1rem;
+  }
+  .order-header { display:flex; justify-content:space-between; margin-bottom:1rem; }
+  .order-status {
+    display:inline-block;
+    padding:0.3rem 0.8rem;
+    border-radius:20px;
+    font-size:0.85rem;
+    font-weight:600;
+  }
+  .status-pending { background:#fff3cd; color:#856404; }
+  .status-confirmed { background:#d4edda; color:#155724; }
+  .status-shipped { background:#cfe2ff; color:#084298; }
+  .status-delivered { background:#d1ecf1; color:#0c5460; }
+
+  /* EMPTY STATE */
+  .empty-state {
+    text-align:center;
+    padding:3rem 2rem;
+    color:#7f8c8d;
+  }
+  .empty-state i { font-size:3rem; opacity:0.3; margin-bottom:1rem; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .site-header { padding:1rem; }
+    .site-header h1 { font-size:1.4rem; }
+    .profile-header-section { flex-direction:column; text-align:center; padding:1.5rem; }
+    .profile-container { padding:0 1rem; }
+    .profile-tabs { flex-wrap:wrap; }
+    .tab-btn { padding:0.8rem; font-size:0.9rem; }
+    .tab-content { padding:1.5rem; }
+  }
+
+  @media (max-width: 480px) {
+    .site-header { padding:0.8rem; }
+    .site-header h1 { font-size:1.2rem; }
+    .profile-avatar { width:80px; height:80px; font-size:2.5rem; }
+    .profile-tabs { gap:0.3rem; }
+    .tab-btn { padding:0.7rem 0.5rem; font-size:0.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1><a href="index.html">PixelZone</a></h1>
+  <a href="index.html">← Retour à l'accueil</a>
+</header>
+
+<div class="profile-container">
+  <!-- PROFIL HEADER -->
+  <div class="profile-header-section">
+    <div class="profile-avatar">👤</div>
+    <div class="profile-info">
+      <h2 id="user-name">Nom Utilisateur</h2>
+      <p id="user-email">email@exemple.com</p>
+      <p id="user-member">Membre depuis: 01/01/2024</p>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="profile-tabs">
+    <button class="tab-btn active" onclick="showTab('info')">
+      <i class="fas fa-user"></i> Mes Infos
+    </button>
+    <button class="tab-btn" onclick="showTab('commandes')">
+      <i class="fas fa-shopping-bag"></i> Mes Commandes
+    </button>
+    <button class="tab-btn" onclick="showTab('parametres')">
+      <i class="fas fa-cog"></i> Paramètres
+    </button>
+  </div>
+
+  <!-- TAB: MES INFOS -->
+  <div id="info" class="tab-content active">
+    <h3 style="margin-bottom:1.5rem;">Informations Personnelles</h3>
+    <div class="form-group">
+      <label>Nom Complet</label>
+      <input type="text" id="form-name" placeholder="Votre nom">
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="form-email" disabled placeholder="Votre email">
+    </div>
+    <div class="form-group">
+      <label>Téléphone</label>
+      <input type="tel" id="form-phone" placeholder="Votre téléphone">
+    </div>
+    <div class="form-group">
+      <label>Adresse</label>
+      <input type="text" id="form-address" placeholder="Votre adresse">
+    </div>
+    <div class="form-group">
+      <label>Ville</label>
+      <input type="text" id="form-city" placeholder="Votre ville">
+    </div>
+    <div class="form-group">
+      <label>Code Postal</label>
+      <input type="text" id="form-zip" placeholder="Votre code postal">
+    </div>
+    <div style="display:flex; gap:1rem;">
+      <button class="btn btn-primary" onclick="updateProfile()">
+        <i class="fas fa-save"></i> Enregistrer
+      </button>
+      <button class="btn btn-secondary" onclick="cancelEdit()">
+        <i class="fas fa-times"></i> Annuler
+      </button>
+    </div>
+  </div>
+
+  <!-- TAB: MES COMMANDES -->
+  <div id="commandes" class="tab-content">
+    <h3 style="margin-bottom:1.5rem;">Mes Commandes</h3>
+    <div id="orders-list"></div>
+  </div>
+
+  <!-- TAB: PARAMÈTRES -->
+  <div id="parametres" class="tab-content">
+    <h3 style="margin-bottom:1.5rem;">Paramètres du Compte</h3>
+    
+    <div style="background:#f8f9fa; border-radius:8px; padding:1.5rem; margin-bottom:2rem;">
+      <h4 style="margin-bottom:1rem;">Changer le Mot de Passe</h4>
+      <div class="form-group">
+        <label>Ancien mot de passe</label>
+        <input type="password" id="old-password" placeholder="Entrez votre ancien mot de passe">
+      </div>
+      <div class="form-group">
+        <label>Nouveau mot de passe</label>
+        <input type="password" id="new-password" placeholder="Entrez votre nouveau mot de passe">
+      </div>
+      <div class="form-group">
+        <label>Confirmer le mot de passe</label>
+        <input type="password" id="confirm-password" placeholder="Confirmez votre nouveau mot de passe">
+      </div>
+      <button class="btn btn-primary" onclick="changePassword()">
+        <i class="fas fa-key"></i> Changer le mot de passe
+      </button>
+    </div>
+
+    <div style="border-top:1px solid #e8ecf1; padding-top:2rem;">
+      <h4 style="margin-bottom:1rem; color:#e74c3c;">Zone de Danger</h4>
+      <p style="margin-bottom:1rem; color:#7f8c8d;">Supprimer votre compte et toutes vos données</p>
+      <button class="btn btn-danger" onclick="if(confirm('Êtes-vous sûr? Cette action est irréversible!')) { deleteAccount(); }">
+        <i class="fas fa-trash"></i> Supprimer mon compte
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyBmZ8oear75OdXjkjqn2p7k0VjotrQwRYQ",
+  authDomain: "market-promo.firebaseapp.com",
+  projectId: "market-promo",
+  storageBucket: "market-promo.appspot.com",
+  messagingSenderId: "381267030115",
+  appId: "1:381267030115:web:dc310f4cb502bc81800856",
+  measurementId: "G-0RQZLQ9GQ9"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+// VÉRIFIER L'AUTHENTIFICATION
+auth.onAuthStateChanged(user => {
+  if(!user) {
+    window.location.href = 'login.html';
+  } else {
+    loadUserProfile(user.uid);
+    loadUserOrders(user.uid);
+  }
+});
+
+// CHARGER LE PROFIL UTILISATEUR
+function loadUserProfile(uid) {
+  db.collection('users').doc(uid).get().then(doc => {
+    if(doc.exists) {
+      const data = doc.data();
+      document.getElementById('user-name').textContent = data.name || 'Utilisateur';
+      document.getElementById('user-email').textContent = auth.currentUser.email;
+      document.getElementById('user-member').textContent = 'Membre depuis: ' + (data.createdAt ? new Date(data.createdAt).toLocaleDateString('fr-FR') : '---');
+      
+      // REMPLIR LES FORMULAIRES
+      document.getElementById('form-name').value = data.name || '';
+      document.getElementById('form-email').value = auth.currentUser.email;
+      document.getElementById('form-phone').value = data.phone || '';
+      document.getElementById('form-address').value = data.address || '';
+      document.getElementById('form-city').value = data.city || '';
+      document.getElementById('form-zip').value = data.zip || '';
+    }
+  }).catch(err => console.error("Erreur chargement profil:", err));
+}
+
+// CHARGER LES COMMANDES
+function loadUserOrders(uid) {
+  db.collection('orders').where('userId', '==', uid).orderBy('createdAt', 'desc').get().then(snapshot => {
+    const ordersList = document.getElementById('orders-list');
+    
+    if(snapshot.empty) {
+      ordersList.innerHTML = `
+        <div class="empty-state">
+          <i class="fas fa-shopping-bag"></i>
+          <p>Vous n'avez pas encore passé de commande</p>
+          <a href="index.html" style="color:#667eea; text-decoration:underline;">Commencer les achats</a>
+        </div>
+      `;
+      return;
+    }
+    
+    let html = '';
+    snapshot.forEach(doc => {
+      const order = doc.data();
+      const date = new Date(order.createdAt).toLocaleDateString('fr-FR');
+      const status = order.status || 'pending';
+      const statusLabel = {
+        'pending': 'En attente',
+        'confirmed': 'Confirmée',
+        'shipped': 'Expédiée',
+        'delivered': 'Livrée'
+      }[status] || status;
+      
+      html += `
+        <div class="order-card">
+          <div class="order-header">
+            <div>
+              <strong>Commande #${doc.id.slice(0, 8).toUpperCase()}</strong><br>
+              <small style="color:#7f8c8d;">${date}</small>
+            </div>
+            <div style="text-align:right;">
+              <span class="order-status status-${status}">${statusLabel}</span><br>
+              <strong style="font-size:1.1rem; color:#667eea;">${order.total}€</strong>
+            </div>
+          </div>
+          <div>
+            <small style="color:#7f8c8d;">Adresse: ${order.address}</small><br>
+            <small style="color:#7f8c8d;">Téléphone: ${order.phone}</small>
+          </div>
+        </div>
+      `;
+    });
+    
+    ordersList.innerHTML = html;
+  }).catch(err => console.error("Erreur chargement commandes:", err));
+}
+
+// AFFICHER LES TABS
+function showTab(tabName) {
+  document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  
+  document.getElementById(tabName).classList.add('active');
+  event.target.closest('.tab-btn').classList.add('active');
+}
+
+// METTRE À JOUR LE PROFIL
+function updateProfile() {
+  const user = auth.currentUser;
+  if(!user) return;
+  
+  const name = document.getElementById('form-name').value.trim();
+  if(!name) {
+    alert('Veuillez entrer votre nom');
+    return;
+  }
+  
+  db.collection('users').doc(user.uid).update({
+    name: name,
+    phone: document.getElementById('form-phone').value,
+    address: document.getElementById('form-address').value,
+    city: document.getElementById('form-city').value,
+    zip: document.getElementById('form-zip').value
+  }).then(() => {
+    alert('Profil mis à jour avec succès!');
+    loadUserProfile(user.uid);
+  }).catch(err => {
+    console.error("Erreur mise à jour:", err);
+    alert('Erreur lors de la mise à jour');
+  });
+}
+
+// ANNULER EDIT
+function cancelEdit() {
+  const user = auth.currentUser;
+  if(user) loadUserProfile(user.uid);
+}
+
+// CHANGER LE MOT DE PASSE
+function changePassword() {
+  const oldPwd = document.getElementById('old-password').value;
+  const newPwd = document.getElementById('new-password').value;
+  const confirmPwd = document.getElementById('confirm-password').value;
+  
+  if(!oldPwd || !newPwd || !confirmPwd) {
+    alert('Veuillez remplir tous les champs');
+    return;
+  }
+  
+  if(newPwd !== confirmPwd) {
+    alert('Les mots de passe ne correspondent pas');
+    return;
+  }
+  
+  if(newPwd.length < 6) {
+    alert('Le mot de passe doit faire au moins 6 caractères');
+    return;
+  }
+  
+  // Ré-authentifier l'utilisateur
+  const user = auth.currentUser;
+  const credential = firebase.auth.EmailAuthProvider.credential(user.email, oldPwd);
+  
+  user.reauthenticateWithCredential(credential).then(() => {
+    user.updatePassword(newPwd).then(() => {
+      alert('Mot de passe changé avec succès!');
+      document.getElementById('old-password').value = '';
+      document.getElementById('new-password').value = '';
+      document.getElementById('confirm-password').value = '';
+    }).catch(err => {
+      console.error("Erreur changement mdp:", err);
+      alert('Erreur: ' + err.message);
+    });
+  }).catch(err => {
+    console.error("Erreur ré-auth:", err);
+    alert('Ancien mot de passe incorrect');
+  });
+}
+
+// SUPPRIMER LE COMPTE
+function deleteAccount() {
+  const user = auth.currentUser;
+  if(!user) return;
+  
+  // Supprimer les données Firestore
+  db.collection('users').doc(user.uid).delete().then(() => {
+    // Supprimer le compte auth
+    user.delete().then(() => {
+      alert('Compte supprimé avec succès');
+      window.location.href = 'index.html';
+    }).catch(err => {
+      console.error("Erreur suppression compte:", err);
+      alert('Erreur: ' + err.message);
+    });
+  }).catch(err => {
+    console.error("Erreur suppression données:", err);
+    alert('Erreur lors de la suppression');
+  });
+}
+</script>
+
+</body>
+</html>

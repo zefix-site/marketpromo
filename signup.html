@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Inscription - PixelZone</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
@@ -12,63 +13,237 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
 <style>
-* { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; }
-body {
-  background: linear-gradient(135deg, #0f0f10, #1c1c22);
-  color: #fff;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  min-height:100vh;
-}
-.signup-container {
-  background: rgba(25,25,30,0.95);
-  padding: 3rem;
-  border-radius: 25px;
-  box-shadow: 0 0 25px rgba(0,191,255,0.5);
-  width: 100%;
-  max-width: 400px;
-  text-align: center;
-}
-.signup-container h1 { color: #00bfff; margin-bottom: 1.5rem; text-shadow: 0 0 10px #00bfff; }
-.signup-container input {
-  width: 100%;
-  padding: 0.8rem;
-  margin: 0.8rem 0;
-  border-radius: 15px;
-  border: 1px solid #00bfff;
-  background: #1c1c22;
-  color: #fff;
-  font-size: 1rem;
-}
-.signup-container input:focus { outline:none; border-color:#00ffcc; box-shadow: 0 0 10px #00ffcc; }
-.signup-container button {
-  width: 100%;
-  padding: 0.8rem;
-  margin-top:1rem;
-  background:#00bfff;
-  color:#000;
-  font-weight:700;
-  border:none;
-  border-radius:25px;
-  cursor:pointer;
-  transition:0.3s;
-}
-.signup-container button:hover { background:#00ffcc; }
-.signup-container a { color:#00bfff; text-decoration:none; display:block; margin-top:1rem; transition:0.3s; }
-.signup-container a:hover { color:#00ffcc; }
+  /* ===== BASE ===== */
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    font-family:'Poppins', sans-serif;
+    background:#f8f9fa;
+    color:#2c3e50;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:1rem;
+  }
+
+  /* ===== HEADER ===== */
+  .site-header { 
+    background:#fff; 
+    padding:1rem 3rem; 
+    display:flex; 
+    justify-content:space-between; 
+    align-items:center; 
+    border-bottom:1px solid #e8ecf1;
+    box-shadow:0 2px 8px rgba(0,0,0,0.06);
+    position:fixed; 
+    top:0; 
+    left:0;
+    right:0;
+    z-index:1000;
+  }
+  .site-header h1 { 
+    font-size:1.8rem; 
+    font-weight:800; 
+    background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+    letter-spacing:-0.5px;
+    cursor:pointer;
+  }
+  .site-header h1:hover { opacity:0.8; }
+  .header-icons { display:flex; align-items:center; gap:1.5rem; }
+  .header-icons a { 
+    color:#2c3e50; 
+    font-size:1.3rem; 
+    transition:0.3s ease;
+    text-decoration:none;
+  }
+  .header-icons a:hover { color:#667eea; }
+
+  /* ===== SIGNUP CONTAINER ===== */
+  .auth-wrapper { 
+    width:100%; 
+    max-width:500px;
+    margin-top:80px;
+  }
+  .auth-container {
+    background:#fff;
+    padding:3rem 2.5rem;
+    border-radius:12px;
+    border:1px solid #e8ecf1;
+    box-shadow:0 2px 16px rgba(0,0,0,0.08);
+  }
+  .auth-header { 
+    text-align:center; 
+    margin-bottom:2.5rem;
+  }
+  .auth-header h1 { 
+    font-size:2rem; 
+    color:#2c3e50;
+    font-weight:800;
+    margin-bottom:0.5rem;
+  }
+  .auth-header p { 
+    color:#7f8c8d; 
+    font-size:0.95rem;
+  }
+
+  /* ===== FORM ===== */
+  .form-group { 
+    margin-bottom:1.5rem;
+  }
+  .form-group label { 
+    display:block;
+    margin-bottom:0.5rem;
+    font-weight:600;
+    color:#2c3e50;
+    font-size:0.95rem;
+  }
+  .form-group input {
+    width:100%;
+    padding:0.9rem 1rem;
+    border:1px solid #e0e0e0;
+    border-radius:8px;
+    font-family:inherit;
+    font-size:0.95rem;
+    color:#2c3e50;
+    transition:0.3s;
+  }
+  .form-group input::placeholder { color:#bdc3c7; }
+  .form-group input:focus { 
+    outline:none;
+    border-color:#667eea;
+    box-shadow:0 0 0 3px rgba(102, 126, 234, 0.1);
+  }
+
+  /* ===== PASSWORD MATCH INDICATOR ===== */
+  .password-match { 
+    font-size:0.8rem;
+    margin-top:0.3rem;
+    display:none;
+  }
+  .password-match.show { display:block; }
+  .password-match.match { color:#27ae60; }
+  .password-match.nomatch { color:#e74c3c; }
+
+  /* ===== BUTTON ===== */
+  .signup-btn { 
+    width:100%;
+    padding:1rem;
+    background:linear-gradient(135deg, #667eea, #764ba2);
+    color:#fff;
+    border:none;
+    border-radius:8px;
+    font-weight:700;
+    font-size:1rem;
+    cursor:pointer;
+    transition:0.3s;
+    box-shadow:0 4px 12px rgba(102, 126, 234, 0.3);
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+  }
+  .signup-btn:hover { 
+    transform:translateY(-2px);
+    box-shadow:0 6px 16px rgba(102, 126, 234, 0.4);
+  }
+  .signup-btn:active { transform:translateY(0); }
+
+  /* ===== LINKS ===== */
+  .auth-footer { 
+    text-align:center; 
+    margin-top:2rem;
+    padding-top:1.5rem;
+    border-top:1px solid #e8ecf1;
+  }
+  .auth-footer p { 
+    color:#7f8c8d; 
+    font-size:0.95rem;
+    margin-bottom:0.5rem;
+  }
+  .auth-link { 
+    color:#667eea; 
+    text-decoration:none;
+    font-weight:700;
+    transition:0.3s;
+  }
+  .auth-link:hover { color:#764ba2; }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width:768px) {
+    .site-header { padding:0.9rem 1.5rem; }
+    .site-header h1 { font-size:1.4rem; }
+    
+    .auth-wrapper { margin-top:100px; }
+    .auth-container { padding:2rem 1.5rem; }
+    .auth-header h1 { font-size:1.8rem; }
+  }
+
+  @media (max-width:480px) {
+    .site-header { padding:0.8rem 1rem; }
+    .site-header h1 { font-size:1.2rem; }
+    .header-icons { gap:1rem; }
+    .header-icons a { font-size:1.1rem; }
+    
+    .auth-wrapper { margin-top:90px; width:95%; }
+    .auth-container { padding:1.5rem 1rem; }
+    .auth-header h1 { font-size:1.5rem; }
+    .form-group input { padding:0.8rem 0.8rem; }
+    .signup-btn { padding:0.9rem; font-size:0.9rem; }
+  }
 </style>
 </head>
 <body>
 
-<div class="signup-container">
-  <h1>Créer un compte</h1>
-  <input type="text" id="name" placeholder="Nom complet" required>
-  <input type="email" id="email" placeholder="Adresse email" required>
-  <input type="password" id="password" placeholder="Mot de passe" required>
-  <input type="password" id="confirm-password" placeholder="Confirmer mot de passe" required>
-  <button onclick="signup()">S'inscrire</button>
-  <a href="login.html">Déjà un compte ? Se connecter</a>
+<header class="site-header">
+  <h1 onclick="window.location.href='index.html'">PixelZone</h1>
+  <div class="header-icons">
+    <a href="index.html" title="Accueil">
+      <i class="fas fa-home"></i>
+    </a>
+  </div>
+</header>
+
+<div class="auth-wrapper">
+  <div class="auth-container">
+    <div class="auth-header">
+      <h1>Créer un compte</h1>
+      <p>Rejoignez PixelZone en quelques clics</p>
+    </div>
+    
+    <form onsubmit="handleSignup(event)">
+      <div class="form-group">
+        <label for="name">Nom complet</label>
+        <input type="text" id="name" placeholder="Votre nom complet" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="email">Adresse email</label>
+        <input type="email" id="email" placeholder="votre@email.com" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" placeholder="Minimum 6 caractères" required onchange="checkPassword()">
+      </div>
+      
+      <div class="form-group">
+        <label for="confirm-password">Confirmer le mot de passe</label>
+        <input type="password" id="confirm-password" placeholder="Confirmez votre mot de passe" required onchange="checkPassword()">
+        <div class="password-match" id="password-match"></div>
+      </div>
+      
+      <button type="submit" class="signup-btn">
+        <i class="fas fa-user-plus"></i> S'inscrire
+      </button>
+    </form>
+    
+    <div class="auth-footer">
+      <p>Vous avez déjà un compte ?</p>
+      <a href="login.html" class="auth-link">Se connecter ici</a>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -86,7 +261,32 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-function signup(){
+// ===== CHECK PASSWORD MATCH =====
+function checkPassword(){
+  const password = document.getElementById('password').value;
+  const confirm = document.getElementById('confirm-password').value;
+  const indicator = document.getElementById('password-match');
+  
+  if(password && confirm){
+    indicator.classList.add('show');
+    if(password === confirm){
+      indicator.classList.add('match');
+      indicator.classList.remove('nomatch');
+      indicator.textContent = '✓ Les mots de passe correspondent';
+    } else {
+      indicator.classList.add('nomatch');
+      indicator.classList.remove('match');
+      indicator.textContent = '✗ Les mots de passe ne correspondent pas';
+    }
+  } else {
+    indicator.classList.remove('show');
+  }
+}
+
+// ===== HANDLE SIGNUP =====
+function handleSignup(event){
+  event.preventDefault();
+  
   const name = document.getElementById('name').value.trim();
   const email = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value;
@@ -96,8 +296,19 @@ function signup(){
     alert('Veuillez remplir tous les champs.');
     return;
   }
+  
+  if(name.length < 2){
+    alert('Veuillez entrer un nom valide.');
+    return;
+  }
+  
   if(password !== confirm){
     alert('Les mots de passe ne correspondent pas !');
+    return;
+  }
+  
+  if(password.length < 6){
+    alert('Le mot de passe doit contenir au moins 6 caractères.');
     return;
   }
 

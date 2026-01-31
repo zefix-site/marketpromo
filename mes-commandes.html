@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mes Commandes - PixelZone</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Poppins',sans-serif; background:#f8f9fa; color:#2c3e50; }
+
+  .site-header { 
+    background:#fff; padding:1rem 3rem; display:flex; justify-content:space-between; align-items:center; 
+    border-bottom:1px solid #e8ecf1; box-shadow:0 2px 8px rgba(0,0,0,0.06);
+  }
+  .site-header h1 { 
+    font-size:1.8rem; font-weight:800; 
+    background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  }
+  .site-header a { color:#667eea; text-decoration:none; font-weight:600; }
+
+  .container { max-width:900px; margin:2rem auto; padding:0 2rem; }
+  h2 { font-size:2rem; margin-bottom:2rem; }
+
+  .order-card {
+    background:#fff; border:1px solid #e8ecf1; border-radius:12px; padding:1.5rem; margin-bottom:1.5rem;
+    box-shadow:0 2px 8px rgba(0,0,0,0.06); transition:0.3s;
+  }
+  .order-card:hover { box-shadow:0 4px 16px rgba(0,0,0,0.12); }
+
+  .order-header { display:flex; justify-content:space-between; margin-bottom:1rem; align-items:center; }
+  .order-id { font-size:1.1rem; font-weight:700; color:#2c3e50; }
+  .order-date { color:#7f8c8d; font-size:0.9rem; }
+  .order-status { 
+    display:inline-block; padding:0.4rem 1rem; border-radius:20px; font-weight:600; font-size:0.85rem;
+  }
+  .status-pending { background:#fff3cd; color:#856404; }
+  .status-confirmed { background:#d4edda; color:#155724; }
+  .status-shipped { background:#cfe2ff; color:#084298; }
+  .status-delivered { background:#d1ecf1; color:#0c5460; }
+
+  .order-items { background:#f8f9fa; border-radius:8px; padding:1rem; margin:1rem 0; }
+  .item-row { display:flex; justify-content:space-between; margin-bottom:0.5rem; }
+  .item-name { flex:1; }
+  .item-qty { color:#7f8c8d; }
+  .item-price { font-weight:600; color:#667eea; }
+
+  .order-footer { display:flex; justify-content:space-between; align-items:center; padding-top:1rem; border-top:1px solid #e8ecf1; }
+  .order-total { font-size:1.1rem; font-weight:700; }
+  .order-total span { color:#667eea; }
+
+  .btn { padding:0.6rem 1.2rem; border:none; border-radius:8px; cursor:pointer; transition:0.3s; font-weight:600; }
+  .btn-primary { background:#667eea; color:#fff; }
+  .btn-primary:hover { background:#764ba2; }
+
+  .empty-state { text-align:center; padding:4rem 2rem; }
+  .empty-state i { font-size:3rem; opacity:0.3; margin-bottom:1rem; }
+  .empty-state p { color:#7f8c8d; margin-bottom:1rem; }
+
+  @media (max-width: 768px) {
+    .site-header { padding:1rem; }
+    .site-header h1 { font-size:1.4rem; }
+    .order-header { flex-direction:column; align-items:flex-start; }
+    .order-status { margin-top:0.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1><a href="index.html">PixelZone</a></h1>
+  <a href="profil.html">← Retour au profil</a>
+</header>
+
+<div class="container">
+  <h2><i class="fas fa-shopping-bag"></i> Mes Commandes</h2>
+  <div id="orders-list"></div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyBmZ8oear75OdXjkjqn2p7k0VjotrQwRYQ",
+  authDomain: "market-promo.firebaseapp.com",
+  projectId: "market-promo",
+  storageBucket: "market-promo.appspot.com",
+  messagingSenderId: "381267030115",
+  appId: "1:381267030115:web:dc310f4cb502bc81800856",
+  measurementId: "G-0RQZLQ9GQ9"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+auth.onAuthStateChanged(user => {
+  if(!user) {
+    window.location.href = 'login.html';
+  } else {
+    loadOrders(user.uid);
+  }
+});
+
+function loadOrders(uid) {
+  db.collection('orders').where('userId', '==', uid).orderBy('createdAt', 'desc').get().then(snapshot => {
+    const ordersList = document.getElementById('orders-list');
+    
+    if(snapshot.empty) {
+      ordersList.innerHTML = `
+        <div class="empty-state">
+          <i class="fas fa-inbox"></i>
+          <p>Vous n'avez pas encore passé de commande</p>
+          <a href="index.html" style="color:#667eea; text-decoration:underline; font-weight:600;">Commencer les achats</a>
+        </div>
+      `;
+      return;
+    }
+    
+    let html = '';
+    snapshot.forEach(doc => {
+      const order = doc.data();
+      const date = new Date(order.createdAt).toLocaleDateString('fr-FR', {year:'numeric', month:'long', day:'numeric'});
+      const status = order.status || 'pending';
+      const statusLabel = {
+        'pending': 'En attente',
+        'confirmed': 'Confirmée',
+        'shipped': 'Expédiée',
+        'delivered': 'Livrée'
+      }[status] || status;
+      
+      let itemsHtml = '';
+      if(order.items && Array.isArray(order.items)) {
+        order.items.forEach(item => {
+          itemsHtml += `
+            <div class="item-row">
+              <span class="item-name">${item.name}</span>
+              <span class="item-qty">x${item.qty}</span>
+              <span class="item-price">${(item.price * item.qty).toFixed(2)}€</span>
+            </div>
+          `;
+        });
+      }
+      
+      html += `
+        <div class="order-card">
+          <div class="order-header">
+            <div>
+              <div class="order-id">#${doc.id.slice(0, 8).toUpperCase()}</div>
+              <div class="order-date">${date}</div>
+            </div>
+            <span class="order-status status-${status}">${statusLabel}</span>
+          </div>
+          <div class="order-items">
+            ${itemsHtml}
+          </div>
+          <div class="order-footer">
+            <div>
+              <strong>Adresse:</strong> ${order.address}<br>
+              <strong>Téléphone:</strong> ${order.phone}
+            </div>
+            <div>
+              <div class="order-total">Total: <span>${order.total}€</span></div>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+    
+    ordersList.innerHTML = html;
+  }).catch(err => console.error("Erreur:", err));
+}
+</script>
+
+</body>
+</html>
