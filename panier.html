@@ -454,6 +454,7 @@
     }
   }
 </style>
+
 </head>
 <body>
 
@@ -754,51 +755,54 @@ function placeOrder(event){
   const lastName = document.getElementById('lastName').value.trim();
   const address = document.getElementById('address').value.trim();
   const phone = document.getElementById('phone').value.trim();
-  let cart = [];
-  const user = auth.currentUser;
+  
+  if(!firstName || !lastName || !address || !phone){ 
+    alert('Veuillez remplir tous les champs !'); 
+    return; 
+  }
+
+  const user = auth && auth.currentUser;
+  
+  // Vérifier que l'utilisateur est authentifié
+  if(!user){
+    alert('Vous devez être connecté pour passer une commande. Veuillez vous connecter d\'abord.');
+    window.location = 'login.html';
+    return;
+  }
 
   if(user){
     db.collection('carts').doc(user.uid).get().then(doc=>{
+      let cart = [];
       if(doc.exists) cart = doc.data().items || [];
-      sendOrder(cart);
-    }).catch(err => console.error("Erreur:", err));
-  } else {
-    try {
-      cart = JSON.parse(localStorage.getItem('cart')) || [];
-      sendOrder(cart);
-    } catch(e) {
-      console.error("Erreur localStorage:", e);
-      sendOrder([]);
-    }
+      submitOrder(cart);
+    }).catch(err => { console.error("Erreur chargement panier:", err); alert("Erreur lors du chargement du panier"); });
   }
 
-  function sendOrder(cart){
+  function submitOrder(cart){
     if(cart.length===0){ 
-      alert("Votre panier est vide !"); 
-      return; 
-    }
-    if(!firstName || !lastName || !address || !phone){ 
-      alert("Veuillez remplir tous les champs !"); 
+      alert('Votre panier est vide !'); 
       return; 
     }
 
+    const user = auth && auth.currentUser;
     const order = {
       firstName, lastName, address, phone,
-      cart, date:new Date().toISOString(), total: cart.reduce((sum, item) => sum + item.price * item.qty, 0)
+      cart, date:new Date().toISOString(), 
+      total: cart.reduce((sum, item) => sum + item.price * item.qty, 0),
+      status: 'confirmée',
+      userId: user ? user.uid : null,
+      createdAt: new Date()
     };
 
+    console.log('Création commande avec userId:', user.uid, 'Commande:', order);
+
     db.collection('orders').add(order)
-      .then(()=>{
+      .then((docRef)=>{
+        console.log('Commande créée avec ID:', docRef.id);
         alert("Commande passée avec succès ! Merci de votre achat.");
-        const user = auth.currentUser;
+        const user = auth && auth.currentUser;
         if(user){
           db.collection('carts').doc(user.uid).set({items:[]});
-        } else {
-          try {
-            localStorage.removeItem('cart');
-          } catch(e) {
-            console.error("Erreur localStorage:", e);
-          }
         }
         renderCart([]);
         document.getElementById('firstName').value='';
@@ -807,7 +811,7 @@ function placeOrder(event){
         document.getElementById('phone').value='';
       })
       .catch(error=>{
-        console.error(error);
+        console.error('Erreur création commande:', error);
         alert("Erreur lors de la commande. Veuillez réessayer.");
       });
   }

@@ -600,6 +600,105 @@
         margin-bottom: 0.6rem;
       }
     }
+
+    /* --- COMMANDES SECTION --- */
+    .commandes-section {
+      background: linear-gradient(180deg, rgba(25,25,35,0.95) 0%, rgba(15,15,25,0.95) 100%);
+      padding: 2.5rem;
+      border-radius: 15px;
+      border: 1.5px solid rgba(0,191,255,0.3);
+      box-shadow: 0 8px 32px rgba(0,191,255,0.1);
+      margin-top: 3rem;
+    }
+
+    .commandes-section h2 {
+      font-size: 1.8rem;
+      color: #00bfff;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 0 10px rgba(0,191,255,0.3);
+      font-weight: 700;
+    }
+
+    .orders-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(10,10,20,0.9);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .orders-table thead {
+      background: rgba(0,191,255,0.1);
+      border-bottom: 2px solid rgba(0,191,255,0.3);
+    }
+
+    .orders-table th {
+      padding: 1rem;
+      text-align: left;
+      color: #00ffcc;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+    }
+
+    .orders-table td {
+      padding: 1rem;
+      border-bottom: 1px solid rgba(0,191,255,0.1);
+      color: #f5f5f5;
+      font-size: 0.9rem;
+    }
+
+    .orders-table tbody tr:hover {
+      background: rgba(0,191,255,0.05);
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .status-confirmée { background: rgba(0,255,136,0.2); color: #00ff88; }
+    .status-payer { background: rgba(0,170,255,0.2); color: #00aaff; }
+    .status-traitement { background: rgba(255,170,0,0.2); color: #ffaa00; }
+    .status-livrée { background: rgba(0,255,204,0.2); color: #00ffcc; }
+
+    .status-actions {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .status-btn {
+      padding: 0.4rem 0.8rem;
+      border: 1px solid rgba(0,191,255,0.5);
+      background: rgba(0,191,255,0.1);
+      color: #00bfff;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .status-btn:hover {
+      background: rgba(0,191,255,0.3);
+      box-shadow: 0 0 10px rgba(0,191,255,0.3);
+    }
+
+    .order-items {
+      font-size: 0.85rem;
+      color: #00ffcc;
+    }
+
+    .empty-commandes {
+      text-align: center;
+      padding: 2rem;
+      color: #999;
+    }
   </style>
 </head>
 <body>
@@ -608,6 +707,12 @@
   </header>
 
   <div class="container">
+    <!-- SECTION COMMANDES ADMIN EN HAUT -->
+    <div class="commandes-section">
+      <h2>📦 Gestion des commandes</h2>
+      <div id="orders-container"></div>
+    </div>
+
     <div class="form-section">
       <h2>📦 Ajouter un produit</h2>
       <form id="product-form">
@@ -688,10 +793,38 @@
               <label for="garantie">Garantie</label>
               <input type="text" id="garantie" placeholder="ex: 2 ans, Lifetime">
             </div>
+            <div class="form-group">
+              <label for="info-cpu">CPU</label>
+              <input type="text" id="info-cpu" placeholder="ex: Intel i7, Ryzen 5">
+            </div>
+            <div class="form-group">
+              <label for="info-ram">RAM</label>
+              <input type="text" id="info-ram" placeholder="ex: 8GB, 16GB">
+            </div>
+            <div class="form-group">
+              <label for="info-stockage">Stockage</label>
+              <input type="text" id="info-stockage" placeholder="ex: 256GB SSD, 1TB HDD">
+            </div>
+            <div class="form-group">
+              <label for="info-os">Système d'exploitation</label>
+              <input type="text" id="info-os" placeholder="ex: Windows 11, macOS, Linux">
+            </div>
+            <div class="form-group">
+              <label for="info-connectivite">Connectivité</label>
+              <input type="text" id="info-connectivite" placeholder="ex: Wi‑Fi 6, Bluetooth 5.0, 2x USB-C">
+            </div>
+            <div class="form-group">
+              <label for="info-poids-g">Poids (g)</label>
+              <input type="text" id="info-poids-g" placeholder="ex: 1500 g">
+            </div>
           </div>
 
           <!-- Vêtements -->
           <div class="optional-field" data-category="vêtement">
+            <div class="form-group">
+              <label for="vet-genre">Genre</label>
+              <input type="text" id="vet-genre" placeholder="ex: Homme, Femme, Unisexe">
+            </div>
             <div class="form-group">
               <label for="couleur">Couleur</label>
               <input type="text" id="couleur" placeholder="ex: Bleu, Rouge">
@@ -699,6 +832,18 @@
             <div class="form-group">
               <label for="taille-vetement">Taille</label>
               <input type="text" id="taille-vetement" placeholder="ex: XS, S, M, L, XL">
+            </div>
+            <div class="form-group">
+              <label for="vet-guide-taille">Guide des tailles</label>
+              <input type="text" id="vet-guide-taille" placeholder="ex: tour de poitrine, hauteur en cm">
+            </div>
+            <div class="form-group">
+              <label for="vet-entretien">Entretien</label>
+              <input type="text" id="vet-entretien" placeholder="ex: Lavable en machine, Nettoyage à sec">
+            </div>
+            <div class="form-group">
+              <label for="vet-coupe">Coupe</label>
+              <input type="text" id="vet-coupe" placeholder="ex: Regular, Slim, Oversize">
             </div>
             <div class="form-group">
               <label for="matiere">Matière</label>
@@ -720,6 +865,18 @@
               <label for="pureté">Pureté</label>
               <input type="text" id="pureté" placeholder="ex: 14k, 18k, 925, 950">
             </div>
+            <div class="form-group">
+              <label for="poids-gr-bijou">Poids (g)</label>
+              <input type="text" id="poids-gr-bijou" placeholder="ex: 5 g">
+            </div>
+            <div class="form-group">
+              <label for="taille-bague">Taille de bague</label>
+              <input type="text" id="taille-bague" placeholder="ex: 52, 54">
+            </div>
+            <div class="form-group">
+              <label for="certificat-bijou">Certificat</label>
+              <input type="text" id="certificat-bijou" placeholder="ex: GIA, HRD">
+            </div>
           </div>
 
           <!-- Maquillage & Soin -->
@@ -735,6 +892,18 @@
             <div class="form-group">
               <label for="certifications">Certifications</label>
               <input type="text" id="certifications" placeholder="ex: Bio, Vegan, Cruelty-free">
+            </div>
+            <div class="form-group">
+              <label for="maquillage-contenance-ml">Contenance (ml)</label>
+              <input type="text" id="maquillage-contenance-ml" placeholder="ex: 30 ml">
+            </div>
+            <div class="form-group">
+              <label for="maquillage-spf">SPF</label>
+              <input type="text" id="maquillage-spf" placeholder="ex: SPF 30">
+            </div>
+            <div class="form-group">
+              <label for="maquillage-vegan">Vegan</label>
+              <input type="text" id="maquillage-vegan" placeholder="ex: Oui / Non">
             </div>
           </div>
 
@@ -752,6 +921,22 @@
               <label for="duree">Durée</label>
               <input type="text" id="duree" placeholder="ex: 4-6h, 8h+">
             </div>
+            <div class="form-group">
+              <label for="parfum-notes-tete">Notes de tête</label>
+              <input type="text" id="parfum-notes-tete" placeholder="ex: Bergamote, Citron">
+            </div>
+            <div class="form-group">
+              <label for="parfum-notes-coeur">Notes de cœur</label>
+              <input type="text" id="parfum-notes-coeur" placeholder="ex: Jasmin, Rose">
+            </div>
+            <div class="form-group">
+              <label for="parfum-notes-fond">Notes de fond</label>
+              <input type="text" id="parfum-notes-fond" placeholder="ex: Musc, Bois de santal">
+            </div>
+            <div class="form-group">
+              <label for="parfum-contenance-ml">Contenance (ml)</label>
+              <input type="text" id="parfum-contenance-ml" placeholder="ex: 50 ml, 100 ml">
+            </div>
           </div>
 
           <!-- Peluches & Figurines -->
@@ -768,6 +953,14 @@
               <label for="age-min">Âge minimum</label>
               <input type="text" id="age-min" placeholder="ex: 3+, 8+, 14+">
             </div>
+            <div class="form-group">
+              <label for="peluche-materiau">Matériau</label>
+              <input type="text" id="peluche-materiau" placeholder="ex: Polyester, Coton">
+            </div>
+            <div class="form-group">
+              <label for="peluche-taille">Taille</label>
+              <input type="text" id="peluche-taille" placeholder="ex: 20 cm, 50 cm">
+            </div>
           </div>
 
           <!-- Électroménager -->
@@ -783,6 +976,86 @@
             <div class="form-group">
               <label for="bruit">Niveau de bruit</label>
               <input type="text" id="bruit" placeholder="ex: 50dB, Silencieux">
+            </div>
+            <div class="form-group">
+              <label for="poids-electro">Poids</label>
+              <input type="text" id="poids-electro" placeholder="ex: 12 kg">
+            </div>
+            <div class="form-group">
+              <label for="dimensions-electro">Dimensions</label>
+              <input type="text" id="dimensions-electro" placeholder="ex: 60x60x85 cm">
+            </div>
+          </div>
+
+          <!-- Maison & Jardin -->
+          <div class="optional-field" data-category="Maison,Jardin">
+            <div class="form-group">
+              <label for="materiau">Matériau</label>
+              <input type="text" id="materiau" placeholder="ex: Bois, Métal, Plastique">
+            </div>
+            <div class="form-group">
+              <label for="dimensions">Dimensions</label>
+              <input type="text" id="dimensions" placeholder="ex: 120x60x80 cm">
+            </div>
+            <div class="form-group">
+              <label for="couleur-maison">Couleur</label>
+              <input type="text" id="couleur-maison" placeholder="ex: Blanc, Noir">
+            </div>
+            <div class="form-group">
+              <label for="maison-poids">Poids</label>
+              <input type="text" id="maison-poids" placeholder="ex: 25 kg">
+            </div>
+            <div class="form-group">
+              <label for="maison-montage-requis">Montage requis</label>
+              <input type="text" id="maison-montage-requis" placeholder="ex: Oui / Non">
+            </div>
+          </div>
+
+          <!-- Jeux & Jouets -->
+          <div class="optional-field" data-category="jouer">
+            <div class="form-group">
+              <label for="type-jeu">Type</label>
+              <input type="text" id="type-jeu" placeholder="ex: Éducatif, de société, électronique">
+            </div>
+            <div class="form-group">
+              <label for="age-min-jeu">Âge minimum</label>
+              <input type="text" id="age-min-jeu" placeholder="ex: 3+, 8+">
+            </div>
+            <div class="form-group">
+              <label for="nb-joueurs">Nombre de joueurs</label>
+              <input type="text" id="nb-joueurs" placeholder="ex: 1, 2-4">
+            </div>
+            <div class="form-group">
+              <label for="piles-requises">Piles requises</label>
+              <input type="text" id="piles-requises" placeholder="ex: 2x AA">
+            </div>
+            <div class="form-group">
+              <label for="jouet-dimensions">Dimensions</label>
+              <input type="text" id="jouet-dimensions" placeholder="ex: 30x20x10 cm">
+            </div>
+          </div>
+
+          <!-- Cuisines -->
+          <div class="optional-field" data-category="cuisines">
+            <div class="form-group">
+              <label for="materiau-cuisine">Matériau</label>
+              <input type="text" id="materiau-cuisine" placeholder="ex: Acier inoxydable, Céramique">
+            </div>
+            <div class="form-group">
+              <label for="contenance">Contenance</label>
+              <input type="text" id="contenance" placeholder="ex: 2L, 1,5kg">
+            </div>
+            <div class="form-group">
+              <label for="compatibilite">Compatibilité</label>
+              <input type="text" id="compatibilite" placeholder="ex: Four, Lave-vaisselle">
+            </div>
+            <div class="form-group">
+              <label for="puissance-w">Puissance (W)</label>
+              <input type="text" id="puissance-w" placeholder="ex: 800W, 1500W">
+            </div>
+            <div class="form-group">
+              <label for="cuisine-poids">Poids</label>
+              <input type="text" id="cuisine-poids" placeholder="ex: 2.5 kg">
             </div>
           </div>
         </div>
@@ -1137,9 +1410,97 @@
 
       loadCategories();
       displayProducts();
+      loadOrders(); // Charger les commandes
     }
     
     loadProducts();
+
+    // ===== COMMANDES ADMIN =====
+    function loadOrders() {
+      db.collection('orders').get().then(snapshot => {
+        const container = document.getElementById('orders-container');
+        
+        if(snapshot.empty) {
+          container.innerHTML = '<div class="empty-commandes">Aucune commande</div>';
+          return;
+        }
+
+        // Trier par createdAt décroissant
+        let orders = [];
+        snapshot.forEach(doc => {
+          orders.push({ id: doc.id, ...doc.data() });
+        });
+        orders.sort((a,b) => {
+          const dateA = a.createdAt ? (a.createdAt.toDate ? a.createdAt.toDate() : new Date(a.createdAt)) : new Date(0);
+          const dateB = b.createdAt ? (b.createdAt.toDate ? b.createdAt.toDate() : new Date(b.createdAt)) : new Date(0);
+          return dateB - dateA;
+        });
+
+        let html = `
+          <table class="orders-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Client</th>
+                <th>Articles</th>
+                <th>Total</th>
+                <th>Adresse</th>
+                <th>Téléphone</th>
+                <th>Statut</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+
+        orders.forEach(order => {
+          const status = order.status || 'confirmée';
+          let itemsText = '';
+          if(order.cart && Array.isArray(order.cart)) {
+            itemsText = order.cart.map(i => `${i.name} (x${i.qty})`).join(', ');
+          }
+
+          html += `
+            <tr>
+              <td>#${order.id.slice(0,8)}</td>
+              <td>${order.firstName} ${order.lastName}</td>
+              <td class="order-items">${itemsText || 'N/A'}</td>
+              <td>${order.total.toFixed(2)}€</td>
+              <td>${order.address}</td>
+              <td>${order.phone}</td>
+              <td><span class="status-badge status-${status}">${status}</span></td>
+              <td>
+                <div class="status-actions">
+                  ${status !== 'payer' ? `<button class="status-btn" onclick="updateOrderStatus('${order.id}', 'payer')">Payer</button>` : ''}
+                  ${status !== 'traitement' ? `<button class="status-btn" onclick="updateOrderStatus('${order.id}', 'traitement')">Traitement</button>` : ''}
+                  ${status !== 'livrée' ? `<button class="status-btn" onclick="updateOrderStatus('${order.id}', 'livrée')">Livrer</button>` : ''}
+                </div>
+              </td>
+            </tr>
+          `;
+        });
+
+        html += `</tbody></table>`;
+        container.innerHTML = html;
+      }).catch(err => {
+        console.error('Erreur chargement commandes:', err);
+        document.getElementById('orders-container').innerHTML = '<div class="empty-commandes">Erreur chargement commandes</div>';
+      });
+    }
+
+    // Mettre à jour le statut d'une commande
+    window.updateOrderStatus = function(orderId, newStatus) {
+      db.collection('orders').doc(orderId).update({ status: newStatus })
+        .then(() => {
+          console.log('Commande mise à jour:', orderId, newStatus);
+          loadOrders(); // Recharger la liste
+        })
+        .catch(err => {
+          console.error('Erreur mise à jour:', err);
+          alert('Erreur lors de la mise à jour du statut');
+        });
+    }
+
   </script>
 </body>
 </html>

@@ -42,10 +42,10 @@
   .status-delivered { background:#d1ecf1; color:#0c5460; }
 
   .order-items { background:#f8f9fa; border-radius:8px; padding:1rem; margin:1rem 0; }
-  .item-row { display:flex; justify-content:space-between; margin-bottom:0.5rem; }
+  .item-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem; gap:1rem; }
   .item-name { flex:1; }
-  .item-qty { color:#7f8c8d; }
-  .item-price { font-weight:600; color:#667eea; }
+  .item-qty { color:#7f8c8d; min-width:50px; text-align:center; }
+  .item-price { font-weight:600; color:#667eea; min-width:80px; text-align:right; }
 
   .order-footer { display:flex; justify-content:space-between; align-items:center; padding-top:1rem; border-top:1px solid #e8ecf1; }
   .order-total { font-size:1.1rem; font-weight:700; }
@@ -106,10 +106,15 @@ auth.onAuthStateChanged(user => {
 });
 
 function loadOrders(uid) {
-  db.collection('orders').where('userId', '==', uid).orderBy('createdAt', 'desc').get().then(snapshot => {
+  console.log('Chargement des commandes pour uid:', uid);
+  
+  // Requête sans orderBy (pas d'index composite nécessaire)
+  db.collection('orders').where('userId', '==', uid).get().then(snapshot => {
+    console.log('Nombre de commandes trouvées:', snapshot.size);
     const ordersList = document.getElementById('orders-list');
     
     if(snapshot.empty) {
+      console.log('Aucune commande trouvée pour cet utilisateur');
       ordersList.innerHTML = `
         <div class="empty-state">
           <i class="fas fa-inbox"></i>
@@ -120,12 +125,26 @@ function loadOrders(uid) {
       return;
     }
     
-    let html = '';
+    // Trier côté client (par createdAt décroissant)
+    let orders = [];
     snapshot.forEach(doc => {
-      const order = doc.data();
-      const date = new Date(order.createdAt).toLocaleDateString('fr-FR', {year:'numeric', month:'long', day:'numeric'});
-      const status = order.status || 'pending';
+      orders.push({ id: doc.id, ...doc.data() });
+    });
+    orders.sort((a, b) => {
+      const dateA = a.createdAt ? (a.createdAt.toDate ? a.createdAt.toDate() : new Date(a.createdAt)) : new Date(0);
+      const dateB = b.createdAt ? (b.createdAt.toDate ? b.createdAt.toDate() : new Date(b.createdAt)) : new Date(0);
+      return dateB - dateA; // plus récent en premier
+    });
+    
+    let html = '';
+    orders.forEach(order => {
+      console.log('Commande trouvée:', order.id, order);
+      
+      const createdAt = order.createdAt ? (order.createdAt.toDate ? order.createdAt.toDate() : new Date(order.createdAt)) : new Date();
+      const date = createdAt.toLocaleDateString('fr-FR', {year:'numeric', month:'long', day:'numeric'});
+      const status = order.status || 'confirmée';
       const statusLabel = {
+        'confirmée': 'Confirmée',
         'pending': 'En attente',
         'confirmed': 'Confirmée',
         'shipped': 'Expédiée',
@@ -133,8 +152,8 @@ function loadOrders(uid) {
       }[status] || status;
       
       let itemsHtml = '';
-      if(order.items && Array.isArray(order.items)) {
-        order.items.forEach(item => {
+      if(order.cart && Array.isArray(order.cart)) {
+        order.cart.forEach(item => {
           itemsHtml += `
             <div class="item-row">
               <span class="item-name">${item.name}</span>
@@ -149,7 +168,7 @@ function loadOrders(uid) {
         <div class="order-card">
           <div class="order-header">
             <div>
-              <div class="order-id">#${doc.id.slice(0, 8).toUpperCase()}</div>
+              <div class="order-id">#${order.id.slice(0, 8).toUpperCase()}</div>
               <div class="order-date">${date}</div>
             </div>
             <span class="order-status status-${status}">${statusLabel}</span>
@@ -163,7 +182,7 @@ function loadOrders(uid) {
               <strong>Téléphone:</strong> ${order.phone}
             </div>
             <div>
-              <div class="order-total">Total: <span>${order.total}€</span></div>
+              <div class="order-total">Total: <span>${order.total.toFixed(2)}€</span></div>
             </div>
           </div>
         </div>
@@ -171,7 +190,10 @@ function loadOrders(uid) {
     });
     
     ordersList.innerHTML = html;
-  }).catch(err => console.error("Erreur:", err));
+  }).catch(err => { 
+    console.error("Erreur chargement commandes:", err);
+    document.getElementById('orders-list').innerHTML = '<p style="color:red;">Erreur lors du chargement des commandes.</p>';
+  });
 }
 </script>
 

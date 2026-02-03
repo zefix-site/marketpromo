@@ -130,21 +130,21 @@ function loadFavorites(uid) {
     const items = doc.data().items || [];
     let html = '<div class="favorites-grid">';
     
-    items.forEach((item, idx) => {
+    items.forEach((item) => {
       html += `
         <div class="product-card">
           <div class="product-image">
-            ${item.emoji || '📦'}
+            ${item.image ? `<img src="${item.image}" alt="${item.name}" style="width:100%;height:100%;object-fit:cover;">` : (item.emoji || '📦')}
           </div>
           <div class="product-info">
             <h3>${item.name}</h3>
             <div class="product-category">${item.category}</div>
             <div class="product-price">${item.price}€</div>
             <div class="product-actions">
-              <button class="btn btn-primary" onclick="addToCart('${item.name}', ${item.price}, '${item.emoji || '📦'}')">
+              <button class="btn btn-primary" onclick="addToCart('${item.name}', ${item.price}, '${item.image || item.emoji || '📦'}')">
                 <i class="fas fa-shopping-cart"></i>
               </button>
-              <button class="btn btn-danger" onclick="removeFavorite(${idx})">
+              <button class="btn btn-danger" onclick="removeFavorite('${item.id}')">
                 <i class="fas fa-trash"></i>
               </button>
             </div>
@@ -184,15 +184,14 @@ function addToCart(name, price, emoji) {
   });
 }
 
-function removeFavorite(idx) {
+function removeFavorite(id) {
   const user = auth.currentUser;
   if(!user) return;
   
   db.collection('favorites').doc(user.uid).get().then(doc => {
     if(doc.exists) {
       let items = doc.data().items || [];
-      items.splice(idx, 1);
-      
+      items = items.filter(it => it.id !== id);
       return db.collection('favorites').doc(user.uid).update({items});
     }
   }).then(() => {
